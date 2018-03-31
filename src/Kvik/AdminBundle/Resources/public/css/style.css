@@ -1,0 +1,21 @@
+body{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 300;
+}
+
+.a-hover a:hover{
+    background-color: #f0f0f0;
+}
+.size-little{
+    font-size: small;
+}
+
+
+/*LK: no-radius */
+.dropdown-menu{
+    border-radius: 0 !important;
+}
+/*LK: Edit Bootstrap */
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 2.0rem;
+}

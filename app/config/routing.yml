@@ -1,3 +1,7 @@
+kvik_admin:
+    resource: "@KvikAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
