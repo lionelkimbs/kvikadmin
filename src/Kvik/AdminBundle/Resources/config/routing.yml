@@ -1,3 +1,35 @@
-kvik_admin_homepage:
+kvik_admin_index:
     path:     /
-    defaults: { _controller: KvikAdminBundle:Default:index }
+    defaults: { _controller: KvikAdminBundle:Admin:index }
+
+#Category
+kvik_admin_categories:
+    path:    /categories
+    defaults:
+        _controller: KvikAdminBundle:Category:index
+
+#Post
+kvik_admin_post:
+    path:    /posts-{type}
+    defaults:
+        _controller: KvikAdminBundle:Post:index
+        type: post
+    requirements:
+        type: post|page
+kvik_admin_post_add:
+    path:    /post/create-{type}
+    defaults:
+        _controller: KvikAdminBundle:Post:add
+        type: post
+    requirements:
+        type: post|page
+
+#User
+kvik_admin_users:
+    path:    /users
+    defaults:
+        _controller: KvikAdminBundle:User:index
+kvik_admin_user_add:
+    path:    /user/add
+    defaults:
+        _controller: KvikAdminBundle:User:add

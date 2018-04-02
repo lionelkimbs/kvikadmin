@@ -16,7 +16,7 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="{{ path('kvik_admin_homepage') }}"><i class="fas fa-tachometer-alt"></i></a>
+                <a class="navbar-brand" href="{{ path('kvik_admin_index') }}"><i class="fas fa-tachometer-alt"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -24,19 +24,19 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mr-auto">
                         {# Dashbord#}
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#">Tableau de bord</a>
+                        <li class="nav-item {% if 'kvik_admin_index' == app.request.attributes.get('_route') %}active{% endif %}">
+                            <a class="nav-link" href="{{ path('kvik_admin_index') }}">Tableau de bord</a>
                         </li>
                         {# Posts #}
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown {% if 'post' in app.request.uri and 'page' not in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Articles
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'post'}) }}">
                                     <i class="fas fa-plus-circle"></i> Ajouter
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'post'}) }}">
                                     <i class="fas fa-list"></i> Tous les articles
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -46,34 +46,34 @@
                             </div>
                         </li>
                         {# Categories #}
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Catégories</a>
+                        <li class="nav-item {% if 'categories' in app.request.uri %}active{% endif %}">
+                            <a class="nav-link" href="{{ path('kvik_admin_categories') }}">Catégories</a>
                         </li>
                         {# Pages #}
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown {% if 'page' in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Pages
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'page'}) }}">
                                     <i class="fas fa-plus-circle"></i> Ajouter
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list"></i> Tous les articles
+                                <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'page'}) }}">
+                                    <i class="fas fa-list"></i> Toutes les pages
                                 </a>
                             </div>
                         </li>
                         {# Users #}
-                        <li class="nav-item dropdown">
+                        <li class="nav-item dropdown {% if 'admin_user' in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Utilisateurs
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ path('kvik_admin_user_add') }}">
                                     <i class="fas fa-plus-circle"></i> Ajouter
                                 </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list"></i> Tous les articles
+                                <a class="dropdown-item" href="{{ path('kvik_admin_users') }}">
+                                    <i class="fas fa-list"></i> Tous les utilisateurs
                                 </a>
                             </div>
                         </li>
@@ -93,12 +93,12 @@
         </header>
 
         <main>
+            <h1>{% block page_h1 %}{% endblock %}</h1>
             {% block container %}
             {% endblock container %}
         </main>
 
         <footer>
-        {{ "now"|date('Y') }}
         </footer>
 
         <!--Other JS-->

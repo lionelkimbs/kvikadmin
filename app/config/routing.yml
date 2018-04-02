@@ -1,6 +1,6 @@
 kvik_admin:
     resource: "@KvikAdminBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /admin
 
 app:
     resource: '@AppBundle/Controller/'
