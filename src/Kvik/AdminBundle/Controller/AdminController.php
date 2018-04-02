@@ -7,6 +7,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class AdminController extends Controller{
 
     public function indexAction(){
-        return $this->render('@KvikAdmin/Default/index.html.twig');
+        return $this->render('@KvikAdmin/Admin/index.html.twig');
     }
 }

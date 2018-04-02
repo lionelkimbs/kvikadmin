@@ -1,5 +1,10 @@
 {% extends '@KvikAdmin/layout.html.twig' %}
 
+{% block title %}
+    {% if type == "page" %}Pages{% else %}Articles{% endif %}
+{% endblock title %}
+
+
 {% block page_h1 %}
     Index des {% if type == "page" %}pages{% else %}articles{% endif %}
 {% endblock %}

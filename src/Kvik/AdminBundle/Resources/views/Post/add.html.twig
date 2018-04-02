@@ -1,5 +1,10 @@
 {% extends '@KvikAdmin/layout.html.twig' %}
 
+{% block title %}
+    Créer {% if type == "page" %}une page{% else %}un article{% endif %}
+{% endblock title %}
+
+
 {% block container %}
     <h1>Ajouter {% if type == "page" %}une page{% else %}un article{% endif %}</h1>
 {% endblock %}

@@ -11,6 +11,6 @@ class UserController extends Controller{
     }
 
     public function addAction(){
-        return $this->render('@KvikAdmin/User/index.html.twig');
+        return $this->render('@KvikAdmin/User/add.html.twig');
     }
 }

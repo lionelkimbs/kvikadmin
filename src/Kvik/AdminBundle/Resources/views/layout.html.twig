@@ -1,6 +1,7 @@
 <!doctype HTML>
 <html lang="fr">
     <head>
+        <title>{% block title %}{% endblock title %} &rsaquo; Admin &mdash; {{ site_name }}</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400" rel="stylesheet">
         {% stylesheets '@KvikAdminBundle/Resources/public/css/*' filter='cssrewrite' %}
