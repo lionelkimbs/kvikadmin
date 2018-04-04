@@ -17,7 +17,7 @@
     <body>
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-                <a class="navbar-brand" href="{{ path('kvik_admin_index') }}"><i class="fas fa-tachometer-alt"></i></a>
+                <a class="navbar-brand" href="{{ path('kvik_admin_index') }}"><i class="fas fa-hashtag"></i></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -26,12 +26,14 @@
                     <ul class="navbar-nav mr-auto">
                         {# Dashbord#}
                         <li class="nav-item {% if 'kvik_admin_index' == app.request.attributes.get('_route') %}active{% endif %}">
-                            <a class="nav-link" href="{{ path('kvik_admin_index') }}">Tableau de bord</a>
+                            <a class="nav-link" href="{{ path('kvik_admin_index') }}">
+                                <i class="fas fa-inbox"></i> Tableau de bord
+                            </a>
                         </li>
                         {# Posts #}
                         <li class="nav-item dropdown {% if 'post' in app.request.uri and 'page' not in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Articles
+                                <i class="fas fa-copy"></i> Articles
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'post'}) }}">
@@ -48,12 +50,14 @@
                         </li>
                         {# Categories #}
                         <li class="nav-item {% if 'categories' in app.request.uri %}active{% endif %}">
-                            <a class="nav-link" href="{{ path('kvik_admin_categories') }}">Catégories</a>
+                            <a class="nav-link" href="{{ path('kvik_admin_categories') }}">
+                                <i class="fas fa-list-alt"></i> Catégories
+                            </a>
                         </li>
                         {# Pages #}
                         <li class="nav-item dropdown {% if 'page' in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Pages
+                                <i class="fas fa-file-powerpoint"></i> Pages
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'page'}) }}">
@@ -67,7 +71,7 @@
                         {# Users #}
                         <li class="nav-item dropdown {% if 'admin_user' in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Utilisateurs
+                                <i class="fas fa-users"></i> Utilisateurs
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('kvik_admin_user_add') }}">
@@ -80,7 +84,9 @@
                         </li>
                         {# Help #}
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#">À l'aide</a>
+                            <a class="nav-link disabled" href="#">
+                                <i class="fas fa-info-circle"></i> À l'aide
+                            </a>
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
