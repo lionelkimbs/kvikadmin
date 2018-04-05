@@ -3,6 +3,7 @@
 namespace Kvik\AdminBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
  * User
@@ -10,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="kb_user")
  * @ORM\Entity(repositoryClass="Kvik\AdminBundle\Repository\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -21,6 +22,11 @@ class User
      */
     private $id;
 
+
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Get id
