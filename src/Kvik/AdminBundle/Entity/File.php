@@ -1,0 +1,252 @@
+<?php
+
+namespace Kvik\AdminBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * File
+ *
+ * @ORM\Table(name="kb_file")
+ * @ORM\Entity(repositoryClass="Kvik\AdminBundle\Repository\FileRepository")
+ */
+class File
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="link", type="string", length=255)
+     */
+    private $link;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="alt", type="string", length=255, nullable=true)
+     */
+    private $alt;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="extension", type="string", length=10)
+     */
+    private $extension;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date_edit", type="datetimetz")
+     */
+    private $dateEdit;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="notes", type="text", nullable=true)
+     */
+    private $notes;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set link
+     *
+     * @param string $link
+     *
+     * @return File
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * Get link
+     *
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return File
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set alt
+     *
+     * @param string $alt
+     *
+     * @return File
+     */
+    public function setAlt($alt)
+    {
+        $this->alt = $alt;
+
+        return $this;
+    }
+
+    /**
+     * Get alt
+     *
+     * @return string
+     */
+    public function getAlt()
+    {
+        return $this->alt;
+    }
+
+    /**
+     * Set extension
+     *
+     * @param string $extension
+     *
+     * @return File
+     */
+    public function setExtension($extension)
+    {
+        $this->extension = $extension;
+
+        return $this;
+    }
+
+    /**
+     * Get extension
+     *
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->extension;
+    }
+
+    /**
+     * Set dateEdit
+     *
+     * @param \DateTime $dateEdit
+     *
+     * @return File
+     */
+    public function setDateEdit($dateEdit)
+    {
+        $this->dateEdit = $dateEdit;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEdit
+     *
+     * @return \DateTime
+     */
+    public function getDateEdit()
+    {
+        return $this->dateEdit;
+    }
+
+    /**
+     * Set description
+     *
+     * @param string $description
+     *
+     * @return File
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * Set notes
+     *
+     * @param string $notes
+     *
+     * @return File
+     */
+    public function setNotes($notes)
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+    /**
+     * Get notes
+     *
+     * @return string
+     */
+    public function getNotes()
+    {
+        return $this->notes;
+    }
+}
+
