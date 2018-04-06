@@ -84,3 +84,6 @@ fos_user:
     db_driver: orm
     firewall_name: kvik
     user_class: Kvik\AdminBundle\Entity\User
+    from_email:
+        address: '%mailer_user%'
+        sender_name:    '%site_name%'
