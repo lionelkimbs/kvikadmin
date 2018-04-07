@@ -11,11 +11,17 @@ body{
 }
 
 
+/*LK: Edit Bootstrap */
+.navbar-expand-lg .navbar-nav .nav-link {
+    padding-right: 1.4rem;
+}
+
+
+/*LK: Elements added */
+.marge-left{
+    margin-left: 2rem;
+}
 /*LK: no-radius */
 .dropdown-menu{
     border-radius: 0 !important;
-}
-/*LK: Edit Bootstrap */
-.navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: 2.0rem;
 }

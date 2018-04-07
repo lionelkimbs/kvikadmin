@@ -23,6 +23,7 @@
                 </button>
 
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    {# Menu navigation #}
                     <ul class="navbar-nav mr-auto">
                         {# Dashbord#}
                         <li class="nav-item {% if 'kvik_admin_index' == app.request.attributes.get('_route') %}active{% endif %}">
@@ -39,6 +40,7 @@
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'post'}) }}">
                                     <i class="fas fa-plus-circle"></i> Ajouter
                                 </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'post'}) }}">
                                     <i class="fas fa-list"></i> Tous les articles
                                 </a>
@@ -63,6 +65,7 @@
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'page'}) }}">
                                     <i class="fas fa-plus-circle"></i> Ajouter
                                 </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'page'}) }}">
                                     <i class="fas fa-list"></i> Toutes les pages
                                 </a>
@@ -77,6 +80,7 @@
                                 <a class="dropdown-item" href="{{ path('kvik_admin_user_add') }}">
                                     <i class="fas fa-plus-circle"></i> Ajouter
                                 </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ path('kvik_admin_users') }}">
                                     <i class="fas fa-list"></i> Tous les utilisateurs
                                 </a>
@@ -89,12 +93,39 @@
                             </a>
                         </li>
                     </ul>
+                    {# Search form #}
                     <form class="form-inline my-2 my-lg-0">
                         <input class="form-control mr-sm-2" type="search" placeholder="Rechercher" aria-label="Search">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
                             <i class="fas fa-search"></i>
                         </button>
                     </form>
+                    {# User infos #}
+                    <ul class="navbar-nav justify-content-between marge-left">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <i class="fas fa-bell"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-user-circle fa-lg"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right a-hover size-little" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="{{ path('fos_user_profile_edit') }}">
+                                    <i class="fas fa-user"></i> Mon profil
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('fos_user_change_password') }}">
+                                    <i class="fas fa-cogs"></i> Mes paramètres
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ path('fos_user_security_logout') }}">
+                                    <i class="fas fa-times-circle"></i> Déconnexion
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </header>
