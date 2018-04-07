@@ -61,7 +61,7 @@ class User extends BaseUser
     protected $presentation;
 
     /**
-     * @ORM\Column(name="displayed_role", type="string", length=20)
+     * @ORM\Column(name="displayed_role", type="string")
      */
     private $displayedRole;
 

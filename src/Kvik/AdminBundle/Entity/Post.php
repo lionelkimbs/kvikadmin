@@ -73,14 +73,14 @@ class Post
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_edit", type="datetimetz")
+     * @ORM\Column(name="date_edit", type="datetime")
      */
     private $dateEdit;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_pub", type="datetimetz", nullable=true)
+     * @ORM\Column(name="date_pub", type="datetime", nullable=true)
      */
     private $datePub;
 

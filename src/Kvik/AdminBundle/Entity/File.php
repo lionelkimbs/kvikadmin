@@ -52,7 +52,7 @@ class File
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_edit", type="datetimetz")
+     * @ORM\Column(name="date_edit", type="datetime")
      */
     private $dateEdit;
 
