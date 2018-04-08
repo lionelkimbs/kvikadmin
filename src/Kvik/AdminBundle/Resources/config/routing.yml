@@ -33,3 +33,17 @@ kvik_admin_user_add:
     path:    /user/add
     defaults:
         _controller: KvikAdminBundle:User:add
+kvik_admin_user_edit:
+    path:    /user/edit-{id}
+    defaults:
+        _controller: KvikAdminBundle:User:edit
+    requirements:
+        id: \d+
+kvik_admin_user_delete:
+    path:    /user/delete-{id}
+    defaults:
+        _controller: KvikAdminBundle:User:delete
+    requirements:
+        id: \d+
+
+

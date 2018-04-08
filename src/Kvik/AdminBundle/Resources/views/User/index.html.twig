@@ -8,4 +8,35 @@
 
 
 {% block container %}
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <caption>{{ users|length }} utilisateurs</caption>
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th scope="col">Identifiant</th>
+                <th scope="col">Email</th>
+                <th scope="col">Role</th>
+                <th scope="col">Articles</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                <tr>
+                    <td scope="row">
+                        <input type="checkbox">
+                    </td>
+                    <td>
+                        <a href="{% if user == app.user %}{{ path('fos_user_profile_edit') }}{% else %}{{ path('kvik_admin_user_edit', {'id': user.id }) }}{% endif %}">
+                        {{ user.username }}
+                        </a>
+                    </td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.displayedRole }}</td>
+                    <td>4</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
 {% endblock %}

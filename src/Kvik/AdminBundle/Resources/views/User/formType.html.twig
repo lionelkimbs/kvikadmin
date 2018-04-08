@@ -1,0 +1,63 @@
+{% extends '@KvikAdmin/layout.html.twig' %}
+
+{% block container %}
+    {{ form_start(form) }}
+    <div class="form-row">
+        {# Personnal infos #}
+        <div class="col-md-6">
+            {# firstname #}
+            <div class="form-group">
+                {{ form_errors(form.firstname) }}
+                {{ form_label(form.firstname, 'Prénom(s) *', {'label_attr': {} }) }}
+                {{ form_widget(form.firstname, {'attr': {'class': 'form-control', 'placeholder': 'Antonio, Mahtilde...' } }) }}
+            </div>
+            {# name #}
+            <div class="form-group">
+                {{ form_errors(form.name) }}
+                {{ form_label(form.name, 'Nom *') }}
+                {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Doe, Mbaku...' } }) }}
+            </div>
+            {# displayedRole #}
+            <div class="form-group">
+                {{ form_label(form.displayedRole, 'Rôle *') }}
+                {{ form_widget(form.displayedRole, {'attr': {'class': 'form-control custom-select' } }) }}
+            </div>
+            <hr>
+            {# presentation #}
+            <div class="form-group">
+                {{ form_errors(form.presentation) }}
+                {{ form_label(form.presentation, 'Présentation') }}
+                {{ form_widget(form.presentation, {'attr': {'class': 'form-control', 'placeholder': 'Petite présentation de l\'utilisateur ou biographie...' } }) }}
+            </div>
+        </div>
+        {# Account infos #}
+        <div class="col-md-6">
+            {# username #}
+            <div class="form-group">
+                {{ form_errors(form.username) }}
+                {{ form_label(form.username, 'Identifiant *') }}
+                {{ form_widget(form.username, {'attr': {'class': 'form-control', 'placeholder': 'L\'identifiant doit être unique...' } }) }}
+            </div>
+            {# email #}
+            <div class="form-group">
+                {{ form_errors(form.email) }}
+                {{ form_label(form.email, 'Email *') }}
+                {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'email@exemple.com...' } }) }}
+            </div>
+            {% block add_in_accountInfos %}
+            {% endblock %}
+        </div>
+        {# Buttons #}
+        <div class="col-md-12">
+            <div class="form-group">
+                {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-success float-right'} }) }}
+                {% block add_in_buttons %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+{% endblock %}

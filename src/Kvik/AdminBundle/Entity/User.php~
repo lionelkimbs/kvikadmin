@@ -61,7 +61,7 @@ class User extends BaseUser
     protected $presentation;
 
     /**
-     * @ORM\Column(name="displayed_role", type="string")
+     * @ORM\Column(name="displayed_role", type="string", length=20)
      */
     private $displayedRole;
 
@@ -69,6 +69,11 @@ class User extends BaseUser
      * @ORM\Column(name="date_added", type="datetime")
      */
     private $dateAdded;
+
+    /**
+     * @ORM\Column(name="date_updated", type="datetime")
+     */
+    private $dateUpdated;
 
 
     public function __construct()

@@ -1,0 +1,18 @@
+{% extends '@KvikAdmin/User/formType.html.twig' %}
+
+{% block title %}Modifier &laquo; {{ user.username }} &raquo;{% endblock title %}
+
+{% block page_h1 %}Modifier &laquo; {{ user.username }} &raquo;{% endblock %}
+
+{% block add_in_accountInfos %}
+    {# password #}
+    <div class="form-group">
+        {{ form_errors(form.plainPassword) }}
+        {{ form_label(form.plainPassword, 'Mot de passe *') }}
+        {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control' } }) }}
+    </div>
+{% endblock %}
+
+{% block add_in_buttons %}
+    <a href="{{ path('kvik_admin_user_delete', {'id': user.id}) }}" onclick="return confirm('Êtes-vous sûre de vouloir supprimer cet utilisateur ?');" class="btn btn-danger">Supprimer</a>
+{% endblock %}

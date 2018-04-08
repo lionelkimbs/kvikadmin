@@ -70,6 +70,11 @@ class User extends BaseUser
      */
     private $dateAdded;
 
+    /**
+     * @ORM\Column(name="date_updated", type="datetime")
+     */
+    private $dateUpdated;
+
 
     public function __construct()
     {
@@ -195,5 +200,29 @@ class User extends BaseUser
     public function getDisplayedRole()
     {
         return $this->displayedRole;
+    }
+
+    /**
+     * Set dateUpdated
+     *
+     * @param \DateTime $dateUpdated
+     *
+     * @return User
+     */
+    public function setDateUpdated($dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get dateUpdated
+     *
+     * @return \DateTime
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
     }
 }
