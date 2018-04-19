@@ -47,3 +47,8 @@ kvik_admin_user_delete:
         id: \d+
 
 
+#FOS User routes
+fos_user_profile_edit:
+    path: /profile/edit
+    defaults:
+        _controller: KvikAdminBundle:User:edit

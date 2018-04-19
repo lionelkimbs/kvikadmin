@@ -39,7 +39,7 @@ twig:
     strict_variables: '%kernel.debug%'
     globals:
         #Bundle Parameters
-        site_name: ImagesFrancophones
+        site_name: '%site_name%'
 
 
 # Doctrine Configuration
@@ -90,5 +90,4 @@ fos_user:
     registration:
         form:
             name: app_user_registration
-
 

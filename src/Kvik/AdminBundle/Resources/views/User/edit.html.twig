@@ -8,8 +8,8 @@
     {# password #}
     <div class="form-group">
         {{ form_errors(form.plainPassword) }}
-        {{ form_label(form.plainPassword, 'Mot de passe *') }}
-        {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control' } }) }}
+        {{ form_label(form.plainPassword, 'Nouveau mot de passe *') }}
+        {{ form_widget(form.plainPassword, {'attr': {'class': 'form-control', 'value': user.plainPassword } }) }}
     </div>
 {% endblock %}
 

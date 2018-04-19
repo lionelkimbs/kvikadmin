@@ -39,16 +39,19 @@ class UserController extends Controller{
         ]);
     }
 
-    public function editAction($id, Request $request){
+    public function editAction($id = null, Request $request){
         $em = $this->getDoctrine()->getManager();
-        $user = $em->getRepository(User::class)->find($id);
+        //* Who's user is this ?
+        if( $id == null ) $user = $this->getUser();
+        else $user = $em->getRepository(User::class)->find($id);
+
+        //* If user exists
         if ($user !== null){
-            $form = $this->createForm(UserType::class, $user, [
-                'todo' => 'edit'
-            ]);
+            $form = $this->createForm(UserType::class, $user, ['todo' => 'edit']);
             if( $form->handleRequest($request)->isValid() && $request->isMethod('POST') ){
                 $this->giveUserRole($user);
                 $user->setDateUpdated(new \DateTime());
+                if( $user->getPlainPassword() == null  ) $user->setPassword($user->getPassword());
                 $em->persist($user);
                 $em->flush();
                 $request->getSession()->getFlashBag()->add('notice', 'Modifications appliquées avec succès !');
