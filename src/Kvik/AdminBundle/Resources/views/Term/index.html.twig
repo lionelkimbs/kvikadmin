@@ -1,14 +1,7 @@
 {% extends '@KvikAdmin/layout.html.twig' %}
 
-{% block title %}
-    Catégories
-{% endblock title %}
-
-
-{% block page_h1 %}
-    Catégories
-{% endblock %}
-
+{% block title %}Catégories{% endblock title %}
+{% block page_h1 %}Catégories{% endblock %}
 
 {% block container %}
     <div class="row">
@@ -38,21 +31,21 @@
                         </td>
                     </tr>
                 {% else %}
+                    {% for term in terms %}
                     <tr>
-                        {% for term in terms %}
-                            <th scope="row">1</th>
-                            <td>
+                        <th scope="row">1</th>
+                        <td>
+                            <a href="{{ path('kvik_admin_term_edit', {'type': app.request.get('type'), 'id': term.id }) }}">
                                 {{ term.name }}
-                            </td>
-                            <td>
-                                {{ term.resume }}
-                            </td>
-                            <td> {{ term.slug }}</td>
-                            <td>
-                                4
-                            </td>
-                        {% endfor %}
+                            </a>
+                        </td>
+                        <td>
+                            {{ term.resume }}
+                        </td>
+                        <td> {{ term.slug }}</td>
+                        <td>4</td>
                     </tr>
+                    {% endfor %}
                 {% endif %}
                 </tbody>
             </table>

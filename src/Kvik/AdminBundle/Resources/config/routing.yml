@@ -9,6 +9,20 @@ kvik_admin_terms:
         _controller: KvikAdminBundle:Term:index
     requirements:
         type: categories|tags
+kvik_admin_term_edit:
+    path:    /{type}/edit-{id}
+    defaults:
+        _controller: KvikAdminBundle:Term:edit
+    requirements:
+        type: categories|tags
+        id: \d+
+kvik_admin_term_delete:
+    path:    /{type}/delete-{id}
+    defaults:
+        _controller: KvikAdminBundle:Term:delete
+    requirements:
+        type: categories|tags
+        id: \d+
 
 #Post
 kvik_admin_post:

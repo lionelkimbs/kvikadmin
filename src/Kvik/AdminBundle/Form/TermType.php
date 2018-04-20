@@ -41,7 +41,9 @@ class TermType extends AbstractType
                         ->orderBy('t.name', 'ASC')
                         ;
                 },
-                'choice_label' => 'name'
+                'choice_label' => 'name',
+                'required' => false,
+                'placeholder' => 'Aucun'
             ])
             ;
         }
