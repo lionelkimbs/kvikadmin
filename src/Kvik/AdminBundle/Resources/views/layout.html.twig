@@ -51,7 +51,7 @@
                         </li>
                         {# Categories #}
                         <li class="nav-item {% if 'categories' in app.request.uri %}active{% endif %}">
-                            <a class="nav-link" href="{{ path('kvik_admin_categories') }}">
+                            <a class="nav-link" href="{{ path('kvik_admin_terms', {'type': 'categories'}) }}">
                                 <i class="fas fa-list-alt"></i> Catégories
                             </a>
                         </li>

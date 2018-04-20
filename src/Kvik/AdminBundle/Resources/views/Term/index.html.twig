@@ -11,4 +11,51 @@
 
 
 {% block container %}
+    <div class="row">
+        <div class="col-4">
+            {{ form_start(form) }}
+                {% include '@KvikAdmin/Term/formType.html.twig' %}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+
+        <div class="col-8">
+            <table class="table table-hover table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Identifiant</th>
+                    <th scope="col">Articles</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if terms is empty %}
+                    <tr>
+                        <td colspan="5">
+                            Aucune catégorie trouvée.
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        {% for term in terms %}
+                            <th scope="row">1</th>
+                            <td>
+                                {{ term.name }}
+                            </td>
+                            <td>
+                                {{ term.resume }}
+                            </td>
+                            <td> {{ term.slug }}</td>
+                            <td>
+                                4
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}

@@ -1,0 +1,42 @@
+
+    {# name #}
+    <div class="form-group">
+        {{ form_errors(form.name) }}
+        {{ form_label(form.name, 'Nom *') }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-control', 'placeholder': 'Ce nom est utilisé un peu partout sur votre site.' } }) }}
+    </div>
+
+    {# slug #}
+    <div class="form-group">
+        {{ form_errors(form.slug) }}
+        {{ form_label(form.slug, 'Identifiant *') }}
+        {{ form_widget(form.slug, {'attr': {'class': 'form-control', 'placeholder': 'Identifiant unique, en lettres minuscules, sans accent ni espace.' } }) }}
+    </div>
+
+    {% if form.parent is not null %}
+    {# parent #}
+    <div class="form-group">
+        <div class="input-group mb-3">
+            {{ form_errors(form.parent) }}
+            <div class="input-group-prepend">
+            {{ form_label(form.parent, 'Parent', {'label_attr': {'class': 'input-group-text'}}) }}
+            </div>
+            {{ form_widget(form.parent, {'attr': {'class': 'custom-select' } }) }}
+        </div>
+    </div>
+    {% endif %}
+
+    {# description #}
+    <div class="form-group">
+        {{ form_errors(form.resume) }}
+        {{ form_label(form.resume, 'Description') }}
+        {{ form_widget(form.resume, {'attr': {'class': 'form-control', 'placeholder': 'La description n\'est pas très utilisée par défaut, cependant de plus en plus de thèmes l\'affichent.' } }) }}
+    </div>
+
+    {# Buttons #}
+    <div class="form-group">
+        {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-success float-right'} }) }}
+        {% block add_in_buttons %}
+        {% endblock %}
+    </div>
+
