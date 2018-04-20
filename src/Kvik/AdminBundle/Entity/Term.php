@@ -5,12 +5,12 @@ namespace Kvik\AdminBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Category
+ * Term
  *
- * @ORM\Table(name="kb_category")
- * @ORM\Entity(repositoryClass="Kvik\AdminBundle\Repository\CategoryRepository")
+ * @ORM\Table(name="term")
+ * @ORM\Entity(repositoryClass="Kvik\AdminBundle\Repository\TermRepository")
  */
-class Category
+class Term
 {
     /**
      * @var int
@@ -31,7 +31,7 @@ class Category
     /**
      * @var string
      *
-     * @ORM\Column(name="slug", type="string", length=255, unique=true)
+     * @ORM\Column(name="slug", type="string", length=255)
      */
     private $slug;
 
@@ -41,6 +41,13 @@ class Category
      * @ORM\Column(name="resume", type="text", nullable=true)
      */
     private $resume;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="term_type", type="smallint")
+     */
+    private $termType;
 
 
     /**
@@ -58,7 +65,7 @@ class Category
      *
      * @param string $name
      *
-     * @return Category
+     * @return Term
      */
     public function setName($name)
     {
@@ -82,7 +89,7 @@ class Category
      *
      * @param string $slug
      *
-     * @return Category
+     * @return Term
      */
     public function setSlug($slug)
     {
@@ -106,7 +113,7 @@ class Category
      *
      * @param string $resume
      *
-     * @return Category
+     * @return Term
      */
     public function setResume($resume)
     {
@@ -123,6 +130,30 @@ class Category
     public function getResume()
     {
         return $this->resume;
+    }
+
+    /**
+     * Set termType
+     *
+     * @param integer $termType
+     *
+     * @return Term
+     */
+    public function setTermType($termType)
+    {
+        $this->termType = $termType;
+
+        return $this;
+    }
+
+    /**
+     * Get termType
+     *
+     * @return int
+     */
+    public function getTermType()
+    {
+        return $this->termType;
     }
 }
 

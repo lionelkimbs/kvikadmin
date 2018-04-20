@@ -2,11 +2,14 @@ kvik_admin_index:
     path:     /
     defaults: { _controller: KvikAdminBundle:Admin:index }
 
-#Category
+#Term
 kvik_admin_categories:
     path:    /categories
     defaults:
-        _controller: KvikAdminBundle:Category:index
+        _controller: KvikAdminBundle:Term:index
+        type: cat
+    requirements:
+        type: cat|tag
 
 #Post
 kvik_admin_post:
