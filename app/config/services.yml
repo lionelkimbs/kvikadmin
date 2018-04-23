@@ -37,3 +37,7 @@ services:
         class: Kvik\AdminBundle\Form\UserType
         tags:
             - { name: form.type, alias: app_user_registration }
+
+    kvik.sanitize:
+        class: Kvik\AdminBundle\Services\Sanitize
+        public: true

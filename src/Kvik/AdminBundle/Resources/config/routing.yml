@@ -39,6 +39,18 @@ kvik_admin_post_add:
         type: post
     requirements:
         type: post|page
+kvik_admin_post_edit:
+    path:    /post/edit-{id}
+    defaults:
+        _controller: KvikAdminBundle:Post:edit
+    requirements:
+        id: \d+
+kvik_admin_post_trash:
+    path:    /post/trash-{id}
+    defaults:
+        _controller: KvikAdminBundle:Post:trash
+    requirements:
+        id: \d+
 
 #User
 kvik_admin_users:

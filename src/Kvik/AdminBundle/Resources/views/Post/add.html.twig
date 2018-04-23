@@ -7,4 +7,131 @@
 
 {% block container %}
     <h1>Ajouter {% if type == "page" %}une page{% else %}un article{% endif %}</h1>
+
+    {{ form_start(form) }}
+        <div class="form-row">
+            <div class="col-md-8">
+                {# title #}
+                <div class="form-group">
+                    {{ form_errors(form.title) }}
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Titre de l\'article' } }) }}
+                </div>
+                {# slug displayed only in edit mode #}
+                {% if form.slug is defined %}
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            {{ form_errors(form.slug) }}
+                            {{ form_widget(form.slug, {'attr': {'class': 'form-control', 'placeholder': 'Identifiant unique' } }) }}
+                        </div>
+                    </div>
+                {% endif %}
+                {# body #}
+                <div class="form-group">
+                    {{ form_errors(form.body) }}
+                    {{ form_widget(form.body, {'attr': {'class': 'form-control', 'placeholder': 'Contenu de l\'article' } }) }}
+                </div>
+
+                <hr>
+                {# excerpt #}
+                <div class="form-group">
+                    {{ form_errors(form.excerpt) }}
+                    {{ form_widget(form.excerpt, {'attr': {'class': 'form-control', 'placeholder': 'Texte de présentation de l\'article' } }) }}
+                </div>
+                {# metadescription #}
+                <div class="form-group">
+                    {{ form_errors(form.metadescription) }}
+                    {{ form_widget(form.metadescription, {'attr': {'class': 'form-control', 'placeholder': 'La meta-description n\'est pas obligatoire, mais fortement recommandée' } }) }}
+                </div>
+
+                <hr>
+                {# commentStatus #}
+                <div class="form-group">
+                    {% block closed_widget %}
+                        {% spaceless %}
+                            <div class="row">
+                                <div class="col-12">
+                                    {{ form_label(form.commentStatus, 'Commentaires :') }}
+                                </div>
+                                {% for child in form.commentStatus %}
+                                {{ block('widget_container_attributes') }}
+                                <div class="col-4 radio-inline">
+                                    {{ form_widget(child) }}
+                                    {{ form_label(child) }}
+                                </div>
+                            {% endfor %}
+                            </div>
+                        {% endspaceless %}
+                    {% endblock %}
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                {# postStatus #}
+                <div class="form-group">
+                    {{ form_errors(form.postStatus) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.postStatus, 'Etat') }}</div>
+                        <div class="col-8">{{ form_widget(form.postStatus, {'attr': {'class': 'form-control' } }) }}</div>
+                    </div>
+                </div>
+                {# privacy #}
+                <div class="form-group">
+                    {{ form_errors(form.privacy) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.privacy, 'Confidentialité') }}</div>
+                        <div class="col-8">{{ form_widget(form.privacy, {'attr': {'class': 'form-control' } }) }}</div>
+                    </div>
+                </div>
+                {# postPassword #}
+                <div class="form-group">
+                    {{ form_errors(form.postPassword) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.datePub, 'Mot de passe') }}</div>
+                        <div class="col-8">{{ form_widget(form.postPassword, {'attr': {'class': 'form-control', 'placeholder': 'Si votre contenu est privé.'} }) }}</div>
+                    </div>
+                </div>
+                {# dateEdit displayed only in edit mode #}
+                {% if form.dateEdit is defined %}
+                    <div class="form-group">
+                        {{ form_errors(form.dateEdit) }}
+                        <div class="row">
+                            <div class="col-4">{{ form_label(form.dateEdit, 'Modifié le ') }}</div>
+                            <div class="col-8">{{ form_widget(form.dateEdit) }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+                {# datePub #}
+                <div class="form-group">
+                    {{ form_errors(form.datePub) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.datePub, 'Date de publication') }}</div>
+                        <div class="col-8">{{ form_widget(form.datePub) }}</div>
+                    </div>
+                </div>
+                {# deletePost button #}
+                {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
+                <a href="{{ path('kvik_admin_post_trash', {'id': post.id}) }}" class="text-danger">Déplacer vers la corbeille</a>
+                {% endif %}
+                <hr>
+                {# terms #}
+                <div class="form-group">
+                    {{ form_errors(form.terms) }}
+                    {{ form_label(form.terms, 'Catégories') }}
+                    <div class="form-control">
+                        {{ form_widget(form.terms) }}
+                    </div>
+                </div>
+                {# send to trash button #}
+
+            </div>
+
+            <div class="col-12">
+                <hr>
+                {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-success float-right'} }) }}
+                {% block add_buttons %}{% endblock %}
+            </div>
+        </div>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
 {% endblock %}

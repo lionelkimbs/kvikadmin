@@ -22,7 +22,9 @@ class TermType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('slug', TextType::class)
+            ->add('slug', TextType::class, [
+                'required' => false
+            ])
             ->add('resume', TextareaType::class, [
                 'required' => false
             ])

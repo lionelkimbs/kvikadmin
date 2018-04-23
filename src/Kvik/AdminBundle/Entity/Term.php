@@ -61,13 +61,19 @@ class Term
      * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Term", inversedBy="children")
      */
     private $parent;
-    
+    /**
+     * Many Terms have Many Posts.
+     * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Post", mappedBy="terms")
+     */
+    private $posts;
+
     /**
      * Term constructor.
      */
     public function __construct()
     {
         $this->children = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
 
