@@ -18,7 +18,7 @@ class TermController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $slug = $this->container->get('kvik.sanitize')->slugify($term->getSlug(), $term->getName());
+            $slug = $this->container->get('kvik.sanitize')->slugify($term->getSlug(), $term->getName(), $term);
             $term->setSlug($slug);
             $em->persist($term);
             $em->flush();
@@ -42,7 +42,7 @@ class TermController extends Controller
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $slug = $this->container->get('kvik.sanitize')->slugify($term->getSlug(), $term->getName());
+            $slug = $this->container->get('kvik.sanitize')->slugify($term->getSlug(), $term->getName(), $term);
             $term->setSlug($slug);
             $em->persist($term);
             $em->flush();

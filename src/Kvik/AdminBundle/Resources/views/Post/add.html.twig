@@ -1,12 +1,18 @@
 {% extends '@KvikAdmin/layout.html.twig' %}
 
 {% block title %}
-    Créer {% if type == "page" %}une page{% else %}un article{% endif %}
+    {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}Modifier {% if type == "page" %}la page{% else %}l'article{% endif %}
+    {% else %}Créer {% if type == "page" %}une nouvelle page{% else %}un nouvel article{% endif %}
+    {% endif %}
 {% endblock title %}
 
 
 {% block container %}
-    <h1>Ajouter {% if type == "page" %}une page{% else %}un article{% endif %}</h1>
+    <h1>
+        {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}Modifier {% if type == "page" %}la page{% else %}l'article{% endif %}
+        {% else %}Créer {% if type == "page" %}une nouvelle page{% else %}un nouvel article{% endif %}
+        {% endif %}
+    </h1>
 
     {{ form_start(form) }}
         <div class="form-row">
@@ -63,6 +69,24 @@
                         {% endspaceless %}
                     {% endblock %}
                 </div>
+
+                <hr>
+                {# Author displayed only in edit mode #}
+                {% if form.author is defined %}
+                    <div class="form-group">
+                        {{ form_errors(form.author) }}
+                        <div class="row">
+                            <div class="col-4">{{ form_label(form.author, 'Auteur') }}</div>
+                            <div class="col-8">{{ form_widget(form.author, {'attr': {'class': 'form-control' } }) }}</div>
+                        </div>
+                    </div>
+                {% endif %}
+
+                <hr>
+                {# Last editor #}
+                {% if post.editor is not null %}
+                    <cite>Dernière modification le {{ post.dateEdit|date('d/m/Y') }} par {{ post.editor.firstname }}.</cite>
+                {% endif %}
             </div>
 
             <div class="col-md-4">

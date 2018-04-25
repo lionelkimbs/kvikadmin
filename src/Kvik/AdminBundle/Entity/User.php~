@@ -2,6 +2,7 @@
 
 namespace Kvik\AdminBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -76,8 +77,17 @@ class User extends BaseUser
     private $dateUpdated;
 
 
+    /**
+     * One User has Many Posts.
+     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Post", mappedBy="author")
+     */
+    private $posts;
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
+        $this->posts = new ArrayCollection();
         parent::__construct();
     }
 
@@ -200,5 +210,29 @@ class User extends BaseUser
     public function getDisplayedRole()
     {
         return $this->displayedRole;
+    }
+
+    /**
+     * Set dateUpdated
+     *
+     * @param \DateTime $dateUpdated
+     *
+     * @return User
+     */
+    public function setDateUpdated($dateUpdated)
+    {
+        $this->dateUpdated = $dateUpdated;
+
+        return $this;
+    }
+
+    /**
+     * Get dateUpdated
+     *
+     * @return \DateTime
+     */
+    public function getDateUpdated()
+    {
+        return $this->dateUpdated;
     }
 }

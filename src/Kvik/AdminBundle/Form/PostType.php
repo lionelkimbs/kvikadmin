@@ -4,6 +4,7 @@ namespace Kvik\AdminBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
 use Kvik\AdminBundle\Entity\Term;
+use Kvik\AdminBundle\Entity\User;
 use Kvik\AdminBundle\Repository\TermRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -81,6 +82,12 @@ class PostType extends AbstractType
 
         if( $options['todo'] == 'edit' ){
             $builder
+                ->add('author', EntityType::class, [
+                    'class' => User::class,
+                    'choice_label' => function($u){
+                        return $u->getFirstname() .' '. $u->getName();
+                    }
+                ])
                 ->add('dateEdit', DateTimeType::class, [
                     'data' => new \DateTime()
                 ])
@@ -96,7 +103,8 @@ class PostType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Kvik\AdminBundle\Entity\Post',
             'todo' => null,
-            'type' => null
+            'type' => null,
+            'user' => null
         ));
     }
 

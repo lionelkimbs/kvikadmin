@@ -2,6 +2,7 @@
 
 namespace Kvik\AdminBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User as BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -76,8 +77,17 @@ class User extends BaseUser
     private $dateUpdated;
 
 
+    /**
+     * One User has Many Posts.
+     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Post", mappedBy="author")
+     */
+    private $posts;
+    /**
+     * User constructor.
+     */
     public function __construct()
     {
+        $this->posts = new ArrayCollection();
         parent::__construct();
     }
 
@@ -224,5 +234,39 @@ class User extends BaseUser
     public function getDateUpdated()
     {
         return $this->dateUpdated;
+    }
+
+    /**
+     * Add post
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $post
+     *
+     * @return User
+     */
+    public function addPost(\Kvik\AdminBundle\Entity\Post $post)
+    {
+        $this->posts[] = $post;
+
+        return $this;
+    }
+
+    /**
+     * Remove post
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $post
+     */
+    public function removePost(\Kvik\AdminBundle\Entity\Post $post)
+    {
+        $this->posts->removeElement($post);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
     }
 }

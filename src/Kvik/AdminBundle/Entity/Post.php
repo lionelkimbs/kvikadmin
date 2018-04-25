@@ -120,6 +120,16 @@ class Post
      */
     private $terms;
     /**
+     * Many Posts have One Author.
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\User", inversedBy="posts")
+     */
+    private $author;
+    /**
+     * One Post has One Editor.
+     * @ORM\OneToOne(targetEntity="Kvik\AdminBundle\Entity\User")
+     */
+    private $editor;
+    /**
      * Post constructor.
      */
     public function __construct()
@@ -483,5 +493,53 @@ class Post
     public function getPrivacy()
     {
         return $this->privacy;
+    }
+
+    /**
+     * Set author
+     *
+     * @param \Kvik\AdminBundle\Entity\User $author
+     *
+     * @return Post
+     */
+    public function setAuthor(\Kvik\AdminBundle\Entity\User $author = null)
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Get author
+     *
+     * @return \Kvik\AdminBundle\Entity\User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * Set editor
+     *
+     * @param \Kvik\AdminBundle\Entity\User $editor
+     *
+     * @return Post
+     */
+    public function setEditor(\Kvik\AdminBundle\Entity\User $editor = null)
+    {
+        $this->editor = $editor;
+
+        return $this;
+    }
+
+    /**
+     * Get editor
+     *
+     * @return \Kvik\AdminBundle\Entity\User
+     */
+    public function getEditor()
+    {
+        return $this->editor;
     }
 }
