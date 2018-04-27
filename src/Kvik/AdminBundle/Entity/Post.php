@@ -125,8 +125,8 @@ class Post
      */
     private $author;
     /**
-     * One Post has One Editor.
-     * @ORM\OneToOne(targetEntity="Kvik\AdminBundle\Entity\User")
+     * One Post has Many Editors.
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\User")
      */
     private $editor;
     /**

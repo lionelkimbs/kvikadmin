@@ -29,6 +29,7 @@ class PostController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setSlug( $this->container->get('kvik.sanitize')->slugify($post->getSlug(), $post->getTitle(), $post) );
+            if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
             $post->setEditor($this->getUser());
             $post->setPostType($type);
             $em->persist($post);
@@ -54,6 +55,7 @@ class PostController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() ){
             $post->setSlug( $this->container->get('kvik.sanitize')->slugify($post->getSlug(), $post->getTitle(), $post) );
+            if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
             $post->setEditor($this->getUser());
             $em->persist($post);
             $em->flush();

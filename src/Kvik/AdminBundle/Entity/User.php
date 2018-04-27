@@ -25,7 +25,7 @@ class User extends BaseUser
     protected $id;
 
     /**
-     * @ORM\Column(name="firstname", type="string", length=255)
+     * @ORM\Column(name="firstname", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="Veuillez enter un prénom.", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=3,
@@ -38,7 +38,7 @@ class User extends BaseUser
     protected $firstname;
 
     /**
-     * @ORM\Column(name="name", type="string", length=255)
+     * @ORM\Column(name="name", type="string", length=255, nullable=true)
      * @Assert\NotBlank(message="Veuillez enter un nom.", groups={"Registration", "Profile"})
      * @Assert\Length(
      *     min=3,
@@ -62,7 +62,7 @@ class User extends BaseUser
     protected $presentation;
 
     /**
-     * @ORM\Column(name="displayed_role", type="string", length=20)
+     * @ORM\Column(name="displayed_role", type="string", length=20, nullable=true)
      */
     private $displayedRole;
 
@@ -88,6 +88,8 @@ class User extends BaseUser
     public function __construct()
     {
         $this->posts = new ArrayCollection();
+        $this->dateAdded = new \DateTime();
+        $this->dateUpdated = new \DateTime();
         parent::__construct();
     }
 

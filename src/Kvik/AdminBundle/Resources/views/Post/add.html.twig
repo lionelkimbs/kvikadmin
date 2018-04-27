@@ -84,8 +84,8 @@
 
                 <hr>
                 {# Last editor #}
-                {% if post.editor is not null %}
-                    <cite>Dernière modification le {{ post.dateEdit|date('d/m/Y') }} par {{ post.editor.firstname }}.</cite>
+                {% if post.editor is defined %}
+                    <cite>Dernière modification le {{ post.dateEdit|date('d/m/Y') }} par {{ post.editor.username }}.</cite>
                 {% endif %}
             </div>
 
