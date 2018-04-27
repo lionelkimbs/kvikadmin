@@ -240,4 +240,38 @@ class Term
     {
         return $this->parent;
     }
+
+    /**
+     * Add post
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $post
+     *
+     * @return Term
+     */
+    public function addPost(\Kvik\AdminBundle\Entity\Post $post)
+    {
+        $this->posts[] = $post;
+
+        return $this;
+    }
+
+    /**
+     * Remove post
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $post
+     */
+    public function removePost(\Kvik\AdminBundle\Entity\Post $post)
+    {
+        $this->posts->removeElement($post);
+    }
+
+    /**
+     * Get posts
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPosts()
+    {
+        return $this->posts;
+    }
 }

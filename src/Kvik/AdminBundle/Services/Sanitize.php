@@ -15,7 +15,7 @@ class Sanitize{
     /*
      * Remove all specils chars and check if that slug already exist and add "-1" at the end
      */
-    public function slugify($text, $name, $object){
+    public function slugify($text, $name = null, $object = null){
         if( $text == null ) $text = $name;
 
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);

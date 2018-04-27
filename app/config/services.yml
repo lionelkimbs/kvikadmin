@@ -41,3 +41,7 @@ services:
     kvik.sanitize:
         class: Kvik\AdminBundle\Services\Sanitize
         public: true
+
+    kvik.postManager:
+        class: Kvik\AdminBundle\Services\PostManager
+        public: true

@@ -57,11 +57,18 @@ class TermController extends Controller
         ]);
     }
 
-    public function deleteAction(Request $request, $type, $id)
+    public function deleteAction(Request $request, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $term = $em->getRepository(Term::class)->getOneTerm($type, $id);
+        $term = $em->getRepository(Term::class)->find($id);
+
         if ( $term !== null ){
+            if($term->getTermType() == 1 ){
+                $type = 'categories';
+                $this->container->get('kvik.postManager')->addPostsToUncategorized($term->getPosts());
+            }
+            else $type = 'tags';
+
             $em->remove($term);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_terms', [
