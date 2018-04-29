@@ -14,7 +14,7 @@
         {% endif %}
     </h1>
 
-    {{ form_start(form) }}
+    {{ form_start(form, {'attr': {'autocomplete':'off'} }) }}
         <div class="form-row">
             <div class="col-md-8">
                 {# title #}
@@ -49,6 +49,16 @@
                     {{ form_widget(form.metadescription, {'attr': {'class': 'form-control', 'placeholder': 'La meta-description n\'est pas obligatoire, mais fortement recommandée' } }) }}
                 </div>
 
+                {# author #}
+                <hr>
+                <div class="form-group">
+                    {{ form_errors(form.author) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.author, 'Auteur') }}</div>
+                        <div class="col-8">{{ form_widget(form.author, {'attr': {'class': 'form-control' } }) }}</div>
+                    </div>
+                </div>
+
                 <hr>
                 {# commentStatus #}
                 <div class="form-group">
@@ -69,18 +79,6 @@
                         {% endspaceless %}
                     {% endblock %}
                 </div>
-
-                <hr>
-                {# Author displayed only in edit mode #}
-                {% if form.author is defined %}
-                    <div class="form-group">
-                        {{ form_errors(form.author) }}
-                        <div class="row">
-                            <div class="col-4">{{ form_label(form.author, 'Auteur') }}</div>
-                            <div class="col-8">{{ form_widget(form.author, {'attr': {'class': 'form-control' } }) }}</div>
-                        </div>
-                    </div>
-                {% endif %}
 
                 <hr>
                 {# Last editor #}

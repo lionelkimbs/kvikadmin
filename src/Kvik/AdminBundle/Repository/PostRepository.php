@@ -2,6 +2,12 @@
 
 namespace Kvik\AdminBundle\Repository;
 
+use Doctrine\ORM\Query\Expr;
+use Doctrine\ORM\QueryBuilder;
+use Kvik\AdminBundle\Entity\Term;
+use Kvik\AdminBundle\Entity\User;
+use Symfony\Component\Config\Definition\Exception\Exception;
+
 /**
  * PostRepository
  *
@@ -10,4 +16,46 @@ namespace Kvik\AdminBundle\Repository;
  */
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findPostsByQuery($params){
+        if ( isset($params['cat']) ) {
+            $params['cat'] = $this->_em->getRepository(Term::class)->findOneBy([
+                'slug' => $params['cat']
+            ])->getId();
+        }
+        if ( isset($params['tag']) ) {
+            $params['tag'] = $this->_em->getRepository(Term::class)->findOneBy([
+                'slug' => $params['tag']
+            ])->getId();
+        }
+        if ( isset($params['author']) ) {
+            $params['author'] = $this->_em->getRepository(User::class)->findOneBy([
+                'username' => $params['author']
+            ])->getId();
+        }
+
+        $qb = $this->createQueryBuilder('p');
+        $qb
+            ->join('p.terms', 't')
+            ->addSelect('t')
+            ->join('p.author', 'a')
+            ->where('p.postStatus = :status')
+            ->orWhere('t.id = :cat')
+            ->orWhere('t.id = :tag')
+            ->orWhere('a.id = :author')
+            ->andWhere('p.postStatus != :trash')
+            ->setParameters([
+                'status' => $params['status'],
+                'cat' => $params['cat'],
+                'tag' => $params['tag'],
+                'author' => $params['author'],
+                'trash' => 'trash',
+                ]
+            )
+        ;
+        return $qb;
+    }
+    public function getPostsByQuery(array $params){
+        return $this->findPostsByQuery($params)->getQuery()->getResult();
+    }
+
 }

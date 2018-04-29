@@ -10,7 +10,10 @@
 {% block container %}
     <div class="row">
         <div class="col-8">
-            {% include '@KvikAdmin/Term/formType.html.twig' %}
+            {{ form_start(form) }}
+                {% include '@KvikAdmin/Term/formType.html.twig' %}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
             {# remove #}
             <div class="form-group">
                 <a href="{{ path('kvik_admin_term_delete', {'id': term.id, 'type': app.request.get('type')}) }}" onclick="return confirm('Êtes-vous sûr de vouloir supprmier cet élément ?');">Supprimer</a>

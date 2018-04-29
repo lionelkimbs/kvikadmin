@@ -36,9 +36,10 @@ class TermController extends Controller
     public function editAction(Request $request, $type, $id)
     {
         $em = $this->getDoctrine()->getManager();
-        $term = $em->getRepository(Term::class)->getOneTerm($type, $id);
+        $term = $em->getRepository(Term::class)->find($id);
         $form = $this->createForm(TermType::class, $term, [
-            'type' => $type
+            'type' => $type,
+            'todo' => 'edit'
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
@@ -65,7 +66,14 @@ class TermController extends Controller
         if ( $term !== null ){
             if($term->getTermType() == 1 ){
                 $type = 'categories';
-                $this->container->get('kvik.postManager')->addPostsToUncategorized($term->getPosts());
+                //*: If $cat is Uncategorized
+                if( $term->getSlug() == 'uncategorized' && !$term->getPosts()->isEmpty() ){
+                    $request->getSession()->getFlashBag()->add('notice', 'Vous ne pouvez pas supprimer cette catégorie tant qu\'elle contient des articles.');
+                    return $this->redirectToRoute('kvik_admin_terms', [
+                        'type' => $type
+                    ]);
+                }
+                else $this->container->get('kvik.postManager')->addPostsToUncategorized($term->getPosts());
             }
             else $type = 'tags';
 
@@ -77,9 +85,7 @@ class TermController extends Controller
         }
         else{
             $request->getSession()->getFlashBag()->add('notice', 'Cette page n\'existe pas !');
-            return $this->redirectToRoute('kvik_admin_terms', [
-                'type' => $type
-            ]);
+            return $this->redirectToRoute('kvik_admin_index');
         }
     }
 

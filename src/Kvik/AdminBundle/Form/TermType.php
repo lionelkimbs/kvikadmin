@@ -15,11 +15,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class TermType extends AbstractType
 {
+    private $obejct;
+
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->obejct = $builder->getData();
+
+
         $builder
             ->add('name', TextType::class)
             ->add('slug', TextType::class, [
@@ -32,21 +37,42 @@ class TermType extends AbstractType
         ;
         //* Only for categories
         if ($options['type'] == 'categories' ){
+            if ($options['todo'] == 'edit' ){
+                $builder
+                    ->add('parent', EntityType::class, [
+                        'class' => Term::class,
+                        'query_builder' => function(EntityRepository $er){
+                            return $er->createQueryBuilder('t')
+                                ->where('t.id != :id')
+                                ->setParameter('id', $this->obejct->getId())
+                                ->orderBy('t.name', 'ASC')
+                            ;
+                        },
+                        'choice_label' => 'name',
+                        'required' => false,
+                        'placeholder' => 'Aucun'
+                    ])
+                ;
+            }
+            else {
+                $builder
+                    ->add('parent', EntityType::class, [
+                        'class' => Term::class,
+                        'query_builder' => function(EntityRepository $er){
+                            return $er->createQueryBuilder('t')
+                                ->orderBy('t.name', 'ASC')
+                            ;
+                        },
+                        'choice_label' => 'name',
+                        'required' => false,
+                        'placeholder' => 'Aucun'
+                    ])
+                ;
+            }
             $builder
                 ->add('termType', HiddenType::class, [
                     'data' => 1
                 ])
-                ->add('parent', EntityType::class, [
-                'class' => Term::class,
-                'query_builder' => function(EntityRepository $er){
-                    return $er->createQueryBuilder('t')
-                        ->orderBy('t.name', 'ASC')
-                        ;
-                },
-                'choice_label' => 'name',
-                'required' => false,
-                'placeholder' => 'Aucun'
-            ])
             ;
         }
         //* Only for tags
@@ -64,7 +90,8 @@ class TermType extends AbstractType
     {
         $resolver->setDefaults(array(
             'data_class' => 'Kvik\AdminBundle\Entity\Term',
-            'type' => null
+            'type' => null,
+            'todo' => null
         ));
     }
 

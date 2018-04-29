@@ -53,7 +53,7 @@ class Post
     /**
      * @var int
      *
-     * @ORM\Column(name="post_status", type="smallint")
+     * @ORM\Column(name="post_status", type="string", length=8)
      */
     private $postStatus;
 
@@ -67,7 +67,7 @@ class Post
     /**
      * @var string
      *
-     * @ORM\Column(name="comment_status", type="string", length=20)
+     * @ORM\Column(name="comment_status", type="boolean")
      */
     private $commentStatus;
 

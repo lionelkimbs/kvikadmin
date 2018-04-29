@@ -2,10 +2,11 @@
 
 namespace Kvik\AdminBundle\Services;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\PersistentCollection;
 use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PostManager{
@@ -30,17 +31,16 @@ class PostManager{
         }
     }
 
-    /**
-     * @param ArrayCollection $posts
+    /***
      * When a category is deleted, all posts without any category goes to Uncategorized
      */
-    public function addPostsToUncategorized(ArrayCollection $posts){
+    public function addPostsToUncategorized(PersistentCollection $posts){
         foreach ($posts as $post){
             if( $post->getTerms()->isEmpty() ) $this->addToUncategorized($post);
             $this->em->persist($post);
         }
     }
-
+    
     /*
      * Create and return Uncategorized term
     **/

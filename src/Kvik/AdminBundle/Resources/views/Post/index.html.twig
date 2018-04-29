@@ -9,6 +9,22 @@
 {% endblock %}
 
 {% block container %}
+    <div>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link active" href="{{ path(app.request.attributes.get('_route')) }}">Tous</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish'})) }}">Publié(s)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft'})) }}">Brouillons</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash'})) }}">Corbeille</a>
+            </li>
+        </ul>
+    </div>
     <table class="table table-hover table-striped">
         <thead>
         <tr>
@@ -33,15 +49,20 @@
                     <th scope="row">1</th>
                     <td>
                         <a href="{{ path('kvik_admin_post_edit', {'id': post.id }) }}">
-                            {{ post.title }}
+                            {% if post.postStatus == 'publish' %}<b>{{ post.title }}</b>
+                            {% else %}{{ post.title }}{% endif %}
                         </a>
                     </td>
                     <td>
-                        xxx
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'author':post.author.username})) }}">
+                            {{ post.author.firstname }} {{ post.author.name }}
+                        </a>
                     </td>
                     <td>
                         {% for cat in post.terms %}
-                            {{ cat.name }}
+                            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug})) }}">
+                                {{ cat.name }}
+                            </a>
                             {% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </td>

@@ -37,8 +37,8 @@ class PostType extends AbstractType
             ])
             ->add('postStatus', ChoiceType::class, [
                 'choices' => [
-                    'Brouillon' => 1,
-                    'Publié' => 2
+                    'Brouillon' => 'draft',
+                    'Publié' => 'publish'
                 ]
             ])
             ->add('privacy', ChoiceType::class, [
@@ -64,6 +64,12 @@ class PostType extends AbstractType
             ->add('metadescription', TextareaType::class, [
                 'required' => false
             ])
+            ->add('author', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => function($u){
+                    return $u->getFirstname() .' '. $u->getName();
+                }
+            ])
             ->add('terms', EntityType::class, [
                 'class' => Term::class,
                 'query_builder' => function(EntityRepository $tr){
@@ -82,12 +88,6 @@ class PostType extends AbstractType
 
         if( $options['todo'] == 'edit' ){
             $builder
-                ->add('author', EntityType::class, [
-                    'class' => User::class,
-                    'choice_label' => function($u){
-                        return $u->getFirstname() .' '. $u->getName();
-                    }
-                ])
                 ->add('dateEdit', DateTimeType::class, [
                     'data' => new \DateTime()
                 ])
@@ -103,8 +103,7 @@ class PostType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'Kvik\AdminBundle\Entity\Post',
             'todo' => null,
-            'type' => null,
-            'user' => null
+            'type' => null
         ));
     }
 

@@ -20,22 +20,4 @@ class TermRepository extends \Doctrine\ORM\EntityRepository
         return $this->findTerms($type)->getQuery()->getResult();
     }
 
-    /*
-     * Return one term object by $type and $id params
-     */
-    private function findOneTerm($type, $id){
-        return $this->createQueryBuilder('t')
-            ->where('t.termType = :type')
-            ->andWhere('t.id = :id')
-            ->setParameters([
-                'type' => $type,
-                'id' => $id
-            ])
-        ;
-    }
-    public function getOneTerm($type, $id){
-        if( $type == 'categories' ) $type = 1;
-        else $type = 2;
-        return $this->findOneTerm($type, $id)->getQuery()->getSingleResult();
-    }
 }

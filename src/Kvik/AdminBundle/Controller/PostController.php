@@ -9,10 +9,25 @@ use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends Controller
 {
-    public function indexAction($type)
+    /**
+     * @param Request $request
+     * @param $type
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function indexAction(Request $request, $type)
     {
         $em = $this->getDoctrine()->getManager();
-        $posts = $em->getRepository(Post::class)->findBy([
+        if( count($request->query) > 0 ){
+            $params = [
+                'status' => $request->query->get('status'),
+                'cat' => $request->query->get('cat'),
+                'tag' => $request->query->get('tag'),
+                'author' => $request->query->get('author'),
+                'page' => $request->query->get('page')
+            ];
+            $posts = $em->getRepository(Post::class)->getPostsByQuery($params);
+        }
+        else $posts = $em->getRepository(Post::class)->findBy([
             'postType' => $type
         ]);
         return $this->render('@KvikAdmin/Post/index.html.twig', [
@@ -49,8 +64,7 @@ class PostController extends Controller
         $post = $em->getRepository(Post::class)->find($id);
         $form = $this->createForm(PostType::class, $post, [
             'todo' => 'edit',
-            'type' => $post->getPostType(),
-            'user' => $this->getUser()
+            'type' => $post->getPostType()
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() ){
@@ -75,7 +89,7 @@ class PostController extends Controller
         $post = $em->getRepository(Post::class)->find($id);
         if ( $post === null ) return $this->render('@KvikAdmin/Admin/index.html.twig');
         else{
-            $post->setPostStatus(0);
+            $post->setPostStatus('trash');
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post', [
