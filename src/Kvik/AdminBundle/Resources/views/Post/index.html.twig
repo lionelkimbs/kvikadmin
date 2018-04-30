@@ -10,18 +10,18 @@
 
 {% block container %}
     <div>
-        <ul class="nav">
+        <ul class="nav filters">
             <li class="nav-item">
-                <a class="nav-link active" href="{{ path(app.request.attributes.get('_route')) }}">Tous</a>
+                <a class="nav-link {% if app.request.query.get('status') is null %}active{% endif %}" href="{{ path(app.request.attributes.get('_route')) }}">Tous</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish'})) }}">Publié(s)</a>
+                <a class="nav-link {% if app.request.query.get('status') == 'publish' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish'})) }}">Publié(s)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft'})) }}">Brouillons</a>
+                <a class="nav-link {% if app.request.query.get('status') == 'draft' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft'})) }}">Brouillon(s)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash'})) }}">Corbeille</a>
+                <a class="nav-link trash {% if app.request.query.get('status') == 'trash' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash'})) }}">Corbeille</a>
             </li>
         </ul>
     </div>
@@ -60,10 +60,7 @@
                     </td>
                     <td>
                         {% for cat in post.terms %}
-                            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug})) }}">
-                                {{ cat.name }}
-                            </a>
-                            {% if not loop.last %}, {% endif %}
+                            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug})) }}">{{ cat.name }}</a>{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </td>
                     <td>4</td>

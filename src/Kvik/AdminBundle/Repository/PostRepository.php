@@ -16,46 +16,56 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
-    public function findPostsByQuery($params){
+    public function findPosts($params, $type){
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.postType = :type')
+            ->setParameter('type', $type)
+            ->orderBy('p.dateEdit', 'DESC')
+        ;
+        //status
+        if ( isset($params['status']) ) {
+            $qb
+                ->andWhere('p.postStatus = :status')
+                ->setParameter('status', $params['status'])
+            ;
+        }
+        //cat
         if ( isset($params['cat']) ) {
             $params['cat'] = $this->_em->getRepository(Term::class)->findOneBy([
                 'slug' => $params['cat']
             ])->getId();
+            $qb
+                ->join('p.terms', 't')
+                ->andWhere('t.id = :cat')
+                ->setParameter('cat', $params['cat'])
+            ;
         }
+        //tag
         if ( isset($params['tag']) ) {
             $params['tag'] = $this->_em->getRepository(Term::class)->findOneBy([
                 'slug' => $params['tag']
             ])->getId();
+            $qb
+                ->join('p.terms', 't')
+                ->andWhere('t.id = :tag')
+                ->setParameter('cat', $params['tag'])
+            ;
         }
+        //author
         if ( isset($params['author']) ) {
             $params['author'] = $this->_em->getRepository(User::class)->findOneBy([
                 'username' => $params['author']
             ])->getId();
+            $qb
+                ->join('p.author', 'a')
+                ->andWhere('a.id = :author')
+                ->setParameter('author', $params['author'])
+            ;
         }
-
-        $qb = $this->createQueryBuilder('p');
-        $qb
-            ->join('p.terms', 't')
-            ->addSelect('t')
-            ->join('p.author', 'a')
-            ->where('p.postStatus = :status')
-            ->orWhere('t.id = :cat')
-            ->orWhere('t.id = :tag')
-            ->orWhere('a.id = :author')
-            ->andWhere('p.postStatus != :trash')
-            ->setParameters([
-                'status' => $params['status'],
-                'cat' => $params['cat'],
-                'tag' => $params['tag'],
-                'author' => $params['author'],
-                'trash' => 'trash',
-                ]
-            )
-        ;
         return $qb;
     }
-    public function getPostsByQuery(array $params){
-        return $this->findPostsByQuery($params)->getQuery()->getResult();
+    public function getPosts(array $params, $type){
+        return $this->findPosts($params, $type)->getQuery()->getResult();
     }
 
 }

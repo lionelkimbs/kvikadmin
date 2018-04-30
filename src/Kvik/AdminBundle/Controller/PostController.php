@@ -17,19 +17,15 @@ class PostController extends Controller
     public function indexAction(Request $request, $type)
     {
         $em = $this->getDoctrine()->getManager();
-        if( count($request->query) > 0 ){
-            $params = [
-                'status' => $request->query->get('status'),
-                'cat' => $request->query->get('cat'),
-                'tag' => $request->query->get('tag'),
-                'author' => $request->query->get('author'),
-                'page' => $request->query->get('page')
-            ];
-            $posts = $em->getRepository(Post::class)->getPostsByQuery($params);
-        }
-        else $posts = $em->getRepository(Post::class)->findBy([
-            'postType' => $type
-        ]);
+        $params = [
+            'status' => $request->query->get('status'),
+            'cat' => $request->query->get('cat'),
+            'tag' => $request->query->get('tag'),
+            'author' => $request->query->get('author'),
+            'page' => $request->query->get('page')
+        ];
+        $posts = $em->getRepository(Post::class)->getPosts($params, $type);
+
         return $this->render('@KvikAdmin/Post/index.html.twig', [
             'type' => $type,
             'posts' => $posts
