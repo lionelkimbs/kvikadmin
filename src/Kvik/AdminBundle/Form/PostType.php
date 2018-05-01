@@ -25,7 +25,8 @@ class PostType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->type = $builder->getData()->getPostType();
+        if( $options['type'] == 'post' ) $this->type = 1;
+        elseif( $options['type'] == 'page' ) $this->type = 2;
         $builder
             ->add('title', TextType::class)
             ->add('body', TextareaType::class, [
