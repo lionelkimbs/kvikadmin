@@ -23,31 +23,93 @@
             <li class="nav-item">
                 <a class="nav-link trash {% if app.request.query.get('status') == 'trash' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash'})) }}">Corbeille</a>
             </li>
+            {% if ('cat' in app.request.query|keys) or ('tag' in app.request.query|keys) or ('author' in app.request.query|keys) %}
+            <li class="nav-item remove-filters">
+                <a href="{{ path(app.request.attributes.get('_route')) }}">Supprimer les filtres <i class="fas fa-times"></i></a>
+            </li>
+            {% endif %}
+
         </ul>
     </div>
-    <table class="table table-hover table-striped">
+    {# form in Table #}
+    {{ form_start(form) }}
+    {# group Actions Buttons #}
+    <div class="row">
+        <div class="col-8 form-inline">
+            {{ form_errors(form.status) }}
+            {{ form_label(form.status, 'Actions groupées', {'label_attr': {'class': 'inlinge-marge-r'}}) }}
+            {{ form_widget(form.status, {'attr': {'class': 'form-control'} }) }}
+            {# validation Button #}
+            {{ form_widget(form.valider, {'attr': {'class': 'btn btn-info inlinge-marge'} }) }}
+        </div>
+
+        <div class="col-4 nav justify-content-end post_info">
+            <div class="post_total">
+                {{ form.post|length }} éléments sur {{ total }}
+            </div>
+            <ul class="pagination pagination-sm">
+            {% if total > 20 %}
+                {% set total_pges = (total /20)|round(0, 'ceil') %}
+
+                {% if app.request.query.get('pge') is not null %}
+                    {% set pge = app.request.query.get('pge') %}
+                {% else %} {% set pge = 1 %} {% endif %}
+                {% set i = max(1, (app.request.query.get('pge') - 5)) %}
+                {% set j = min((app.request.query.get('pge') + 5), total_pges) %}
+
+                {% for i in 1..j %}
+                    {% if (i != 1) and (i == max(1, (app.request.query.get('pge') - 5))) %}
+                        <li class="page-item">
+                            <span class="page-link">Début</span>
+                        </li>
+                    {% elseif i == pge %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ pge }}</span>
+                        </li>
+                    {% else %}
+                        <li class="page-item">
+                        <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pge':i})) }}">{{ i }}</a>
+                        {% if (i == min((app.request.query.get('pge') + 5), total)) and (i != total_pges) %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pge':total_pges})) }}">Fin</a>
+                            </li>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+        </div>
+
+    </div>
+
+    {# posts #}
+    <table class="table table-hover table-striped posts">
         <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Titre</th>
-            <th scope="col">Auteur</th>
-            <th scope="col">Catégories</th>
-            <th scope="col">Tags</th>
-            <th scope="col">Date</th>
-        </tr>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titre</th>
+                <th scope="col">Auteur</th>
+                <th scope="col">Catégories</th>
+                <th scope="col">Tags</th>
+                <th scope="col">Date</th>
+            </tr>
         </thead>
         <tbody>
-        {% if posts is empty %}
+        {% if form.post is empty %}
             <tr>
-                <td colspan="6">
-                    Aucun{% if type == "page" %}e trouvée. Créez votre première page.{% else %} article trouvé. Créez votre premier article.{% endif %}
+                <td colspan="6" class="title">
+                    Aucun article trouvé. Vous pouvez <a href="{{ path('kvik_admin_post_add') }}">créer votre {% if type == "page" %}première page{% else %}premier article{% endif %}</a>.
                 </td>
             </tr>
         {% else %}
-            {% for post in posts %}
+            {% for child in form.post %}
+                {% set index = child.vars.value %}{# get array index #}
+                {% set post = form.post.vars.choices[index].data %}{# get post object #}
                 <tr>
-                    <th scope="row">1</th>
-                    <td>
+                    <th scope="row">
+                        {{ form_widget(child) }}
+                    </th>
+                    <td class="title">
                         <a href="{{ path('kvik_admin_post_edit', {'id': post.id }) }}">
                             {% if post.postStatus == 'publish' %}<b>{{ post.title }}</b>
                             {% else %}{{ post.title }}{% endif %}
@@ -63,9 +125,9 @@
                             <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug})) }}">{{ cat.name }}</a>{% if not loop.last %}, {% endif %}
                         {% endfor %}
                     </td>
-                    <td>4</td>
+                    <td>5</td>
                     <td>
-                        {% if post.postStatus == 2 %}
+                        {% if post.postStatus == 'publish' %}
                             Publié le {{ post.datePub|date('d/m/Y') }}
                         {% else %}
                             Modifié le {{ post.dateEdit|date('d/m/Y') }}
@@ -76,4 +138,8 @@
         {% endif %}
         </tbody>
     </table>
+
+    {{ form_rest(form) }}
+    {{ form_end(form) }}
+
 {% endblock %}

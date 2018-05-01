@@ -2,11 +2,8 @@
 
 namespace Kvik\AdminBundle\Repository;
 
-use Doctrine\ORM\Query\Expr;
-use Doctrine\ORM\QueryBuilder;
 use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Entity\User;
-use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
  * PostRepository
@@ -17,11 +14,14 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
     public function findPosts($params, $type){
+
         $qb = $this->createQueryBuilder('p')
             ->where('p.postType = :type')
             ->setParameter('type', $type)
             ->orderBy('p.dateEdit', 'DESC')
+            ->setMaxResults( 10 );
         ;
+
         //status
         if ( isset($params['status']) ) {
             $qb
@@ -64,8 +64,21 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
         }
         return $qb;
     }
+
+    public function getTotalPosts(array $params, $type){
+        return $this->findPosts($params, $type)
+            ->select('count(p.id)')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+    }
+
     public function getPosts(array $params, $type){
-        return $this->findPosts($params, $type)->getQuery()->getResult();
+        $offset = !is_null($params['pge']) ? ($params['pge'] - 1)*20 : 0;
+        return $this->findPosts($params, $type)
+            ->setFirstResult( $offset )
+            ->setMaxResults(20)
+        ;
     }
 
 }

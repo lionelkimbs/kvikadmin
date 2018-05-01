@@ -4,11 +4,17 @@ namespace Kvik\AdminBundle\Controller;
 
 use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Form\PostType;
+use Kvik\AdminBundle\Repository\PostRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends Controller
 {
+    private $type;
+    private $params;
     /**
      * @param Request $request
      * @param $type
@@ -22,13 +28,49 @@ class PostController extends Controller
             'cat' => $request->query->get('cat'),
             'tag' => $request->query->get('tag'),
             'author' => $request->query->get('author'),
-            'page' => $request->query->get('page')
+            'pge' => $request->query->get('pge')
         ];
-        $posts = $em->getRepository(Post::class)->getPosts($params, $type);
+
+        $this->params = $params;
+        $this->type = $type;
+        $form = $this->createFormBuilder()
+            ->add('post', EntityType::class, [
+                'class' => Post::class,
+                'choice_label' => 'id',
+                'expanded' => true,
+                'multiple' => true,
+                'query_builder' => function(PostRepository $pr){
+                    return $pr->getPosts($this->params, $this->type);
+                },
+                'label' => false
+            ])
+            ->add('status', ChoiceType::class, [
+                'choices' => [
+                    'Publier' => 'publish',
+                    'Mettre en brouillon' => 'draft',
+                    'Déplacer vers la corbeille' => 'trash'
+                ]
+            ])
+            ->add('valider', SubmitType::class)
+            ->getForm()
+        ;
+        $form->handleRequest($request);
+        if( $form->isSubmitted() && $form->isValid() ){
+            $data = $form->getData();
+            if( !empty($data['post']) ){
+                foreach($data['post'] as $post){
+                    $post->setPostStatus($data['status']);
+                    $em->persist($post);
+                }
+                $em->flush();
+            }
+            return $this->redirectToRoute('kvik_admin_post', ['type' => $type]);
+        }
 
         return $this->render('@KvikAdmin/Post/index.html.twig', [
             'type' => $type,
-            'posts' => $posts
+            'form' => $form->createView(),
+            'total' => (int) $em->getRepository(Post::class)->getTotalPosts($params, $type)
         ]);
     }
 

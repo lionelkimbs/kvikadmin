@@ -25,8 +25,7 @@ class PostType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if( $options['type'] == 'post' ) $this->type = 1;
-        elseif( $options['type'] == 'page' ) $this->type = 2;
+        $this->type = $builder->getData()->getPostType();
         $builder
             ->add('title', TextType::class)
             ->add('body', TextareaType::class, [
@@ -85,7 +84,6 @@ class PostType extends AbstractType
             ])
             ->add('enregistrer', SubmitType::class)
         ;
-
         if( $options['todo'] == 'edit' ){
             $builder
                 ->add('dateEdit', DateTimeType::class, [

@@ -1,32 +1,45 @@
-body{
-    font-family: 'Sansita', sans-serif;
-}
+body{font-family: 'Sansita', sans-serif;}
 
-.a-hover a:hover{
-    background-color: #f0f0f0;
-}
-.size-little{
-    font-size: small;
-}
-
+.a-hover a:hover{background-color: #f0f0f0;}
+.size-little{font-size: small;}
 
 /*LK: Edit Bootstrap */
-.navbar-expand-lg .navbar-nav .nav-link {
-    padding-right: 1.4rem;
-}
-
+.navbar-expand-lg .navbar-nav .nav-link { padding-right: 1.4rem; }
+.page-item span.page-link{cursor: default;}
+.form-inline{margin: 0.6rem 0;}
+.post_info ul{ margin-top: 1.5rem;}
 
 /*LK: Elements added */
-.marge-left{
-    margin-left: 2rem;
+.remove-filters a:hover{background-color: #dedede; text-decoration: none;}
+.remove-filters a{
+    color: #333;
+    display: block;
+    margin: .2rem 1rem;
+    font-size: smaller;
+    background: #efefef;
+    padding: .3rem .5rem;
 }
+.no-marge{ margin: 2rem;}
+.marge-left{ margin-left: 2rem;}
+.post_total {
+    font-size: smaller;
+    margin-right: 1rem;
+    vertical-align: bottom;
+    color: #777;
+    padding-top: 2rem;
+}
+.inlinge-marge-r{ margin-right: 0.4rem; }
+.inlinge-marge{ margin: 0 1rem; }
+
 /*LK: no-radius */
-.dropdown-menu{
-    border-radius: 0 !important;
-}
+.dropdown-menu{border-radius: 0 !important;}
+
 a{ color: #0F7DCF;}
 .filters a.trash{ color: #333;}
 .filters a.nav-link{ font-size: smaller;}
 .filters a.nav-link:hover{ color: #0061C9; text-decoration: underline;}
 .filters a.nav-link.active{ font-weight: 700; background-color: #f2f2f2;}
 .filters a.trash.active{ font-weight: normal; color: #e14d43;}
+
+table.posts td{ font-size: smaller;}
+table.posts td.title{ font-size: medium;}
