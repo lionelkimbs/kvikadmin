@@ -19,7 +19,6 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
             ->where('p.postType = :type')
             ->setParameter('type', $type)
             ->orderBy('p.dateEdit', 'DESC')
-            ->setMaxResults( 10 );
         ;
 
         //status

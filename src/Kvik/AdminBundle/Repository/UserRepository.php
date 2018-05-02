@@ -2,6 +2,8 @@
 
 namespace Kvik\AdminBundle\Repository;
 
+use Kvik\AdminBundle\Entity\User;
+
 /**
  * UserRepository
  *
@@ -10,4 +12,28 @@ namespace Kvik\AdminBundle\Repository;
  */
 class UserRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findOtherUsers(User $user){
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :user')
+            ->setParameter('user', $user->getId())
+            ->orderBy('u.name', 'ASC')
+        ;
+    }
+    public function getOtherUsers(User $user, array $params){
+        $offset = !is_null($params['pge']) ? ($params['pge'] - 1)*20 : 0;
+        return $this->findOtherUsers($user)
+            ->setFirstResult( $offset )
+            ->setMaxResults(20)
+        ;
+    }
+    public function getTotalOtherUsers(User $user){
+        return $this->findOtherUsers($user)
+            ->select('count(u.id)')
+            ->getQuery()
+            ->getSingleResult()
+        ;
+    }
+
+
+
 }

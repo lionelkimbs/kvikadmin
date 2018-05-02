@@ -10,18 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
-use Symfony\Component\Validator\Constraints\NotBlank;
 
 class UserType extends AbstractType
 {
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $constraintsOptions = array(
-            'message' => 'fos_user.current_password.invalid',
-        );
-
         $builder
             ->add('name', TextType::class)
             ->add('firstname', TextType::class)
@@ -30,10 +24,10 @@ class UserType extends AbstractType
             ])
             ->add('displayedRole', ChoiceType::class, [
                 'choices' => [
-                    'Inscrit' => 'Inscrit',
-                    'Editeur' => 'Editeur',
-                    'Administrateur' => 'Administrateur',
-                    'Super-administrateur' => 'Super-administrateur'
+                    'Inscrit' => 'inscrit',
+                    'Editeur' => 'editeur',
+                    'Administrateur' => 'admin',
+                    'Super-administrateur' => 'super-admin'
                 ]
             ])
             ->add('enregistrer', SubmitType::class)

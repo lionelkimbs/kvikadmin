@@ -8,9 +8,62 @@
 
 
 {% block container %}
+
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-4 form-inline">
+            {{ form_label(form.enabled, 'Actions groupées', {'label_attr': {'class': 'inlinge-marge-r'}}) }}
+            {{ form_widget(form.enabled, {'attr': {'class': 'form-control'} }) }}
+            {# validation Button #}
+            {{ form_widget(form.appliquer, {'attr': {'class': 'btn btn-info inlinge-marge'} }) }}
+        </div>
+        <div class="col-4 form-inline">
+            {{ form_widget(form.role, {'attr': {'class': 'form-control'} }) }}
+            {# validation Button #}
+            {{ form_widget(form.changer, {'attr': {'class': 'btn btn-info inlinge-marge'} }) }}
+        </div>
+
+        <div class="col-4 nav justify-content-end post_info">
+            <div class="post_total">
+                {{ form.user|length }} utlisateur(s).
+            </div>
+            <ul class="pagination pagination-sm">
+                {% if total > 20 %}
+                    {% set total_pges = (total /20)|round(0, 'ceil') %}
+
+                    {% if app.request.query.get('pge') is not null %}
+                        {% set pge = app.request.query.get('pge') %}
+                    {% else %} {% set pge = 1 %} {% endif %}
+                    {% set i = max(1, (app.request.query.get('pge') - 5)) %}
+                    {% set j = min((app.request.query.get('pge') + 5), total_pges) %}
+
+                    {% for i in 1..j %}
+                        {% if (i != 1) and (i == max(1, (app.request.query.get('pge') - 5))) %}
+                            <li class="page-item">
+                                <span class="page-link">Début</span>
+                            </li>
+                        {% elseif i == pge %}
+                            <li class="page-item active">
+                                <span class="page-link">{{ pge }}</span>
+                            </li>
+                        {% else %}
+                            <li class="page-item">
+                            <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pge':i})) }}">{{ i }}</a>
+                            {% if (i == min((app.request.query.get('pge') + 5), total)) and (i != total_pges) %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pge':total_pges})) }}">Fin</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
+    </div>
+    {# users #}
     <div class="table-responsive">
         <table class="table table-hover">
-            <caption>{{ users|length }} utilisateurs</caption>
             <thead>
             <tr>
                 <th scope="col"></th>
@@ -21,22 +74,36 @@
             </tr>
             </thead>
             <tbody>
-            {% for user in users %}
+            {% if form.user is empty %}
                 <tr>
-                    <td scope="row">
-                        <input type="checkbox">
+                    <td colspan="5" class="title">
+                        Aucun utilisateur trouvé. Vous pouvez <a href="{{ path('kvik_admin_user_add') }}">en ajouter</a> dès à présent.
                     </td>
-                    <td>
-                        <a href="{% if user == app.user %}{{ path('fos_user_profile_edit') }}{% else %}{{ path('kvik_admin_user_edit', {'id': user.id }) }}{% endif %}">
-                        {{ user.username }}
-                        </a>
-                    </td>
-                    <td>{{ user.email }}</td>
-                    <td>{{ user.displayedRole }}</td>
-                    <td>4</td>
                 </tr>
-            {% endfor %}
+            {% else %}
+                {% for child in form.user %}
+                    {% set index = child.vars.value %}{# get array index #}
+                    {% set user = form.user.vars.choices[index].data %}{# get user object #}
+                    <tr>
+                        <td scope="row">
+                            {{ form_widget(child) }}
+                        </td>
+                        <td>
+                            <a href="{% if user == app.user %}{{ path('fos_user_profile_edit') }}{% else %}{{ path('kvik_admin_user_edit', {'id': user.id }) }}{% endif %}">
+                            {{ user.username }}
+                            </a>
+                            {% if user.enabled == 0 %}<a class="badge badge-secondary" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'active':user.id})) }}">Inactif</a>{% endif %}
+                        </td>
+                        <td>{{ user.email }}</td>
+                        <td>{{ user.displayedRole }}</td>
+                        <td>4</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
             </tbody>
         </table>
+        {{ form_rest(form) }}
+        {{ form_end(form) }}
+
     </div>
 {% endblock %}
