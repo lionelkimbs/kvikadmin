@@ -3,8 +3,10 @@
 namespace Kvik\AdminBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
+use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Entity\User;
+use Kvik\AdminBundle\Repository\PostRepository;
 use Kvik\AdminBundle\Repository\TermRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -20,13 +22,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class PostType extends AbstractType
 {
     private $type;
+    private $post;
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        if( $options['type'] == 'post' ) $this->type = 1;
-        elseif( $options['type'] == 'page' ) $this->type = 2;
+        $this->type = $options['type'];
+        $this->post = $builder->getData();
         $builder
             ->add('title', TextType::class)
             ->add('body', TextareaType::class, [
@@ -48,14 +51,6 @@ class PostType extends AbstractType
                 ],
                 'data' => 1
             ])
-            ->add('commentStatus', ChoiceType::class, [
-                'choices' => [
-                    'Interdits' => 0,
-                    'Autorisés' => 1
-                ],
-                'data' => 0,
-                'expanded' => true
-            ])
             ->add('postPassword', PasswordType::class, [
                 'required' => false            ])
             ->add('datePub', DateTimeType::class, [
@@ -70,21 +65,46 @@ class PostType extends AbstractType
                     return $u->getFirstname() .' '. $u->getName();
                 }
             ])
-            ->add('terms', EntityType::class, [
-                'class' => Term::class,
-                'query_builder' => function(EntityRepository $tr){
-                    return $tr->createQueryBuilder('t')
-                        ->where('t.termType = :type')
-                        ->setParameter('type', $this->type)
-                        ->orderBy('t.name', 'ASC')
-                    ;
-                },
-                'choice_label' => 'name',
-                'multiple' => true,
-                'expanded' => true
-            ])
             ->add('enregistrer', SubmitType::class)
         ;
+        if( $options['type'] == 'post' ){
+            $builder
+                ->add('commentStatus', ChoiceType::class, [
+                    'choices' => [
+                        'Interdits' => 0,
+                        'Autorisés' => 1
+                    ],
+                    'data' => 0,
+                    'expanded' => true
+                ])
+                ->add('terms', EntityType::class, [
+                    'class' => Term::class,
+                    'query_builder' => function(EntityRepository $tr){
+                        return $tr->createQueryBuilder('t')
+                            ->where('t.termType = :type')
+                            ->setParameter('type', 1)
+                            ->orderBy('t.name', 'ASC')
+                            ;
+                    },
+                    'choice_label' => 'name',
+                    'multiple' => true,
+                    'expanded' => true
+                ])
+            ;
+        }
+        if( $options['type'] == 'page' ){
+            $builder
+                ->add('parent', EntityType::class, [
+                    'class' => Post::class,
+                    'query_builder' => function(PostRepository $pr){
+                        return $pr->getOtherPosts($this->post, $this->type);
+                    },
+                    'choice_label' => 'title',
+                    'expanded' => true,
+                    'label' => false
+                ])
+            ;
+        }
         if( $options['todo'] == 'edit' ){
             $builder
                 ->add('dateEdit', DateTimeType::class, [

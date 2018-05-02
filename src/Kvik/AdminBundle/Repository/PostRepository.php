@@ -2,6 +2,7 @@
 
 namespace Kvik\AdminBundle\Repository;
 
+use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Entity\User;
 
@@ -13,6 +14,24 @@ use Kvik\AdminBundle\Entity\User;
  */
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getOtherPosts(Post $post = null, $type){
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.postType = :type')
+            ->setParameter('type', $type)
+            ->orderBy('p.title', 'ASC')
+        ;
+        if( $post->getId() !== null )
+            $qb
+            ->andWhere('p.id != :id')
+            ->setParameter('id', $post->getId())
+        ;
+        return $qb;
+    }
+    /**
+     * @param $params
+     * @param $type
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function findPosts($params, $type){
 
         $qb = $this->createQueryBuilder('p')
@@ -63,7 +82,11 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
         }
         return $qb;
     }
-
+    /**
+     * @param array $params
+     * @param $type
+     * @return mixed
+     */
     public function getTotalPosts(array $params, $type){
         return $this->findPosts($params, $type)
             ->select('count(p.id)')
@@ -71,7 +94,11 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
             ->getSingleScalarResult()
         ;
     }
-
+    /**
+     * @param array $params
+     * @param $type
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function getPosts(array $params, $type){
         $offset = !is_null($params['pge']) ? ($params['pge'] - 1)*20 : 0;
         return $this->findPosts($params, $type)

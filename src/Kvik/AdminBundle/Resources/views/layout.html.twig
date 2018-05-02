@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         {# Posts #}
-                        <li class="nav-item dropdown {% if 'post' in app.request.uri and 'page' not in app.request.uri %}active{% endif %}">
+                        <li class="nav-item dropdown {% if type == 'post' %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-copy"></i> Articles
                             </a>
@@ -56,7 +56,7 @@
                             </a>
                         </li>
                         {# Pages #}
-                        <li class="nav-item dropdown {% if 'page' in app.request.uri %}active{% endif %}">
+                        <li class="nav-item dropdown {% if type == 'page' %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-file-powerpoint"></i> Pages
                             </a>

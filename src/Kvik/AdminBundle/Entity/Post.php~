@@ -67,7 +67,7 @@ class Post
     /**
      * @var string
      *
-     * @ORM\Column(name="comment_status", type="boolean")
+     * @ORM\Column(name="comment_status", type="boolean", nullable=true)
      */
     private $commentStatus;
 
@@ -113,7 +113,16 @@ class Post
      */
     private $metadescription;
 
-
+    /**
+     * One Parent has Many posts.
+     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Post", mappedBy="parent")
+     */
+    private $children;
+    /**
+     * Many Posts have One Parent.
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Post", inversedBy="children")
+     */
+    private $parent;
     /**
      * Many Posts have Many Terms.
      * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Term", inversedBy="posts")
@@ -136,13 +145,14 @@ class Post
     {
         $this->terms = new ArrayCollection();
         $this->dateEdit = new \DateTime();
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer
      */
     public function getId()
     {
@@ -270,9 +280,33 @@ class Post
     }
 
     /**
+     * Set privacy
+     *
+     * @param boolean $privacy
+     *
+     * @return Post
+     */
+    public function setPrivacy($privacy)
+    {
+        $this->privacy = $privacy;
+
+        return $this;
+    }
+
+    /**
+     * Get privacy
+     *
+     * @return boolean
+     */
+    public function getPrivacy()
+    {
+        return $this->privacy;
+    }
+
+    /**
      * Set commentStatus
      *
-     * @param string $commentStatus
+     * @param boolean $commentStatus
      *
      * @return Post
      */
@@ -286,7 +320,7 @@ class Post
     /**
      * Get commentStatus
      *
-     * @return string
+     * @return boolean
      */
     public function getCommentStatus()
     {
@@ -382,7 +416,7 @@ class Post
     /**
      * Get menuOrder
      *
-     * @return int
+     * @return integer
      */
     public function getMenuOrder()
     {
@@ -438,6 +472,64 @@ class Post
     }
 
     /**
+     * Add child
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $child
+     *
+     * @return Post
+     */
+    public function addChild(\Kvik\AdminBundle\Entity\Post $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $child
+     */
+    public function removeChild(\Kvik\AdminBundle\Entity\Post $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Kvik\AdminBundle\Entity\Post $parent
+     *
+     * @return Post
+     */
+    public function setParent(\Kvik\AdminBundle\Entity\Post $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Kvik\AdminBundle\Entity\Post
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
      * Add term
      *
      * @param \Kvik\AdminBundle\Entity\Term $term
@@ -469,30 +561,6 @@ class Post
     public function getTerms()
     {
         return $this->terms;
-    }
-
-    /**
-     * Set privacy
-     *
-     * @param boolean $privacy
-     *
-     * @return Post
-     */
-    public function setPrivacy($privacy)
-    {
-        $this->privacy = $privacy;
-
-        return $this;
-    }
-
-    /**
-     * Get privacy
-     *
-     * @return boolean
-     */
-    public function getPrivacy()
-    {
-        return $this->privacy;
     }
 
     /**

@@ -69,8 +69,6 @@ class UserController extends Controller{
         if( $form->isSubmitted() && $form->isValid() ) {
             $data = $form->getData();
             if( $form->get('appliquer')->isClicked() && !is_null($data['enabled']) ){
-                var_dump($data['enabled']);
-
                 foreach($data['user'] as $user){
                     if( $data['enabled'] === 'remove' ){
                         $em->remove($user);

@@ -59,8 +59,9 @@
                     </div>
                 </div>
 
-                <hr>
                 {# commentStatus #}
+                {% if post.editor is defined and post.postType != 'page' %}
+                <hr>
                 <div class="form-group">
                     {% block closed_widget %}
                         {% spaceless %}
@@ -79,10 +80,11 @@
                         {% endspaceless %}
                     {% endblock %}
                 </div>
+                {% endif %}
 
-                <hr>
                 {# Last editor #}
                 {% if post.editor is defined %}
+                    <hr>
                     <cite>Dernière modification le {{ post.dateEdit|date('d/m/Y') }} par {{ post.editor.username }}.</cite>
                 {% endif %}
             </div>
@@ -136,15 +138,25 @@
                 {% endif %}
                 <hr>
                 {# terms #}
-                <div class="form-group">
+                {% if form.dateEdit is defined and post.postType != 'page' %}
+                    <div class="form-group">
                     {{ form_errors(form.terms) }}
                     {{ form_label(form.terms, 'Catégories') }}
                     <div class="form-control">
                         {{ form_widget(form.terms) }}
                     </div>
                 </div>
-                {# send to trash button #}
-
+                {% endif %}
+                {# parent #}
+                {% if form.parent is defined %}
+                    <div class="form-group">
+                        {{ form_errors(form.parent) }}
+                        <div class="row">
+                            <div class="col-4">{{ form_label(form.parent, 'Parent') }}</div>
+                            <div class="col-8">{{ form_widget(form.parent, {'attr': {'class': 'form-control' } }) }}</div>
+                        </div>
+                    </div>
+                {% endif %}
             </div>
 
             <div class="col-12">
