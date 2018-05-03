@@ -2,22 +2,35 @@
 
 namespace Kvik\AdminBundle\Repository;
 
+use Kvik\AdminBundle\Entity\Term;
+
 class TermRepository extends \Doctrine\ORM\EntityRepository
 {
     /*
      * Return array of term by $type params
      */
-    private function findTerms($type){
+    public function findTerms($type){
         return $this->createQueryBuilder('t')
             ->where('t.termType = :type')
             ->setParameter('type', $type)
             ->orderBy('t.name', 'ASC')
         ;
     }
-    public function getTerms($type){
-        if( $type == 'categories' ) $type = 1;
-        else $type = 2;
-        return $this->findTerms($type)->getQuery()->getResult();
+    public function getTheTerms($type, $params){
+        $offset = !is_null($params['pge']) ? ($params['pge'] - 1)*20 : 0;
+
+        return $this->findTerms($type)
+            ->setFirstResult( $offset )
+            ->setMaxResults(20)
+        ;
+    }
+
+    public function getTotalTerms($type){
+        return $this->findTerms($type)
+            ->select('count(t.id)')
+            ->getQuery()
+            ->getSingleResult()
+        ;
     }
 
 }

@@ -21,6 +21,7 @@ body{font-family: 'Sansita', sans-serif;}
 }
 .no-marge{ margin: 2rem;}
 .marge-left{ margin-left: 2rem;}
+.marge-top{ margin-top: 2rem;}
 .post_total {
     font-size: smaller;
     margin-right: 1rem;

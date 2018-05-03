@@ -130,6 +130,20 @@
         </header>
 
         <main class="container-fluid">
+            {# Flash bag messages #}
+            <div class="row marge-top">
+                <div class="col-12">
+                    {% for message in app.session.flashbag.get('notice') %}
+                        <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <b>Message flash : </b>{{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
             <h1>{% block page_h1 %}{% endblock %}</h1>
             {% block container %}
             {% endblock container %}

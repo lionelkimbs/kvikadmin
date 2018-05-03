@@ -13,6 +13,53 @@
         </div>
 
         <div class="col-8">
+            {{ form_start(formulaire) }}
+            <div class="row">
+                <div class="col-4 form-inline">
+                    {# validation action #}
+                    {{ form_widget(formulaire.action, {'attr': {'class': 'form-control'} }) }}
+                    {# validation Button #}
+                    {{ form_widget(formulaire.appliquer, {'attr': {'class': 'btn btn-info inlinge-marge'} }) }}
+                </div>
+
+                <div class="col-8 nav justify-content-end post_info">
+                    <div class="post_total">
+                        {{ formulaire.term|length }} élément(s).
+                    </div>
+                    <ul class="pagination pagination-sm">
+                        {% if total > 20 %}
+                            {% set total_pges = (total /20)|round(0, 'ceil') %}
+
+                            {% if app.request.query.get('pge') is not null %}
+                                {% set pge = app.request.query.get('pge') %}
+                            {% else %} {% set pge = 1 %} {% endif %}
+                            {% set i = max(1, (app.request.query.get('pge') - 5)) %}
+                            {% set j = min((app.request.query.get('pge') + 5), total_pges) %}
+
+                            {% for i in 1..j %}
+                                {% if (i != 1) and (i == max(1, (app.request.query.get('pge') - 5))) %}
+                                    <li class="page-item">
+                                        <span class="page-link">Début</span>
+                                    </li>
+                                {% elseif i == pge %}
+                                    <li class="page-item active">
+                                        <span class="page-link">{{ pge }}</span>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item">
+                                    <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pge':i})) }}">{{ i }}</a>
+                                    {% if (i == min((app.request.query.get('pge') + 5), total)) and (i != total_pges) %}
+                                        <li class="page-item">
+                                            <a class="page-link" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'pge':total_pges})) }}">Fin</a>
+                                        </li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+
+            </div>
             <table class="table table-hover table-striped">
                 <thead>
                 <tr>
@@ -24,31 +71,38 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% if terms is empty %}
+                {% if formulaire.term is empty %}
                     <tr>
-                        <td colspan="5">
-                            Aucune catégorie trouvée.
+                        <td colspan="5" class="title">
+                            Aucun élément.
                         </td>
                     </tr>
                 {% else %}
-                    {% for term in terms %}
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>
-                            <a href="{{ path('kvik_admin_term_edit', {'type': app.request.get('type'), 'id': term.id }) }}">
+                    {% for child in formulaire.term %}
+                        {% set index = child.vars.value %}{# get array index #}
+                        {% set term = formulaire.term.vars.choices[index].data %}{# get term object #}
+                        <tr>
+                            <td scope="row">
+                                {{ form_widget(child) }}
+                            </td>
+                            <td>
+                                <a href="{{ path('kvik_admin_term_edit', {'id': term.id, 'type': type}) }}">
                                 {{ term.name }}
-                            </a>
-                        </td>
-                        <td>
-                            {{ term.resume }}
-                        </td>
-                        <td> {{ term.slug }}</td>
-                        <td> {{ term.posts|length }}</td>
-                    </tr>
+                                </a>
+                            </td>
+                            <td>
+                                {{ term.resume }}
+                            </td>
+                            <td> {{ term.slug }}</td>
+                            <td> {{ term.posts|length }}</td>
+                        </tr>
                     {% endfor %}
                 {% endif %}
                 </tbody>
             </table>
+
+            {{ form_rest(formulaire) }}
+            {{ form_end(formulaire) }}
         </div>
     </div>
 {% endblock %}
