@@ -83,12 +83,14 @@ class PostController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $post->setSlug( $this->container->get('kvik.sanitize')->slugify($post->getSlug(), $post->getTitle(), $post) );
             if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
+            if( $post->getPostType() == 'page' ) $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setEditor($this->getUser());
             $post->setPostType($type);
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [
-                'id' => $post->getId()
+                'id' => $post->getId(),
+                'type' => $post->getPostType()
             ]);
         }
         return $this->render('@KvikAdmin/Post/add.html.twig', [
@@ -108,11 +110,13 @@ class PostController extends Controller
         if ($form->isSubmitted() && $form->isValid() ){
             $post->setSlug( $this->container->get('kvik.sanitize')->slugify($post->getSlug(), $post->getTitle(), $post) );
             if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
+            if( $post->getPostType() == 'page' ) $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setEditor($this->getUser());
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [
                 'id' => $post->getId(),
+                'type' => $post->getPostType()
             ]);
         }
         return $this->render('@KvikAdmin/Post/add.html.twig', [
@@ -125,7 +129,7 @@ class PostController extends Controller
     public function trashAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
         $post = $em->getRepository(Post::class)->find($id);
-        if ( $post === null ) return $this->render('@KvikAdmin/Admin/index.html.twig');
+        if ( $post === null ) return $this->redirectToRoute('kvik_admin_index');
         else{
             $post->setPostStatus('trash');
             $em->persist($post);

@@ -26,31 +26,31 @@ kvik_admin_term_delete:
 
 #Post
 kvik_admin_post:
-    path:    /posts-{type}
+    path:    /{type}s
     defaults:
         _controller: KvikAdminBundle:Post:index
-        type: post
     requirements:
         type: post|page
 kvik_admin_post_add:
-    path:    /post/create-{type}
+    path:    /{type}/add
     defaults:
         _controller: KvikAdminBundle:Post:add
-        type: post
     requirements:
         type: post|page
 kvik_admin_post_edit:
-    path:    /post/edit-{id}
+    path:    /{type}/edit-{id}
     defaults:
         _controller: KvikAdminBundle:Post:edit
     requirements:
         id: \d+
+        type: post|page
 kvik_admin_post_trash:
-    path:    /post/trash-{id}
+    path:    /{type}/trash-{id}
     defaults:
         _controller: KvikAdminBundle:Post:trash
     requirements:
         id: \d+
+        type: post|page
 
 #User
 kvik_admin_users:

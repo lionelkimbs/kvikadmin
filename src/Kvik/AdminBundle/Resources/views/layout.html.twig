@@ -31,7 +31,7 @@
                             </a>
                         </li>
                         {# Posts #}
-                        <li class="nav-item dropdown {% if type == 'post' %}active{% endif %}">
+                        <li class="nav-item dropdown {% if 'admin_post' in app.request.get('_route') and 'post' in app.request.get('type') %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-copy"></i> Articles
                             </a>
@@ -56,7 +56,7 @@
                             </a>
                         </li>
                         {# Pages #}
-                        <li class="nav-item dropdown {% if type == 'page' %}active{% endif %}">
+                        <li class="nav-item dropdown {% if 'admin_post' in app.request.get('_route') and 'page' in app.request.get('type') %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-file-powerpoint"></i> Pages
                             </a>

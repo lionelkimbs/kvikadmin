@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Term
  *
- * @ORM\Table(name="term")
+ * @ORM\Table(name="kb_term")
  * @ORM\Entity(repositoryClass="Kvik\AdminBundle\Repository\TermRepository")
  */
 class Term

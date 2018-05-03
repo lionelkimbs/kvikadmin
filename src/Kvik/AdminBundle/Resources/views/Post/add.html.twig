@@ -60,7 +60,7 @@
                 </div>
 
                 {# commentStatus #}
-                {% if post.editor is defined and post.postType != 'page' %}
+                {% if form.commentStatus is defined %}
                 <hr>
                 <div class="form-group">
                     {% block closed_widget %}
@@ -134,11 +134,11 @@
                 </div>
                 {# deletePost button #}
                 {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
-                <a href="{{ path('kvik_admin_post_trash', {'id': post.id}) }}" class="text-danger">Déplacer vers la corbeille</a>
+                <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType}) }}" class="text-danger">Déplacer vers la corbeille</a>
                 {% endif %}
                 <hr>
                 {# terms #}
-                {% if form.dateEdit is defined and post.postType != 'page' %}
+                {% if form.terms is defined %}
                     <div class="form-group">
                     {{ form_errors(form.terms) }}
                     {{ form_label(form.terms, 'Catégories') }}
@@ -148,7 +148,7 @@
                 </div>
                 {% endif %}
                 {# parent #}
-                {% if form.parent is defined %}
+                {% if form.parent is not null %}
                     <div class="form-group">
                         {{ form_errors(form.parent) }}
                         <div class="row">

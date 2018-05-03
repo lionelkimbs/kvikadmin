@@ -12,20 +12,20 @@
     <div>
         <ul class="nav filters">
             <li class="nav-item">
-                <a class="nav-link {% if app.request.query.get('status') is null %}active{% endif %}" href="{{ path(app.request.attributes.get('_route')) }}">Tous</a>
+                <a class="nav-link {% if app.request.query.get('status') is null %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), {'type':type}) }}">Tous</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if app.request.query.get('status') == 'publish' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish'})) }}">Publié(s)</a>
+                <a class="nav-link {% if app.request.query.get('status') == 'publish' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish', 'type':type})) }}">Publié(s)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link {% if app.request.query.get('status') == 'draft' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft'})) }}">Brouillon(s)</a>
+                <a class="nav-link {% if app.request.query.get('status') == 'draft' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft', 'type':type})) }}">Brouillon(s)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link trash {% if app.request.query.get('status') == 'trash' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash'})) }}">Corbeille</a>
+                <a class="nav-link trash {% if app.request.query.get('status') == 'trash' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash', 'type':type})) }}">Corbeille</a>
             </li>
             {% if ('cat' in app.request.query|keys) or ('tag' in app.request.query|keys) or ('author' in app.request.query|keys) %}
             <li class="nav-item remove-filters">
-                <a href="{{ path(app.request.attributes.get('_route')) }}">Supprimer les filtres <i class="fas fa-times"></i></a>
+                <a href="{{ path(app.request.attributes.get('_route'), {'type':type}) }}">Supprimer les filtres <i class="fas fa-times"></i></a>
             </li>
             {% endif %}
 
@@ -88,17 +88,21 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Titre</th>
+                {% if type == 'post' %}
+                    <th scope="col">Catégories</th>
+                    <th scope="col">Tags</th>
+                {% else %}
+                    <th scope="col">Parent</th>
+                {% endif %}
                 <th scope="col">Auteur</th>
-                <th scope="col">Catégories</th>
-                <th scope="col">Tags</th>
                 <th scope="col">Date</th>
             </tr>
         </thead>
         <tbody>
         {% if form.post is empty %}
             <tr>
-                <td colspan="6" class="title">
-                    Aucun article trouvé. Vous pouvez <a href="{{ path('kvik_admin_post_add') }}">créer votre {% if type == "page" %}première page{% else %}premier article{% endif %}</a>.
+                <td colspan="{% if type == 'post' %}6{% else %}5{% endif %}" class="title">
+                    Aucun article trouvé. Vous pouvez <a href="{{ path('kvik_admin_post_add', {'type':type}) }}">créer votre {% if type == "page" %}première page{% else %}premier article{% endif %}</a>.
                 </td>
             </tr>
         {% else %}
@@ -110,22 +114,34 @@
                         {{ form_widget(child) }}
                     </th>
                     <td class="title">
-                        <a href="{{ path('kvik_admin_post_edit', {'id': post.id }) }}">
+                        <a href="{{ path('kvik_admin_post_edit', {'id': post.id, 'type': post.postType }) }}">
                             {% if post.postStatus == 'publish' %}<b>{{ post.title }}</b>
                             {% else %}{{ post.title }}{% endif %}
                         </a>
                     </td>
+                    {% if type == 'post' %}
+                        <td>
+                            {% for cat in post.terms %}
+                                <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug, 'type': post.postType})) }}">{{ cat.name }}</a>{% if not loop.last %}, {% endif %}
+                            {% endfor %}
+                        </td>
+                        <td>5</td>
+                    {% else %}
+                        <td>
+                            {% if post.parent is not null %}
+                            <a href="{{ path('kvik_admin_post_edit', {'id': post.parent.id, 'type': post.parent.postType}) }}">
+                                {{ post.parent.title }}
+                            </a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                    {% endif %}
                     <td>
-                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'author':post.author.username})) }}">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'author':post.author.username, 'type': post.postType })) }}">
                             {{ post.author.firstname }} {{ post.author.name }}
                         </a>
                     </td>
-                    <td>
-                        {% for cat in post.terms %}
-                            <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug})) }}">{{ cat.name }}</a>{% if not loop.last %}, {% endif %}
-                        {% endfor %}
-                    </td>
-                    <td>5</td>
                     <td>
                         {% if post.postStatus == 'publish' %}
                             Publié le {{ post.datePub|date('d/m/Y') }}

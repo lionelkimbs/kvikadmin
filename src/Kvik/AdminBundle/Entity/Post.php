@@ -131,6 +131,7 @@ class Post
     /**
      * Many Posts have One Author.
      * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\User", inversedBy="posts")
+     * @ORM\JoinTable(name="kb_users_groups")
      */
     private $author;
     /**

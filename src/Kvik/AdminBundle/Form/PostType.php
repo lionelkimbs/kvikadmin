@@ -7,7 +7,6 @@ use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Entity\User;
 use Kvik\AdminBundle\Repository\PostRepository;
-use Kvik\AdminBundle\Repository\TermRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -99,9 +98,11 @@ class PostType extends AbstractType
                     'query_builder' => function(PostRepository $pr){
                         return $pr->getOtherPosts($this->post, $this->type);
                     },
+                    'placeholder' => 'Aucun',
                     'choice_label' => 'title',
                     'expanded' => true,
-                    'label' => false
+                    'label' => false,
+                    'required' => false
                 ])
             ;
         }
