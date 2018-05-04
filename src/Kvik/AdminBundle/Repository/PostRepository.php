@@ -47,6 +47,8 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('status', $params['status'])
             ;
         }
+        if( $params['status'] != 'trash' ) $qb ->andWhere('p.postStatus != :status')->setParameter('status', 'trash');
+
         //cat
         if ( isset($params['cat']) ) {
             $params['cat'] = $this->_em->getRepository(Term::class)->findOneBy([

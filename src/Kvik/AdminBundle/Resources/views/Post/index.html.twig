@@ -9,27 +9,32 @@
 {% endblock %}
 
 {% block container %}
-    <div>
-        <ul class="nav filters">
-            <li class="nav-item">
-                <a class="nav-link {% if app.request.query.get('status') is null %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), {'type':type}) }}">Tous</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if app.request.query.get('status') == 'publish' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish', 'type':type})) }}">Publié(s)</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link {% if app.request.query.get('status') == 'draft' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft', 'type':type})) }}">Brouillon(s)</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link trash {% if app.request.query.get('status') == 'trash' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash', 'type':type})) }}">Corbeille</a>
-            </li>
-            {% if ('cat' in app.request.query|keys) or ('tag' in app.request.query|keys) or ('author' in app.request.query|keys) %}
-            <li class="nav-item remove-filters">
-                <a href="{{ path(app.request.attributes.get('_route'), {'type':type}) }}">Supprimer les filtres <i class="fas fa-times"></i></a>
-            </li>
-            {% endif %}
+    <div class="row">
+        <div class="col-10">
+            <ul class="nav filters">
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.query.get('status') is null %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), {'type':type}) }}">Tous</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.query.get('status') == 'publish' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'publish', 'type':type})) }}">Publié(s)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link {% if app.request.query.get('status') == 'draft' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'draft', 'type':type})) }}">Brouillon(s)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link trash {% if app.request.query.get('status') == 'trash' %}active{% endif %}" href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'status':'trash', 'type':type})) }}">Corbeille</a>
+                </li>
+                {% if ('cat' in app.request.query|keys) or ('tag' in app.request.query|keys) or ('author' in app.request.query|keys) %}
+                <li class="nav-item remove-filters">
+                    <a href="{{ path(app.request.attributes.get('_route'), {'type':type}) }}">Supprimer les filtres <i class="fas fa-times"></i></a>
+                </li>
+                {% endif %}
 
-        </ul>
+            </ul>
+        </div>
+        <div class="col-2 justify-content-end">
+            <a href="{{ path('kvik_admin_post_add', {'type': type}) }}" class="btn btn-info float-right">Ajouter</a>
+        </div>
     </div>
     {# form in Table #}
     {{ form_start(form) }}
@@ -114,7 +119,7 @@
                         {{ form_widget(child) }}
                     </th>
                     <td class="title">
-                        <a href="{{ path('kvik_admin_post_edit', {'id': post.id, 'type': post.postType }) }}">
+                        <a href="{{ path('kvik_admin_post_edit', {'id': post.id, 'type': post.postType }) }}" {% if app.request.query.get('status') == 'trash' %}class="in-trash" {% endif %}>
                             {% if post.postStatus == 'publish' %}<b>{{ post.title }}</b>
                             {% else %}{{ post.title }}{% endif %}
                         </a>

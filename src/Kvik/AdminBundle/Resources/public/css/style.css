@@ -31,7 +31,10 @@ body{font-family: 'Sansita', sans-serif;}
 }
 .inlinge-marge-r{ margin-right: 0.4rem; }
 .inlinge-marge{ margin: 0 1rem; }
-
+a.in-trash{
+    color: #333;
+    font-size: smaller;
+}
 /*LK: no-radius */
 .dropdown-menu{border-radius: 0 !important;}
 
@@ -39,7 +42,7 @@ a{ color: #0F7DCF;}
 .filters a.trash{ color: #333;}
 .filters a.nav-link{ font-size: smaller;}
 .filters a.nav-link:hover{ color: #0061C9; text-decoration: underline;}
-.filters a.nav-link.active{ font-weight: 700; background-color: #f2f2f2;}
+.filters a.nav-link.active{ font-weight: 700; background-color: #f2f2f2; border-bottom: 1px dotted #e2e2e2;}
 .filters a.trash.active{ font-weight: normal; color: #e14d43;}
 
 table.posts td{ font-size: smaller;}
