@@ -111,7 +111,9 @@ class PostType extends AbstractType
                 ->add('dateEdit', DateTimeType::class, [
                     'data' => new \DateTime()
                 ])
-                ->add('slug', TextType::class)
+                ->add('slug', TextType::class, [
+                    'required' => false
+                ])
             ;
         }
     }

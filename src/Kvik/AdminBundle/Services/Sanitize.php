@@ -21,13 +21,20 @@ class Sanitize{
 
         if( $text == null ) $text = $name;
 
+        $text = htmlentities( $text, ENT_NOQUOTES, 'utf-8' );
+        $text = preg_replace( '#&([A-za-z])(?:acute|cedil|caron|circ|grave|orn|ring|slash|th|tilde|uml);#', '\1', $text );
+        $text = preg_replace( '#&([A-za-z]{2})(?:lig);#', '\1', $text );
+
         $text = preg_replace('~[^\pL\d]+~u', '-', $text);
-        $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+        $text = iconv('utf-8', 'us-ascii//IGNORE', $text);
         $text = preg_replace('~[^-\w]+~', '', $text);
         $text = trim($text, '-');
         $text = preg_replace('~-+~', '-', $text);
         $text = mb_strtolower($text);
-        if (empty($text)) return 'n-a';
+        if (empty($text)){
+            $date = new \DateTime();
+            return 'n-a-' .$date->getTimestamp();
+        }
 
         //*: Check if $object is a Post or a Term
         if (is_a($object, Post::class)) $check_object = $this->em->getRepository(Post::class)->findOneBy(['slug' => $text]);

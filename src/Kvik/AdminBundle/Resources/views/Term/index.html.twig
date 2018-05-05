@@ -15,14 +15,14 @@
         <div class="col-8">
             {{ form_start(formulaire) }}
             <div class="row">
-                <div class="col-4 form-inline">
+                <div class="col-6 form-inline">
                     {# validation action #}
                     {{ form_widget(formulaire.action, {'attr': {'class': 'form-control'} }) }}
                     {# validation Button #}
                     {{ form_widget(formulaire.appliquer, {'attr': {'class': 'btn btn-info inlinge-marge'} }) }}
                 </div>
 
-                <div class="col-8 nav justify-content-end post_info">
+                <div class="col-6 nav justify-content-end post_info">
                     <div class="post_total">
                         {{ formulaire.term|length }} élément(s).
                     </div>
