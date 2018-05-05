@@ -126,6 +126,7 @@ class Post
     /**
      * Many Posts have Many Terms.
      * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Term", inversedBy="posts")
+     * @ORM\JoinTable(name="kb_posts_terms")
      */
     private $terms;
     /**
