@@ -88,7 +88,7 @@
                         <td scope="row">
                             {{ form_widget(child) }}
                         </td>
-                        <td>
+                        <td class="title">
                             <a href="{% if user == app.user %}{{ path('fos_user_profile_edit') }}{% else %}{{ path('kvik_admin_user_edit', {'id': user.id }) }}{% endif %}">
                             {{ user.username }}
                             </a>
