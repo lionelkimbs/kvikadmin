@@ -6,14 +6,15 @@
     {% endif %}
 {% endblock title %}
 
-
-{% block container %}
+{% block page_h1 %}
     <h1>
         {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}Modifier {% if type == "page" %}la page{% else %}l'article{% endif %}
         {% else %}Créer {% if type == "page" %}une nouvelle page{% else %}un nouvel article{% endif %}
         {% endif %}
     </h1>
+{% endblock %}
 
+{% block container %}
     {{ form_start(form, {'attr': {'autocomplete':'off'} }) }}
         <div class="form-row">
             <div class="col-md-8">
