@@ -35,6 +35,17 @@ a.in-trash{
     color: #333;
     font-size: smaller;
 }
+.div-list .form-control{
+    min-height: 5rem;
+    max-height: 10rem;
+    display: block;
+    overflow: auto;
+}
+.div-list .parent-list{border-bottom:1px dotted #dadada;}
+.div-list div input{margin-right: 0.3rem;}
+.div-list .form-control div:hover{color: #03616f;}
+
+
 /*LK: no-radius */
 .dropdown-menu{border-radius: 0 !important;}
 

@@ -96,22 +96,22 @@ ivory_ck_editor:
     default_config:                     kvik
     plugins:
         htmlwriter:
-            path:                       "/bundles/kvikadmin/ckeditor/htmlwriter/"
+            path:                       "/bundles/kvikadmin/ckeditor/plugins/htmlwriter/"
             filename:                   "plugin.js"
         notification:
-            path:                       "/bundles/kvikadmin/ckeditor/notification/"
+            path:                       "/bundles/kvikadmin/ckeditor/plugins/notification/"
             filename:                   "plugin.js"
         undo:
-            path:                       "/bundles/kvikadmin/ckeditor/undo/"
+            path:                       "/bundles/kvikadmin/ckeditor/plugins/undo/"
             filename:                   "plugin.js"
         wordcount:
-            path:                       "/bundles/kvikadmin/ckeditor/wordcount/"
+            path:                       "/bundles/kvikadmin/ckeditor/plugins/wordcount/"
             filename:                   "plugin.js"
         video:
-            path:                       "/bundles/kvikadmin/ckeditor/video/"
+            path:                       "/bundles/kvikadmin/ckeditor/plugins/video/"
             filename:                   "plugin.js"
         codemirror:
-            path:                       "/bundles/kvikadmin/ckeditor/codemirror/"
+            path:                       "/bundles/kvikadmin/ckeditor/plugins/codemirror/"
             filename:                   "plugin.js"
     configs:
         kvik:
@@ -119,9 +119,10 @@ ivory_ck_editor:
             stylesSet:                  "my_styles"         # Chargement des styles personnalisables my_styles (voir plus bas)
             uiColor:                    "#FCFCFC"           # Couleur de fond de l'interface
             contentsCss:                ['bundles/app/css/style.css'] # Charge les styles dans l'éditeur (permet de voir en temps réel le résultat)
-            skin:                       "office2013,../kvikadmin/ckeditor/office2013/"
+            skin:                       "icy_orange,../kvikadmin/ckeditor/themes/icy_orange/"
             toolbar1:                   "standard"          # Charger la toolbar tollbar_1 (voir plus bas)
             toolbar2:                   [ ['Video' ], '/', [ 'RemoveFormat' ], [ 'Maximize' ] ]
+            toolbar3:                   [[ 'Bold', 'Italic', 'Underline', 'BulletedList' ]]
             filebrowserBrowseRoute:     "elfinder"
             filebrowserBrowseRouteParameters:
                 instance:               "ckeditor"
@@ -136,7 +137,7 @@ ivory_ck_editor:
 
 #El Finder Configuration
 fm_elfinder:
-    assets_path: assets # Le dossier configuré dans composer.json
+    assets_path: "/assets" # Le dossier configuré dans composer.json
     instances:
         ckeditor:
             locale:           "%locale%"
@@ -148,7 +149,7 @@ fm_elfinder:
                 roots:
                     uploads:
                         driver:           "LocalFileSystem"
-                        path:             "web/assets/"
+                        path:             "assets/Medias"
                         upload_allow:     ['image/png', 'image/jpg', 'image/jpeg', 'image/gif', 'application/zip', 'audio/mpeg', 'text/csv', 'video/mp4', 'video/webm', 'application/pdf']
                         upload_deny:      ['all']
                         upload_max_size:  "8M"

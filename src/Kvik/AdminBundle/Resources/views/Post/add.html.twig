@@ -42,24 +42,9 @@
                 {# excerpt #}
                 <div class="form-group">
                     {{ form_errors(form.excerpt) }}
-                    {{ form_widget(form.excerpt, {'attr': {'class': 'form-control', 'placeholder': 'Texte de présentation de l\'article' } }) }}
+                    {{ form_label(form.excerpt, 'Extrait') }}
+                    {{ form_widget(form.excerpt, {'attr': {'class': 'form-control', 'placeholder': 'Les extraits sont des résumés facultatifs de vos contenus, écrits à la main. Si vous n\'en renseignez pas, les 200 premiers caractères de votre article feront office d\'extrait.' } }) }}
                 </div>
-                {# metadescription #}
-                <div class="form-group">
-                    {{ form_errors(form.metadescription) }}
-                    {{ form_widget(form.metadescription, {'attr': {'class': 'form-control', 'placeholder': 'La meta-description n\'est pas obligatoire, mais fortement recommandée' } }) }}
-                </div>
-
-                {# author #}
-                <hr>
-                <div class="form-group">
-                    {{ form_errors(form.author) }}
-                    <div class="row">
-                        <div class="col-4">{{ form_label(form.author, 'Auteur') }}</div>
-                        <div class="col-8">{{ form_widget(form.author, {'attr': {'class': 'form-control' } }) }}</div>
-                    </div>
-                </div>
-
                 {# commentStatus #}
                 {% if form.commentStatus is defined %}
                 <hr>
@@ -71,12 +56,12 @@
                                     {{ form_label(form.commentStatus, 'Commentaires :') }}
                                 </div>
                                 {% for child in form.commentStatus %}
-                                {{ block('widget_container_attributes') }}
-                                <div class="col-4 radio-inline">
-                                    {{ form_widget(child) }}
-                                    {{ form_label(child) }}
-                                </div>
-                            {% endfor %}
+                                    {{ block('widget_container_attributes') }}
+                                    <div class="col-4 radio-inline">
+                                        {{ form_widget(child) }}
+                                        {{ form_label(child) }}
+                                    </div>
+                                {% endfor %}
                             </div>
                         {% endspaceless %}
                     {% endblock %}
@@ -133,37 +118,82 @@
                         <div class="col-8">{{ form_widget(form.datePub) }}</div>
                     </div>
                 </div>
+                {# author #}
+                <hr>
+                <div class="form-group">
+                    {{ form_errors(form.author) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.author, 'Auteur') }}</div>
+                        <div class="col-8">{{ form_widget(form.author, {'attr': {'class': 'form-control' } }) }}</div>
+                    </div>
+                </div>
+                {# metadescription #}
+                <hr>
+                <div class="form-group">
+                    {{ form_errors(form.metadescription) }}
+                    <div class="row">
+                        <div class="col-4">{{ form_label(form.metadescription, 'Meta-description') }}</div>
+                        <div class="col-8">{{ form_widget(form.metadescription, {'attr': {'class': 'form-control', 'placeholder': 'La meta-description n\'est pas obligatoire, mais fortement recommandée' } }) }}</div>
+                    </div>
+                </div>
+
+
                 {# deletePost button #}
-                {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
-                <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType}) }}" class="text-danger">Déplacer vers la corbeille</a>
-                {% endif %}
+                <hr>
+                <div class="form-group">
+                    <div class="row">
+                        {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
+                            <div class="col-6">
+                                <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType}) }}" class="text-danger">Déplacer vers la corbeille</a>
+                            </div>
+                        {% endif %}
+                        <div class="col-6 float-right">
+                            {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-info float-right'} }) }}
+                        </div>
+                    </div>
+                </div>
                 <hr>
                 {# terms #}
                 {% if form.terms is defined %}
                     <div class="form-group">
-                    {{ form_errors(form.terms) }}
-                    {{ form_label(form.terms, 'Catégories') }}
-                    <div class="form-control">
-                        {{ form_widget(form.terms) }}
+                        {{ form_errors(form.terms) }}
+                        <div class="row">
+                            <div class="col-4">{{ form_label(form.terms, 'Catégories') }}</div>
+                            <div class="col-8 div-list">
+                                <div class="form-control">
+                                    {% for child in form.terms %}
+                                        {{ block('widget_container_attributes') }}
+                                        <div>
+                                            {{ form_widget(child) }}
+                                            {{ form_label(child) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
                 {% endif %}
+
                 {# parent #}
                 {% if form.parent is not null %}
                     <div class="form-group">
                         {{ form_errors(form.parent) }}
                         <div class="row">
                             <div class="col-4">{{ form_label(form.parent, 'Parent') }}</div>
-                            <div class="col-8">{{ form_widget(form.parent, {'attr': {'class': 'form-control' } }) }}</div>
+                            <div class="col-8 div-list">
+                                <div class="form-control">
+                                    {% for child in form.parent %}
+                                        {{ block('widget_container_attributes') }}
+                                        <div class="parent-list">
+                                            {{ form_widget(child) }}
+                                            {{ form_label(child) }}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 {% endif %}
-            </div>
-
-            <div class="col-12">
-                <hr>
-                {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-success float-right'} }) }}
-                {% block add_buttons %}{% endblock %}
             </div>
         </div>
 
