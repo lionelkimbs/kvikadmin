@@ -44,7 +44,7 @@ a.in-trash{
 .div-list .parent-list{border-bottom:1px dotted #dadada;}
 .div-list div input{margin-right: 0.3rem;}
 .div-list .form-control div:hover{color: #03616f;}
-
+.form-group .tags{display: inline-block; margin-right: 0.5rem;}
 
 /*LK: no-radius */
 .dropdown-menu{border-radius: 0 !important;}

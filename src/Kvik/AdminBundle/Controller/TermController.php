@@ -53,9 +53,11 @@ class TermController extends Controller
                     if ($term->getSlug() == 'uncategorized') {
                         $request->getSession()->getFlashBag()->add('notice', 'La catégorie par défaut ne peut être supprimée dans une action groupée.');
                     } else {
-                        $this->container->get('kvik.postManager')->addPostsToUncategorized($term->getPosts());
+                        if( $term->getTermType() == 1 ){
+                            $this->container->get('kvik.postManager')->addPostsToUncategorized($term->getPosts());
+                            $loop++;
+                        }
                         $em->remove($term);
-                        $loop++;
                     }
                 }
                 if( $loop > 0 ) $request->getSession()->getFlashBag()->add('notice', 'Retrouvez tous les articles des catégories suppriémes dans la catégorie "Uncategorized".');

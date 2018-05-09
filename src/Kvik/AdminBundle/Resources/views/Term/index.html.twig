@@ -1,7 +1,13 @@
 {% extends '@KvikAdmin/layout.html.twig' %}
 
-{% block title %}Catégories{% endblock title %}
-{% block page_h1 %}<h1>Catégories</h1>{% endblock %}
+{% block title %}
+    {% if type == "categories" %}Catégories{% else %}Etiquettes{% endif %}
+{% endblock title %}
+
+{% block page_h1 %}
+    <h1>{% if type == "categories" %}Catégories{% else %}Etiquettes{% endif %}</h1>
+{% endblock %}
+
 
 {% block container %}
     <div class="row">

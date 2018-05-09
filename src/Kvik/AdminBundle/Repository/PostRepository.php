@@ -68,7 +68,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
             $qb
                 ->join('p.terms', 't')
                 ->andWhere('t.id = :tag')
-                ->setParameter('cat', $params['tag'])
+                ->setParameter('tag', $params['tag'])
             ;
         }
         //author

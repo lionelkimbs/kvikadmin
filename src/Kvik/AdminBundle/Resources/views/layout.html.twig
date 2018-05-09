@@ -33,7 +33,7 @@
                         {# Posts #}
                         <li class="nav-item dropdown {% if 'admin_post' in app.request.get('_route') and 'post' in app.request.get('type') %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-copy"></i> Articles
+                                <i class="fas fa-file-alt"></i> Articles
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post_add', {'type':'post'}) }}">
@@ -41,11 +41,11 @@
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'post'}) }}">
-                                    <i class="fas fa-list"></i> Tous les articles
+                                    <i class="fas fa-copy"></i> Tous les articles
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'post', 'status':'trash'}) }}">
-                                    <i class="fas fa-trash-alt"></i> Corbeille
+                                <a class="dropdown-item" href="{{ path('kvik_admin_terms', {'type': 'tags'}) }}">
+                                    <i class="fas fa-tag"></i> Etiquettes
                                 </a>
                             </div>
                         </li>
@@ -66,7 +66,7 @@
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{{ path('kvik_admin_post', {'type':'page'}) }}">
-                                    <i class="fas fa-list"></i> Toutes les pages
+                                    <i class="far fa-copy"></i> Toutes les pages
                                 </a>
                             </div>
                         </li>

@@ -126,11 +126,28 @@
                     </td>
                     {% if type == 'post' %}
                         <td>
-                            {% for cat in post.terms %}
+                            {% set catsArray = [] %}
+                            {% for cat in post.terms if cat.termType == 1 %}
+                                {% set catsArray = catsArray|merge([cat]) %}
+                            {% endfor %}
+
+                            {% for cat in catsArray %}
                                 <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'cat':cat.slug, 'type': post.postType})) }}">{{ cat.name }}</a>{% if not loop.last %}, {% endif %}
                             {% endfor %}
                         </td>
-                        <td>5</td>
+                        <td>
+                            {% set tagsArray = [] %}
+                            {% for tag in post.terms if tag.termType == 2 %}
+                                {% set tagsArray = tagsArray|merge([tag]) %}
+                            {% endfor %}
+
+                            {% if tagsArray is empty %}-
+                            {% else %}
+                                {% for tag in tagsArray %}
+                                    <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all|merge({'tag':tag.slug, 'type': post.postType})) }}">{{ tag.name }}</a>{% if not loop.last %}, {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </td>
                     {% else %}
                         <td>
                             {% if post.parent is not null %}

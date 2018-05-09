@@ -162,11 +162,37 @@
                             <div class="col-8 div-list">
                                 <div class="form-control">
                                     {% for child in form.terms %}
-                                        {{ block('widget_container_attributes') }}
-                                        <div>
-                                            {{ form_widget(child) }}
-                                            {{ form_label(child) }}
-                                        </div>
+                                        {% set index = child.vars.value %}{# get array index #}
+                                        {% set term = form.terms.vars.choices[index].data %}{# get post object #}
+
+                                        {% if term.termType == 1 %}
+                                            {{ block('widget_container_attributes') }}
+                                            <div>
+                                                {{ form_widget(child) }}
+                                                {{ form_label(child) }}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-4">{{ form_label(form.terms, 'Etiquettes : ') }}</div>
+                            <div class="col-8">
+                                <div class="form-control">
+                                    {% for child in form.terms %}
+                                        {% set index = child.vars.value %}{# get array index #}
+                                        {% set term = form.terms.vars.choices[index].data %}{# get post object #}
+                                        {% if term.termType == 2 %}
+                                            {{ block('widget_container_attributes') }}
+                                            <div class="tags">
+                                                {{ form_widget(child) }}
+                                                {{ form_label(child) }}
+                                            </div>
+                                        {% endif %}
                                     {% endfor %}
                                 </div>
                             </div>

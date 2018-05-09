@@ -85,8 +85,6 @@ class PostType extends AbstractType
                     'class' => Term::class,
                     'query_builder' => function(EntityRepository $tr){
                         return $tr->createQueryBuilder('t')
-                            ->where('t.termType = :type')
-                            ->setParameter('type', 1)
                             ->orderBy('t.name', 'ASC')
                             ;
                     },
