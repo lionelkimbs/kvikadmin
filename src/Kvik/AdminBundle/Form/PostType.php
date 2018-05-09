@@ -3,6 +3,7 @@
 namespace Kvik\AdminBundle\Form;
 
 use Doctrine\ORM\EntityRepository;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Entity\User;
@@ -31,8 +32,12 @@ class PostType extends AbstractType
         $this->post = $builder->getData();
         $builder
             ->add('title', TextType::class)
-            ->add('body', TextareaType::class, [
-                'required' => false
+            ->add('body', CKEditorType::class, [
+                'required' => false,
+                'config_name' => 'kvik',
+                'config' => [
+                    'language' => 'fr'
+                ]
             ])
             ->add('excerpt', TextareaType::class, [
                 'required' => false

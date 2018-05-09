@@ -25,3 +25,5 @@ kvik_admin:
     resource: "@KvikAdminBundle/Resources/config/routing.yml"
     prefix:   /admin
 
+elfinder:
+     resource: "@FMElfinderBundle/Resources/config/routing.yml"
