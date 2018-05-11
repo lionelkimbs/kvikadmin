@@ -125,7 +125,7 @@ class Post
     private $parent;
     /**
      * Many Posts have Many Terms.
-     * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Term", inversedBy="posts")
+     * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Term", inversedBy="posts", cascade={"persist"})
      * @ORM\JoinTable(name="kb_posts_terms")
      */
     private $terms;
@@ -542,6 +542,7 @@ class Post
     public function addTerm(\Kvik\AdminBundle\Entity\Term $term)
     {
         $this->terms[] = $term;
+        $term->addPost($this);
 
         return $this;
     }

@@ -115,6 +115,11 @@ class PostController extends Controller
             if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
             if( $post->getPostType() == 'page' ) $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setEditor($this->getUser());
+            //*LK: Add created term (tag or cat)
+            foreach( $form["newterm"]->getData() as $newterm){
+                $newterm->setSlug( $this->container->get('kvik.sanitize')->slugify($newterm->getName()) );
+                $post->addTerm($newterm);
+            }
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [

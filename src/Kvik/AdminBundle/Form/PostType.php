@@ -11,6 +11,7 @@ use Kvik\AdminBundle\Repository\PostRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -92,7 +93,24 @@ class PostType extends AbstractType
                     'multiple' => true,
                     'expanded' => true
                 ])
+                ->add('newterm', CollectionType::class, [
+                    'entry_type' => TermType::class,
+                    'entry_options' => [
+                        'type' => 'included',
+                        'label' => false
+                    ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'prototype' => true,
+                    'mapped' => false,
+                    'by_reference' => false,
+                    'property_path' => 'terms'
+                ])
             ;
+
+
+
+
         }
         if( $options['type'] == 'page' ){
             $builder

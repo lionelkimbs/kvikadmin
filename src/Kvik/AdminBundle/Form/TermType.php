@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityRepository;
 use Kvik\AdminBundle\Entity\Term;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,62 +25,74 @@ class TermType extends AbstractType
     {
         $this->obejct = $builder->getData();
 
-
-        $builder
-            ->add('name', TextType::class)
-            ->add('slug', TextType::class, [
-                'required' => false
-            ])
-            ->add('resume', TextareaType::class, [
-                'required' => false
-            ])
-            ->add('enregistrer', SubmitType::class)
-        ;
-        //* Only for categories
-        if ($options['type'] == 'categories' ){
-            if ($options['todo'] == 'edit' ){
-                $builder
-                    ->add('parent', EntityType::class, [
-                        'class' => Term::class,
-                        'query_builder' => function(EntityRepository $er){
-                            return $er->createQueryBuilder('t')
-                                ->where('t.id != :id')
-                                ->setParameter('id', $this->obejct->getId())
-                                ->orderBy('t.name', 'ASC')
-                            ;
-                        },
-                        'choice_label' => 'name',
-                        'required' => false,
-                        'placeholder' => 'Aucun'
-                    ])
-                ;
-            }
-            else {
-                $builder
-                    ->add('parent', EntityType::class, [
-                        'class' => Term::class,
-                        'query_builder' => function(EntityRepository $er){
-                            return $er->createQueryBuilder('t')
-                                ->orderBy('t.name', 'ASC')
-                            ;
-                        },
-                        'choice_label' => 'name',
-                        'required' => false,
-                        'placeholder' => 'Aucun'
-                    ])
-                ;
-            }
+        if( $options['type'] == 'included' ){
             $builder
-                ->add('termType', HiddenType::class, [
-                    'data' => 1
+                ->add('name', TextType::class)
+                ->add('termType', ChoiceType::class, [
+                    'choices' => [
+                        'Catégorie' => 1,
+                        'Tag' => 2
+                    ]
                 ])
             ;
         }
-        //* Only for tags
-        if ($options['type'] == 'tags' ){
-            $builder->add('termType', HiddenType::class, [
-                'data' => 2
-            ]);
+        else{
+            $builder
+                ->add('name', TextType::class)
+                ->add('slug', TextType::class, [
+                    'required' => false
+                ])
+                ->add('resume', TextareaType::class, [
+                    'required' => false
+                ])
+                ->add('enregistrer', SubmitType::class)
+            ;
+            //* Only for categories
+            if ($options['type'] == 'categories' ){
+                if ($options['todo'] == 'edit' ){
+                    $builder
+                        ->add('parent', EntityType::class, [
+                            'class' => Term::class,
+                            'query_builder' => function(EntityRepository $er){
+                                return $er->createQueryBuilder('t')
+                                    ->where('t.id != :id')
+                                    ->setParameter('id', $this->obejct->getId())
+                                    ->orderBy('t.name', 'ASC')
+                                    ;
+                            },
+                            'choice_label' => 'name',
+                            'required' => false,
+                            'placeholder' => 'Aucun'
+                        ])
+                    ;
+                }
+                else {
+                    $builder
+                        ->add('parent', EntityType::class, [
+                            'class' => Term::class,
+                            'query_builder' => function(EntityRepository $er){
+                                return $er->createQueryBuilder('t')
+                                    ->orderBy('t.name', 'ASC')
+                                    ;
+                            },
+                            'choice_label' => 'name',
+                            'required' => false,
+                            'placeholder' => 'Aucun'
+                        ])
+                    ;
+                }
+                $builder
+                    ->add('termType', HiddenType::class, [
+                        'data' => 1
+                    ])
+                ;
+            }
+            //* Only for tags
+            if ($options['type'] == 'tags' ){
+                $builder->add('termType', HiddenType::class, [
+                    'data' => 2
+                ]);
+            }
         }
     }
 

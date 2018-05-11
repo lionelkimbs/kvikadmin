@@ -63,7 +63,7 @@ class Term
     private $parent;
     /**
      * Many Terms have Many Posts.
-     * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Post", mappedBy="terms")
+     * @ORM\ManyToMany(targetEntity="Kvik\AdminBundle\Entity\Post", mappedBy="terms", cascade={"persist"})
      */
     private $posts;
 
