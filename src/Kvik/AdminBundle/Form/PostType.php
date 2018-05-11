@@ -93,10 +93,10 @@ class PostType extends AbstractType
                     'multiple' => true,
                     'expanded' => true
                 ])
-                ->add('newterm', CollectionType::class, [
+                ->add('newTag', CollectionType::class, [
                     'entry_type' => TermType::class,
                     'entry_options' => [
-                        'type' => 'included',
+                        'type' => 'newTag',
                         'label' => false
                     ],
                     'allow_add' => true,
@@ -104,7 +104,8 @@ class PostType extends AbstractType
                     'prototype' => true,
                     'mapped' => false,
                     'by_reference' => false,
-                    'property_path' => 'terms'
+                    'property_path' => 'terms',
+                    'label' => false
                 ])
             ;
 

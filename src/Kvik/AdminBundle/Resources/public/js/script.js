@@ -3,13 +3,13 @@
  */
 $(document).ready(function() {
     // On récupère la balise <div> en question qui contient l'attribut « data-prototype » qui nous intéresse.
-    var $container = $('div#kvik_adminbundle_post_newterm');
+    var $container = $('div#kvik_adminbundle_post_newTag');
 
     // On définit un compteur unique pour nommer les champs qu'on va ajouter dynamiquement
     var index = $container.find(':input').length;
 
     // On ajoute un nouveau champ à chaque clic sur le lien d'ajout.
-    $('#add_category').click(function(e) {
+    $('#add_term').click(function(e) {
         addCategory($container);
 
         e.preventDefault(); // évite qu'un # apparaisse dans l'URL
@@ -66,3 +66,43 @@ $(document).ready(function() {
         });
     }
 });
+
+
+/**
+ * LK: Autocomplete to find terms
+ *
+function getAllTags(tags){
+    $( "#all_tags" ).autocomplete({
+        source: tags
+    });
+}*/
+
+$( function() {
+    var availableTags = [
+        "ActionScript",
+        "AppleScript",
+        "Asp",
+        "BASIC",
+        "C",
+        "C++",
+        "Clojure",
+        "COBOL",
+        "ColdFusion",
+        "Erlang",
+        "Fortran",
+        "Groovy",
+        "Haskell",
+        "Java",
+        "JavaScript",
+        "Lisp",
+        "Perl",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Scala",
+        "Scheme"
+    ];
+    $( "#all_tags" ).autocomplete({
+        source: availableTags
+    });
+} );

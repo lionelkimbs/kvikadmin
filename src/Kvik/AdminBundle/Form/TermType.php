@@ -25,14 +25,11 @@ class TermType extends AbstractType
     {
         $this->obejct = $builder->getData();
 
-        if( $options['type'] == 'included' ){
+        if( $options['type'] == 'newTag' ){
             $builder
                 ->add('name', TextType::class)
-                ->add('termType', ChoiceType::class, [
-                    'choices' => [
-                        'Catégorie' => 1,
-                        'Tag' => 2
-                    ]
+                ->add('termType', HiddenType::class, [
+                    'data' => 2
                 ])
             ;
         }

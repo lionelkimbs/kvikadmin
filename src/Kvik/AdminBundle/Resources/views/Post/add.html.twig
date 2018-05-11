@@ -183,21 +183,23 @@
                             <div class="col-4">{{ form_label(form.terms, 'Etiquettes : ') }}</div>
                             <div class="col-8">
                                 <div class="form-control">
+                                    {% set tags = [] %}
                                     {% for child in form.terms %}
                                         {% set index = child.vars.value %}{# get array index #}
                                         {% set term = form.terms.vars.choices[index].data %}{# get post object #}
                                         {% if term.termType == 2 %}
-                                            {{ block('widget_container_attributes') }}
-                                            <div class="tags">
-                                                {{ form_widget(child) }}
-                                                {{ form_label(child) }}
-                                            </div>
+                                            {% set tags = tags|merge([term]) %}
                                         {% endif %}
                                     {% endfor %}
+
+                                    <input type="text" class="form-control" name="all_tags" id="all_tags" placeholder="Recherchez ou ajoutez un tag..." />
                                 </div>
                                 <div class="form-control">
                                     {# store the prototype on the data-prototype attribute #}
-                                    {{ form_row(form.newterm) }}
+                                    {{ form_row(form.newTag) }}
+                                    <a class="btn btn-success" id="add_term">
+                                        <i class="fas fa-plus-circle"></i>
+                                    </a>
                                 </div>
                                 {% javascripts '@KvikAdminBundle/Resources/public/js/*' %}
                                     <script src="{{ asset_url }}"></script>
