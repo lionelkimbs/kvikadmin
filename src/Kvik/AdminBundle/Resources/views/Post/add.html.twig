@@ -194,14 +194,16 @@
                                 </script>
                                 <input name="tag_choosen" id="tags" class="form-control" placeholder="Recherchez ou ajoutez un tag..." />
                                 {% set tagged = [] %}
-                                {% for term in post.terms if term.termType == 2 %}
-                                    {% set tagged = tagged|merge([term.name]) %}
-                                {% endfor %}
+                                {% if post is defined %}
+                                    {% for term in post.terms if term.termType == 2 %}
+                                        {% set tagged = tagged|merge([term.name]) %}
+                                    {% endfor %}
+                                {% endif %}
                                 {{ form_widget(form.newTag, {'attr': {'class': 'tags_choosen'}, 'value': tagged|join(',') }) }}
                                 <div id="tags_choosen">
                                     {% if tagged is not empty %}
                                         {% for tag in tagged %}
-                                        <a class="tag_added" href="#">{{ tag }}<i class="fas fa-times"></i></a>
+                                            <a class="tag_added" href="#">{{ tag }}<i class="fas fa-times"></i></a>
                                         {% endfor %}
                                     {% endif %}
                                 </div>

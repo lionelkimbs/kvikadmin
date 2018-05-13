@@ -89,6 +89,7 @@ class PostController extends Controller
             }
             if( $post->getPostType() == 'page' ) $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setEditor($this->getUser());
+            $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData()); //*LK: Manage tags
             $post->setPostType($type);
             $em->persist($post);
             $em->flush();
@@ -99,7 +100,8 @@ class PostController extends Controller
         }
         return $this->render('@KvikAdmin/Post/add.html.twig', [
             'type' => $type,
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'tags' => $em->getRepository(Term::class)->findBy(['termType' => 2])
         ]);
     }
 
@@ -116,10 +118,7 @@ class PostController extends Controller
             if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
             if( $post->getPostType() == 'page' ) $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setEditor($this->getUser());
-
-            //*LK: Manage tags
-            $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData());
-
+            $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData()); //*LK: Manage tags
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [
