@@ -118,7 +118,6 @@ ivory_ck_editor:
             language:                   "%locale%"
             stylesSet:                  "my_styles"         # Chargement des styles personnalisables my_styles (voir plus bas)
             uiColor:                    "#FCFCFC"           # Couleur de fond de l'interface
-            contentsCss:                ['bundles/app/css/style.css'] # Charge les styles dans l'éditeur (permet de voir en temps réel le résultat)
             skin:                       "icy_orange,../kvikadmin/ckeditor/themes/icy_orange/"
             toolbar1:                   "standard"          # Charger la toolbar tollbar_1 (voir plus bas)
             toolbar2:                   [ ['Video' ], '/', [ 'RemoveFormat' ], [ 'Maximize' ] ]

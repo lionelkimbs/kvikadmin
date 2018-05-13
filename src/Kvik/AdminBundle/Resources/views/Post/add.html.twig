@@ -182,28 +182,29 @@
                         <div class="row">
                             <div class="col-4">{{ form_label(form.terms, 'Etiquettes : ') }}</div>
                             <div class="col-8">
-                                <div class="form-control">
-                                    {% set tags = [] %}
-                                    {% for child in form.terms %}
-                                        {% set index = child.vars.value %}{# get array index #}
-                                        {% set term = form.terms.vars.choices[index].data %}{# get post object #}
-                                        {% if term.termType == 2 %}
-                                            {% set tags = tags|merge([term]) %}
-                                        {% endif %}
-                                    {% endfor %}
-
-                                    <input type="text" class="form-control" name="all_tags" id="all_tags" placeholder="Recherchez ou ajoutez un tag..." />
+                                {% set alltags = [] %}
+                                {% for tag in tags %}
+                                    {% set alltags = alltags|merge([tag.name]) %}
+                                {% endfor %}
+                                <script>
+                                    $(document).ready(function(){
+                                        var tags = {{ alltags|json_encode|raw }};
+                                        completeTags(tags);
+                                    });
+                                </script>
+                                <input name="tag_choosen" id="tags" class="form-control" placeholder="Recherchez ou ajoutez un tag..." />
+                                {% set tagged = [] %}
+                                {% for term in post.terms if term.termType == 2 %}
+                                    {% set tagged = tagged|merge([term.name]) %}
+                                {% endfor %}
+                                {{ form_widget(form.newTag, {'attr': {'class': 'tags_choosen'}, 'value': tagged|join(',') }) }}
+                                <div id="tags_choosen">
+                                    {% if tagged is not empty %}
+                                        {% for tag in tagged %}
+                                        <a class="tag_added" href="#">{{ tag }}<i class="fas fa-times"></i></a>
+                                        {% endfor %}
+                                    {% endif %}
                                 </div>
-                                <div class="form-control">
-                                    {# store the prototype on the data-prototype attribute #}
-                                    {{ form_row(form.newTag) }}
-                                    <a class="btn btn-success" id="add_term">
-                                        <i class="fas fa-plus-circle"></i>
-                                    </a>
-                                </div>
-                                {% javascripts '@KvikAdminBundle/Resources/public/js/*' %}
-                                    <script src="{{ asset_url }}"></script>
-                                {% endjavascripts %}
                             </div>
                         </div>
                     </div>

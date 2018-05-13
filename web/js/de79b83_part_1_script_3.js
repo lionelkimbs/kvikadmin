@@ -71,59 +71,38 @@ $(document).ready(function() {
 /**
  * LK: Autocomplete to find terms
  *
- */
-function split( val ) { return val.split( /,\s*/ ); }
-function extractLast( term ) { return split( term ).pop(); }
-
-$(document).ready(function(e) {
-    $('.tag_added').click(function () {
-        var newchoosen = '',
-            choosen = $('.tags_choosen');
-
-        choosen.val( choosen.val().replace($(this).text(), '') );
-        this.remove();
-
-        if( choosen.val().charAt(0) === ',' ){
-            newchoosen = choosen.val().replace(',','');
-            choosen.val(newchoosen);
-        }
-        if( choosen.val().charAt(choosen.val().length-1) === ',' ){
-            newchoosen = choosen.val().replace(',','');
-            choosen.val(newchoosen);
-        }
-        choosen.val(choosen.val().replace(',,',','));
-        return false;
+function getAllTags(tags){
+    $( "#all_tags" ).autocomplete({
+        source: tags
     });
-});
+}*/
 
-function completeTags(tags){
-    $( "#tags" ).autocomplete({
-        minLength: 1,
-        source: function( request, response ) {
-            response( $.ui.autocomplete.filter(
-                tags, extractLast( request.term ) ) );
-        },
-        focus: function() {
-            return false;
-        },
-        select: function( event, ui ) {
-            var terms = split( this.value );
-            terms.pop();
-            if( jQuery.inArray(ui.item.value, terms) === -1 ){
-                this.value = '';
-                $('#tags_choosen').append('<a class="tag_added" href="#" onclick="this.remove(); return false;">'+ ui.item.value +'<i class="fas fa-times"></i></a>');
-
-                var tag_form = $('.tags_choosen');
-                if( tag_form.val().length === 0 ) tag_form.val( ui.item.value );
-                else tag_form.val( tag_form.val() + ','+ ui.item.value );
-            }
-            return false;
-        },
-        response: function(event, ui) {
-            if ( !ui.content.length ) {
-                var noResult = { value: $('#tags').val(), label:"Ajouter" };
-                ui.content.push(noResult);
-            }
-        }
+$( function() {
+    var availableTags = [
+        "ActionScript",
+        "AppleScript",
+        "Asp",
+        "BASIC",
+        "C",
+        "C++",
+        "Clojure",
+        "COBOL",
+        "ColdFusion",
+        "Erlang",
+        "Fortran",
+        "Groovy",
+        "Haskell",
+        "Java",
+        "JavaScript",
+        "Lisp",
+        "Perl",
+        "PHP",
+        "Python",
+        "Ruby",
+        "Scala",
+        "Scheme"
+    ];
+    $( "#all_tags" ).autocomplete({
+        source: availableTags
     });
-}
+} );

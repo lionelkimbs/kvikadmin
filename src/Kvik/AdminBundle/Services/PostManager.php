@@ -20,6 +20,7 @@ class PostManager{
         $this->container = $container;
     }
 
+
     /*
      * Add a post to Uncategorized
     **/
@@ -31,6 +32,7 @@ class PostManager{
         }
     }
 
+
     /***
      * When a category is deleted, all posts without any category goes to Uncategorized
      */
@@ -38,6 +40,39 @@ class PostManager{
         foreach ($posts as $post){
             if( $post->getTerms()->isEmpty() ) $this->addToUncategorized($post);
             $this->em->persist($post);
+        }
+    }
+
+
+    public function addPostTags(Post $post, $tags){
+
+        if( !empty($tags) ){
+            $terms_tag = explode(',', $tags );
+
+            //Remove all terms deleted
+            foreach ($post->getTerms() as $term) {
+                if( !in_array($term->getName(), $terms_tag ) ) $post->removeTerm($term);
+            }
+
+            //Add all new terms
+            foreach( $terms_tag as $name){
+                $term = $this->em->getRepository(Term::class)->findOneBy([
+                    'termType' => 2,
+                    'name' => $name
+                ]);
+                if( $term !== null ){
+                    $post->getTerms()->contains($term) ? : $post->addTerm($term);
+                }
+                else{
+                    if( !empty($name) ){
+                        $term = new Term();
+                        $term->setName($name);
+                        $term->setTermType(2);
+                        $term->setSlug( $this->container->get('kvik.sanitize')->slugify($name) );
+                        $post->addTerm($term);
+                    }
+                }
+            }
         }
     }
 
@@ -50,6 +85,7 @@ class PostManager{
             if( $child === $page->getParent() ) $child->setParent(null);
         }
     }
+
 
     /*
      * Create and return Uncategorized term

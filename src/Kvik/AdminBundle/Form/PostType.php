@@ -13,6 +13,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -86,26 +87,21 @@ class PostType extends AbstractType
                     'class' => Term::class,
                     'query_builder' => function(EntityRepository $tr){
                         return $tr->createQueryBuilder('t')
+                            ->where('t.termType = '. 1)
                             ->orderBy('t.name', 'ASC')
                             ;
                     },
                     'choice_label' => 'name',
                     'multiple' => true,
-                    'expanded' => true
-                ])
-                ->add('newTag', CollectionType::class, [
-                    'entry_type' => TermType::class,
-                    'entry_options' => [
-                        'type' => 'newTag',
-                        'label' => false
-                    ],
-                    'allow_add' => true,
-                    'allow_delete' => true,
-                    'prototype' => true,
-                    'mapped' => false,
-                    'by_reference' => false,
-                    'property_path' => 'terms',
+                    'expanded' => true,
                     'label' => false
+                ])
+                ->add('newTag', HiddenType::class, [
+                    'required' => false,
+                    'mapped' => false,
+                    'label' => false,
+                    'by_reference' => false,
+                    'property_path' => 'terms'
                 ])
             ;
 

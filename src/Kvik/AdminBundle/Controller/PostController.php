@@ -3,6 +3,7 @@
 namespace Kvik\AdminBundle\Controller;
 
 use Kvik\AdminBundle\Entity\Post;
+use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Form\PostType;
 use Kvik\AdminBundle\Repository\PostRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -115,11 +116,10 @@ class PostController extends Controller
             if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
             if( $post->getPostType() == 'page' ) $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setEditor($this->getUser());
-            //*LK: Add created term (tag or cat)
-            foreach( $form["newterm"]->getData() as $newterm){
-                $newterm->setSlug( $this->container->get('kvik.sanitize')->slugify($newterm->getName()) );
-                $post->addTerm($newterm);
-            }
+
+            //*LK: Manage tags
+            $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData());
+
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [
@@ -130,7 +130,8 @@ class PostController extends Controller
         return $this->render('@KvikAdmin/Post/add.html.twig', [
             'type' => $post->getPostType(),
             'form' => $form->createView(),
-            'post' => $post
+            'post' => $post,
+            'tags' => $em->getRepository(Term::class)->findBy(['termType' => 2])
         ]);
     }
 
