@@ -11,10 +11,11 @@
         <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-        <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
+        <script src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"></script>
     </head>
 
     <body>
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <header>
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
                 <a class="navbar-brand" href="{{ path('kvik_admin_index') }}"><i class="fas fa-hashtag"></i></a>
@@ -121,6 +122,7 @@
                 </div>
             </nav>
         </header>
+    {% endif %}
 
         <main class="container-fluid">
             {# Flash bag messages #}
@@ -137,9 +139,11 @@
                 </div>
             </div>
 
-            {% block page_h1 %}{% endblock %}
-            {% block container %}
-            {% endblock container %}
+            {% if is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                {% block page_h1 %}{% endblock %}
+                {% block container %}
+                {% endblock container %}
+            {% endif %}
 
             {% block fos_user_content %}
             {% endblock fos_user_content %}
