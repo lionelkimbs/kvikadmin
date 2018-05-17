@@ -17,8 +17,8 @@ fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
 
-app:
-    resource: '@AppBundle/Controller/'
+kvik:
+    resource: '@KvikAdminBundle/Controller/'
     type: annotation
 
 kvik_admin:
@@ -27,3 +27,4 @@ kvik_admin:
 
 elfinder:
      resource: "@FMElfinderBundle/Resources/config/routing.yml"
+
