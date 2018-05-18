@@ -192,6 +192,7 @@
                                         completeTags(tags);
                                     });
                                 </script>
+                                <div id="tags_error"></div>
                                 <input name="tag_choosen" id="tags" class="form-control" placeholder="Recherchez ou ajoutez un tag..." />
                                 {% set tagged = [] %}
                                 {% if post is defined %}
@@ -211,7 +212,6 @@
                         </div>
                     </div>
                 {% endif %}
-
                 {# parent #}
                 {% if form.parent is not null %}
                     <div class="form-group">

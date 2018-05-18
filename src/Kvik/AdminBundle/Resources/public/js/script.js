@@ -37,19 +37,20 @@ function completeTags(tags){
             return false;
         },
         select: function( event, ui ) {
+            var tag_form = $('.tags_choosen');
             var terms = split( this.value );
             terms.pop();
-            if( jQuery.inArray(ui.item.value, terms) === -1 ){
-                alert(ui.item.value);
-                console.log(terms.value);
-                this.value = '';
-                $('#tags_choosen').append('<a class="tag_added" href="#">'+ ui.item.value +'<i class="fas fa-times"></i></a>');
 
-                var tag_form = $('.tags_choosen');
+            this.value = '';
+            if( tag_form.val().indexOf(ui.item.value) > -1 ){
+                $('#tags_error').append('<div class="alert alert-danger alert-dismissible fade show" role="alert">Tag déjà ajouté !<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div>');
+            }
+            else{
+                $('#tags_choosen').append('<a class="tag_added" href="#">'+ ui.item.value +'<i class="fas fa-times"></i></a>');
                 if( tag_form.val().length === 0 ) tag_form.val( ui.item.value );
                 else tag_form.val( tag_form.val() + ','+ ui.item.value );
+                return false;
             }
-            return false;
         },
         response: function(event, ui) {
             if ( !ui.content.length ) {

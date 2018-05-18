@@ -52,7 +52,8 @@ class TermController extends Controller
                 foreach($data['term'] as $term) {
                     if ($term->getSlug() == 'uncategorized') {
                         $request->getSession()->getFlashBag()->add('notice', 'La catégorie par défaut ne peut être supprimée dans une action groupée.');
-                    } else {
+                    }
+                    else {
                         if( $term->getTermType() == 1 ){
                             $this->container->get('kvik.postManager')->addPostsToUncategorized($term->getPosts());
                             $loop++;
@@ -73,6 +74,17 @@ class TermController extends Controller
         $form = $this->createForm(TermType::class, $term, ['type' => $type]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
+            if( $term->getTermType() == 2 ){
+                $tags = $em->getRepository(Term::class)->findAll();
+                if( !empty($tags) ){
+                    foreach ($tags as $tag){
+                        if( $tag->getName() == $term->getName() ){
+                            $request->getSession()->getFlashBag()->add('notice', 'Ce tag existe déjà ! Vous devez choisir un nouveau nom');
+                            return $this->redirect($request->getUri());
+                        }
+                    }
+                }
+            }
             $slug = $this->container->get('kvik.sanitize')->slugify($term->getSlug(), $term->getName(), $term);
             $term->setSlug($slug);
             $em->persist($term);

@@ -48,12 +48,10 @@ class PostManager{
 
         if( !empty($tags) ){
             $terms_tag = explode(',', $tags );
-
             //Remove all terms deleted
             foreach ($post->getTerms() as $term) {
                 if( !in_array($term->getName(), $terms_tag ) ) $post->removeTerm($term);
             }
-
             //Add all new terms
             foreach( $terms_tag as $name){
                 $term = $this->em->getRepository(Term::class)->findOneBy([
