@@ -21,7 +21,6 @@ $(document).ready(function(e) {
             choosen.val(newchoosen);
         }
         choosen.val(choosen.val().replace(',,',','));
-        console.log(choosen.val());
         return false;
     });
 });

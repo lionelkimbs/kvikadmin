@@ -12,15 +12,26 @@
             <h1><i class="fab fa-pagelines"></i> {{ site_name }} - Administration</h1>
         </div>
 
-        {# Login form #}
+        {# Forms #}
         <div class="card">
             <div class="card-header text-white bg-info">
-                <h5 class="card-title"><i class="fas fa-unlock-alt"></i> Connexion</h5>
+                <ul class="nav nav-tabs nav-fill">
+                    <li class="nav-item">
+                        <a class="card-title active" href="#" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <i class="fas fa-unlock-alt"></i> Connexion
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="card-title" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                            Mot de passe oublié
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <div class="card-body">
+            <div class="card-body" id="accordion">
                 <hr class="colorgraph">
-
-                <form action="{{ path("fos_user_security_check") }}" method="post">
+                {# Login form #}
+                <form action="{{ path("fos_user_security_check") }}" method="post" id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                     {% if csrf_token %}
                         <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
                     {% endif %}
@@ -42,11 +53,20 @@
 
                     <input type="submit" id="_submit" class="btn btn-info float-right" name="_submit" value="{{ 'security.login.submit'|trans }}" />
                 </form>
-            </div>
-            <div class="card-footer text-muted text-center">
-                <a href="#">Mot de passe oublié</a>
+
+                {# Resetting form #}
+                <form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request collapse" id="collapseTwo" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="form-group form-group-control row">
+                        <label for="username" class="col-7 col-form-label">{{ 'resetting.request.username'|trans }}</label>
+                        <input type="text" id="username" class="col-5 form-control" name="username" required="required" />
+                    </div>
+
+                    <input type="submit" class="btn btn-info float-right" value="{{ 'resetting.request.submit'|trans }}" />
+                </form>
+
             </div>
         </div>
+
 
     </div>
 </div>

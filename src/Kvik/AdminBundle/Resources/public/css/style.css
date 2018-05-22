@@ -9,8 +9,9 @@ body{font-family: 'Sansita', sans-serif;}
 .form-inline{margin: 0.6rem 0;}
 .post_info ul{ margin-top: 1.5rem;}
 .form-group-control{padding-right: 1.0rem;}
-
+.bg-info .nav-tabs {border-bottom: none;}
 /*LK: Elements added */
+.bg-info a.card-title{color: #fff;}
 .welcome{
     margin: 3rem 0 2.5rem 0;
     padding: 0.5rem;
