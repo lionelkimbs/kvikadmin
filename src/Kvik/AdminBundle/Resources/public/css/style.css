@@ -1,4 +1,9 @@
 body{font-family: 'Sansita', sans-serif;}
+header nav.navbar{
+    padding: 0 1rem;
+    box-shadow: 0 .2rem .2rem #aaa;
+}
+main{margin-top: 3rem;}
 
 .a-hover a:hover{background-color: #f0f0f0;}
 .size-little{font-size: small;}
@@ -34,8 +39,9 @@ body{font-family: 'Sansita', sans-serif;}
     border-bottom: 1px dotted #dadada;
 }
 
+.login-box .colorgraph{height: 0.8rem;}
 .colorgraph {
-    height: 0.8rem;
+    height: 2px;
     border-top: 0;
     background: #c4e17f;
     border-radius: 0.1rem;
@@ -47,8 +53,17 @@ body{font-family: 'Sansita', sans-serif;}
 
 
 /* Base for forms style */
+.change_password{
+    display: block;
+    margin: 0 auto;
+    width:40rem;
+    padding:2rem;
+}
+.alert ul{padding:0; margin: 0;}
+.alert li{list-style: none;}
+
 .login-box .nav-item{width:50%;}
-.login-box .form-control:focus {
+.form-control:focus {
     border-bottom: 2px solid #17a2b8;
     outline: 0;
     box-shadow: none;
