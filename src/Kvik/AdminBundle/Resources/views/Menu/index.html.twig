@@ -1,0 +1,73 @@
+{% extends '@KvikAdmin/layout.html.twig' %}
+
+{% block title %}Gestion des menus{% endblock title %}
+
+{% block page_h1 %}
+    <h1>Gestion des menus</h1>
+{% endblock %}
+
+{% block container %}
+    {% if menus|length > 0 %}
+    {{ form_start(formenu, {'attr': {'class': 'form-inline' } }) }}
+        <div class="row justify-content-md-center menu-add">
+            <div class="col-12">
+                {{ form_label(formenu.menu, 'Sélectionnez le menu à modifier :', {'label_attr': {'class': 'mr-2 inline-block'}}) }}
+                {{ form_errors(formenu.menu) }}
+                {{ form_widget(formenu.menu, {'attr': {'class': 'form-control mr-2' } }) }}
+                {{ form_widget(formenu.valider, {'attr': {'class': 'btn btn-info mr-2'} }) }}
+                ou&nbsp;<a href="{{ path('kvik_admin_menus', {'action':'add'}) }}"> créez un nouveau menu.</a>
+            </div>
+        </div>
+    {{ form_rest(formenu) }}
+    {{ form_end(formenu) }}
+
+    {% else %}
+        {% set open = 1 %}
+        Créez votre premier menu
+    {% endif %}
+    {% if open is defined and open == 1 or (app.request.query.get('action') == 'add') %}
+        <hr>
+        <div class="row justify-content-md-center menu-add">
+            <div class="col-md-auto">
+                {{ form_start(form, {'attr': {'class': 'form-inline' } }) }}
+                    {{ form_errors(form.title) }}
+                    {{ form_widget(form.title, {'attr': {'class': 'form-control mr-4', 'placeholder': 'Titre du menu' } }) }}
+                
+                    {{ form_widget(form.valider, {'attr': {'class': 'btn btn-info'} }) }}
+                    {{ form_rest(form) }}
+                {{ form_end(form) }}
+            </div>
+        </div>
+    {% endif %}
+    <hr>
+    
+    {# Liens du menu #}
+    <div class="row menulinks">
+        <div class="col-3">
+            <form method="post" id="add-link">
+            <h3>Liens personnalisés</h3>
+            <div class="form-group menu-input" id="custom-link">
+                <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
+                <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
+                <input type="hidden" name="link-item-type" value="custom">
+            </div>
+
+            <div class="form-group">
+                <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
+            </div>
+            </form>
+        </div>
+        
+        <div class="col-9">
+            <h3 id="draggable">Structure du menu</h3>
+            {{ form_start(formEditor) }}
+            {{ form_rest(formEditor) }}
+            {{ form_end(formEditor) }}
+            <div class="row">
+                <div class="col-4 accordion" id="menu-links">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+{% endblock %}

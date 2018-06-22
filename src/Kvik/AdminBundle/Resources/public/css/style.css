@@ -1,8 +1,5 @@
 body{font-family: 'Sansita', sans-serif;}
-header nav.navbar{
-    padding: 0 1rem;
-    box-shadow: 0 .2rem .2rem #aaa;
-}
+header nav.navbar{padding: 0 1rem;  }
 main{margin-top: 3rem;}
 
 .a-hover a:hover{background-color: #f0f0f0;}
@@ -221,3 +218,30 @@ a{ color: #0F7DCF;}
 
 table td{ font-size: smaller;}
 table td.title{ font-size: medium; max-width: 18rem;}
+
+/**
+ * Globals
+ */
+.btn-action{background-color: #f2f2f2; border-color: #e2e2e2;}
+.btn-action:hover{background-color: #e8e8e8;}
+/**
+ * Menus
+ */
+.menu-add{
+    border: 1px solid #dadada;
+    background-color: #f1f1f1;
+    width: 100%;
+    padding: .5rem 0;
+}
+.menulinks .card{cursor: move;}
+.menulinks .card-header{padding: 0;}
+.menulinks .card-body{padding: .5rem;}
+.menulinks .card-body .form-control{margin: 0;}
+.menulinks .menu-input input{margin: .5rem; border: none; border-bottom: 1px solid #ced4da; border-radius: 0;}
+.menulinks .menu-input input:focus{border-bottom: 1px solid #17a2b8;}
+.menulinks .card{margin-bottom: .6rem;}
+.menulinks .link-type{display: inline-block; float: right; margin-right: .5rem; padding: 0; margin-top: .5rem;}
+.menulinks span.text-danger{font-size: .8rem;}
+.menulinks .btns{margin-top: 1rem;}
+.menulinks .btns a{font-size: smaller;}
+.inline-block{display: inline-block !important;}

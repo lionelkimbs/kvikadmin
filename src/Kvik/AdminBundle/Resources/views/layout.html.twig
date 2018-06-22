@@ -89,16 +89,16 @@
                             </div>
                         </li>
                         {# Appearance #}
-                        <li class="nav-item dropdown {% if 'admin_user' in app.request.uri %}active{% endif %}">
+                        <li class="nav-item dropdown {% if 'menu' in app.request.uri %}active{% endif %}">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-paint-brush"></i> Appearance
+                                <i class="fas fa-paint-brush"></i> Apparence
                             </a>
                             <div class="dropdown-menu dropdown-menu-left a-hover size-little" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-plus-circle"></i> Images et marque
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="{{ path('kvik_admin_menus') }}">
                                     <i class="fas fa-sitemap"></i> Menus
                                 </a>
                                 <div class="dropdown-divider"></div>

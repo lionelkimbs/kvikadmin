@@ -74,6 +74,11 @@ kvik_admin_user_delete:
     requirements:
         id: \d+
 
+#Menu
+kvik_admin_menus:
+    path:    /menus
+    defaults:
+        _controller: KvikAdminBundle:Menu:index
 
 #FOS User routes
 fos_user_profile_edit:
