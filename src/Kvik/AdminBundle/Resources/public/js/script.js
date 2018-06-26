@@ -63,23 +63,28 @@ $(document).ready(function(e) {
             ;
             form.get(0).reset();
             makeItDraggable();
-            //---- Ce qu'il faut faire quand on déplace un élément ----//
-            $("#link-"+numero).on("drag", function () {
-                var elemnt      = $(this),
-                    previous    = elemnt.prev()
-                ;
-                
-                if( elemnt.css("top") === "-50px" ) elemnt.insertBefore(previous);
-                if( elemnt.css("top") === "50px" ) previous.insertBefore(elemnt);
-            });
-
+            makeItDroppable();
         }
         else{
             $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
         }
         return false;
     });
-    
+
+    //---- Ce qu'il faut faire quand on déplace un élément ----//
+    $(".card").on("drag", function () {
+        var elemnt      = $(this),
+            elemnTop    = parseInt(elemnt.css('top'))
+        ;
+        if( elemnt.prev().length > 0 ){
+            var former = (elemnTop / -50);
+            $('#menu-links').each(function () {
+                $("div.form-items h3").html( $(':nth-child('+former+')', $(this)).attr('id') );
+            });
+        }
+    });
+
+
     //---- Supprime le message d'erreur quand le champ est vide ----//
     mlinks.on("focus", "input.form-control", function () {
         $("span.text-danger").remove();
@@ -91,8 +96,13 @@ $(document).ready(function(e) {
     });
 });
     
+function makeItDroppable() {
+    $(".form-items").droppable();
+}
+
 function makeItDraggable() {
-    $(".card").draggable({
+    var card = $(".card");
+    card.draggable({
         grid: [ 50, 50 ]
     });
 }
