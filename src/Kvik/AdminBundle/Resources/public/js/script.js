@@ -27,7 +27,6 @@ $(document).ready(function(e) {
         return false;
     });
 
-
     /**
      * Coloration des onglets dans la page de login
      */
@@ -43,27 +42,44 @@ $(document).ready(function(e) {
     /**
      * Gestion des menus dynamiquement
      */
-    //: Stop envoie du form dans Menulink : liens personnalisés + Affichage du link dans le bloc du menu
     var form        = $("form#add-link"),
-        menulinks   = $( "#menu-links" ),
-        mlinks      = $(".menulinks")
+        mlinks      = $(".menulinks"),
+        sortablelinks = $( "#sortablelinks" )
     ;
     $("#link-item-button").on("click", function(e){
         e.preventDefault();
+        sortablelinks.sortable();
+        sortablelinks.disableSelection();
         var title       = form .find('[name=link-item-title]').val(),
             url         = form .find('[name=link-item-url]').val(),
             type        = form .find('[name=link-item-type]').val(),
-            numero      = $("div#menu-links .card").length,
-            container   = $('div#kvik_adminbundle_menu_links')
+            numero      = $("ul#sortablelinks .card").length
         ;
 
         if( title.length > 0 && url.length > 0 ){
             if( type === 'custom') var type_shown = 'Lien personnalisé';
-            menulinks.append( '<div class="card" id="link-'+numero+'"><div class="card-header"><button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="collapse'+numero+'">'+title+'</button><span class="link-type">'+type_shown+'</span></div><div id="collapse'+numero+'" class="collapse" aria-labelledby="link'+numero+'" data-parent="#menu-links"><div class="card-body row"><div class="col-12 menu-input"><input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'"> <input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien"><input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="text" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL"></div><div class="col-12 btns"><a href="#" class="text-danger" id="retirer" title="Retirer ce lien du menu">Retirer</a> <a class="text-primary float-right" href="#" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="#collapse'+numero+'">Annuler</a></div></div></div></div>')
+            sortablelinks.append(
+                '<li class="card" id="link-'+numero+'">' +
+                    '<div class="card-header">' +
+                        '<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="collapse'+numero+'">'+title+'</button>' +
+                        '<span class="link-type">'+type_shown+'</span>' +
+                    '</div>' +
+                    '<div id="collapse'+numero+'" class="collapse" aria-labelledby="link'+numero+'" data-parent="#sortablelinks">' +
+                        '<div class="card-body row">' +
+                            '<div class="col-12 menu-input">' +
+                                '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'">' +
+                                '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
+                                '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="text" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL">' +
+                            '</div>' +
+                            '<div class="col-12 btns">' +
+                                '<a href="#" class="text-danger" id="retirer" title="Retirer ce lien du menu">Retirer</a>' +
+                                '<a class="text-primary float-right" href="#" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="#collapse'+numero+'">Annuler</a>' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</li>')
             ;
             form.get(0).reset();
-            makeItDraggable();
-            makeItDroppable();
         }
         else{
             $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
@@ -71,41 +87,16 @@ $(document).ready(function(e) {
         return false;
     });
 
-    //---- Ce qu'il faut faire quand on déplace un élément ----//
-    $(".card").on("drag", function () {
-        var elemnt      = $(this),
-            elemnTop    = parseInt(elemnt.css('top'))
-        ;
-        if( elemnt.prev().length > 0 ){
-            var former = (elemnTop / -50);
-            $('#menu-links').each(function () {
-                $("div.form-items h3").html( $(':nth-child('+former+')', $(this)).attr('id') );
-            });
-        }
-    });
-
-
     //---- Supprime le message d'erreur quand le champ est vide ----//
     mlinks.on("focus", "input.form-control", function () {
         $("span.text-danger").remove();
     });
     //---- Clic sur le bouton retirer menulink ajouté ----//
-    $("div#menu-links").on("click", "a#retirer", function(){
+    $("ul#sortablelinks").on("click", "a#retirer", function(){
         $(this).parent().parent().parent().parent().remove();
         return false;
     });
 });
-    
-function makeItDroppable() {
-    $(".form-items").droppable();
-}
-
-function makeItDraggable() {
-    var card = $(".card");
-    card.draggable({
-        grid: [ 50, 50 ]
-    });
-}
 
 function completeTags(tags){
     $( "#tags" ).autocomplete({

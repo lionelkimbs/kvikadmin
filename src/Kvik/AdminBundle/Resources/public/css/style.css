@@ -1,4 +1,17 @@
-body{font-family: 'Sansita', sans-serif;}
+body{font-family: 'Montserrat', sans-serif; background:#f9f9f9;}
+.h1, h1 {font-size: 2.1rem; font-weight: 600;}
+.h2, h2 {font-size: 1.8rem; font-weight: 600;}
+.h3, h3 {font-size: 1.8rem; font-weight: 400;}
+.h4, h4 {font-size: 1.5rem; font-weight: 600;}
+
+/**
+ * Gestion du DRAG AND DROP des menus
+ */
+#sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
+#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em;}
+#sortable li span { position: absolute; margin-left: -1.3em; }
+
+
 header nav.navbar{padding: 0 1rem;  }
 main{margin-top: 3rem;}
 
@@ -245,3 +258,4 @@ table td.title{ font-size: medium; max-width: 18rem;}
 .menulinks .btns{margin-top: 1rem;}
 .menulinks .btns a{font-size: smaller;}
 .inline-block{display: inline-block !important;}
+.labelCheckbox{color: transparent;}

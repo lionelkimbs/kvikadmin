@@ -36,10 +36,6 @@ class UserController extends Controller{
                 'choice_label' => 'id',
                 'expanded' => true,
                 'multiple' => true,
-                'query_builder' => function(UserRepository $ur){
-                    return $ur->getOtherUsers($this->getUser(), $this->params)
-                    ;
-                },
                 'label' => false
             ])
             ->add('enabled', ChoiceType::class, [
