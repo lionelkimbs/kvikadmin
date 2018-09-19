@@ -13,6 +13,7 @@
             <div class="col-12">
                 {{ form_label(formenu.menu, 'Sélectionnez le menu à modifier :', {'label_attr': {'class': 'mr-2 inline-block'}}) }}
                 {{ form_errors(formenu.menu) }}
+                
                 {{ form_widget(formenu.menu, {'attr': {'class': 'form-control mr-2' } }) }}
                 {{ form_widget(formenu.valider, {'attr': {'class': 'btn btn-info mr-2'} }) }}
                 ou&nbsp;<a href="{{ path('kvik_admin_menus', {'action':'add'}) }}"> créez un nouveau menu.</a>
@@ -58,14 +59,32 @@
             </form>
         </div>
         
-        <div class="col-9 form-items">
-            <h3>Structure du menu</h3>
-            {{ form_start(formEditor) }}
-            {{ form_rest(formEditor) }}
-            {{ form_end(formEditor) }}
-            <div class="row menu-elements">
-                <ul id="sortablelinks" class="col-4 accordion"></ul>
+        <div class="col-9">
+            {{ form_start(formEditor, {'attr': {'class': 'form-inline'} }) }}
+
+
+            <div class="card bg-light mb-3 w100">
+                <div class="card-header">
+                    {{ form_errors(formEditor.title) }}
+                    {{ form_widget(formEditor.title, {'attr': {'class': 'form-control mr-4', 'placeholder': 'Titre du menu' } }) }}
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        <h3 class="float-left">Structure du menu</h3>
+                        {{ form_widget(formEditor.enregistrer, {'attr': {'class': 'btn btn-info btn-sm float-right'} }) }}
+                    </div>
+                    <div class="clear"></div>
+                    <div class="row menu-elements">
+                        <div class="col-12">
+                            <ul id="sortablelinks" class="col-4 accordion"></ul>
+                        </div>
+                    </div>
+
+                </div>
             </div>
+            
+            
+            {{ form_end(formEditor) }}
         </div>
     </div>
     

@@ -1,8 +1,8 @@
 body{font-family: 'Montserrat', sans-serif; background:#f9f9f9;}
-.h1, h1 {font-size: 2.1rem; font-weight: 600;}
-.h2, h2 {font-size: 1.8rem; font-weight: 600;}
-.h3, h3 {font-size: 1.8rem; font-weight: 400;}
-.h4, h4 {font-size: 1.5rem; font-weight: 600;}
+.h1, h1 {font-size: 2rem; font-weight: 600;}
+.h2, h2 {font-size: 1.6rem; font-weight: 600;}
+.h3, h3 {font-size: 1.5rem; }
+.h4, h4 {font-size: 1rem;}
 
 /**
  * Gestion du DRAG AND DROP des menus
@@ -11,6 +11,12 @@ body{font-family: 'Montserrat', sans-serif; background:#f9f9f9;}
 #sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em;}
 #sortable li span { position: absolute; margin-left: -1.3em; }
 
+/**
+ * Page de gestion des menus
+ */
+#sortablelinks, #sortablelinks .card-header{padding:0;}
+.w100{width: 100%;}
+.clear{clear: both;}
 
 header nav.navbar{padding: 0 1rem;  }
 main{margin-top: 3rem;}
@@ -247,7 +253,6 @@ table td.title{ font-size: medium; max-width: 18rem;}
     padding: .5rem 0;
 }
 .menulinks .card{cursor: move;}
-.menulinks .card-header{padding: 0;}
 .menulinks .card-body{padding: .5rem;}
 .menulinks .card-body .form-control{margin: 0;}
 .menulinks .menu-input input{margin: .5rem; border: none; border-bottom: 1px solid #ced4da; border-radius: 0;}

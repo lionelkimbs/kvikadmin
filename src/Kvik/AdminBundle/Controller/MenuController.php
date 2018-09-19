@@ -2,6 +2,7 @@
 
 namespace Kvik\AdminBundle\Controller;
 
+use Doctrine\ORM\EntityRepository;
 use Kvik\AdminBundle\Entity\Menu;
 use Kvik\AdminBundle\Form\MenuType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -14,11 +15,13 @@ class MenuController extends Controller{
     public function indexAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $menus = $em->getRepository(Menu::class)->findAll();
+        $menu_edit = $em->getRepository(Menu::class)->find(!empty($request->query->get('menu_id')) ? $request->query->get('menu_id') : $em->getRepository(Menu::class)->findOneBy([], ['title' => 'desc'])->getId());
+
         //---- Formulaire pour ajouter un menu ----//
         $menu = new Menu();
         $form = $this->createForm(MenuType::class, $menu);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($request->isMethod("POST") && $form->isSubmitted() && $form->isValid()) {
             if( empty($menus) ) $menu->setSelected(true);
             $em->persist($menu);
             $em->flush();
@@ -30,17 +33,22 @@ class MenuController extends Controller{
             ->add('menu', EntityType::class, [
                 'class' => Menu::class,
                 'choice_label' => 'title',
-                'label' => false
+                'label' => false,
+                'data' => $menu_edit
             ])
             ->add('valider', SubmitType::class)
             ->getForm()
         ;
-        
+        $formenu->handleRequest($request);
+        if ($formenu->isSubmitted() && $formenu->isValid()) {
+            return $this->redirectToRoute('kvik_admin_menus', [
+                'menu_id' => $formenu->getData()['menu']->getId()
+            ]);
+        }
+
+
         //---- Formulaire qui édite le menu ----//
-        $menu_edited = !empty($request->query->get('menu')) ? $em->getRepository(Menu::class)->find($request->query->get('menu')) : $em->getRepository(Menu::class)->findOneBy([
-            'selected' => true
-        ]);
-        $formEditor = $this->createForm(MenuType::class, $menu, [
+        $formEditor = $this->createForm(MenuType::class, $menu_edit, [
             'todo' => 'edit'
         ]);
         $formEditor->handleRequest($request);
