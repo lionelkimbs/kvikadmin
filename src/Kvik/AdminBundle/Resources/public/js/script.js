@@ -44,18 +44,23 @@ $(document).ready(function(e) {
      */
     var form        = $("form#add-link"),
         mlinks      = $(".menulinks"),
-        sortablelinks = $( "#sortablelinks" )
+        sortablelinks = $( "#sortablelinks" ),
+        hidesort    = $('input.sorts')
     ;
     $("#link-item-button").on("click", function(e){
         e.preventDefault();
-        sortablelinks.sortable();
+        sortablelinks.sortable({
+            stop: function(ev, ui){
+                hidesort.val( $(this).sortable('serialize') );
+                //alert( $(this).sortable('serialize') );
+            }
+        });
         sortablelinks.disableSelection();
-        var title       = form .find('[name=link-item-title]').val(),
-            url         = form .find('[name=link-item-url]').val(),
-            type        = form .find('[name=link-item-type]').val(),
-            numero      = $("ul#sortablelinks .card").length
+        var title   = form .find('[name=link-item-title]').val(),
+            url     = form .find('[name=link-item-url]').val(),
+            type    = form .find('[name=link-item-type]').val(),
+            numero  = $("ul#sortablelinks .card").length
         ;
-
         if( title.length > 0 && url.length > 0 ){
             if( type === 'custom') var type_shown = 'Lien personnalisé';
             sortablelinks.append(
@@ -68,7 +73,7 @@ $(document).ready(function(e) {
                         '<div class="card-body row">' +
                             '<div class="col-12 menu-input">' +
                                 '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'">' +
-                                '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
+                                '<input class="form-control linkname" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
                                 '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="text" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL">' +
                             '</div>' +
                             '<div class="col-12 btns">' +
@@ -79,23 +84,40 @@ $(document).ready(function(e) {
                     '</div>' +
                 '</li>')
             ;
+            if( hidesort.val() === '' ) hidesort.val('link[]='+ numero);
+            else hidesort.val( hidesort.val() + '&link[]='+ numero);
             form.get(0).reset();
         }
-        else{
-            $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
-        }
+        else $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
         return false;
     });
-
-    //---- Supprime le message d'erreur quand le champ est vide ----//
+    /**
+     * Supprime le message d'erreur quand le champ est vide
+     */
     mlinks.on("focus", "input.form-control", function () {
         $("span.text-danger").remove();
     });
-    //---- Clic sur le bouton retirer menulink ajouté ----//
+    /**
+     * Clic sur le bouton retirer menulink ajouté
+     */
     $("ul#sortablelinks").on("click", "a#retirer", function(){
         $(this).parent().parent().parent().parent().remove();
         return false;
     });
+    /**
+     * En modifiant l'input on modifie aussi le title du menulink
+     */
+    $(".card").on('keyup', 'input', function(){
+        var that        = $(this),
+            idParent    = that.prev().parent().parent().parent().parent()
+        ;
+        if( that.hasClass('linkname') ){
+            idParent.find("button").text( that.val() );
+        }
+        //$(idParent + ' button').text( that.val() )
+    });
+    
+    
 });
 
 function completeTags(tags){

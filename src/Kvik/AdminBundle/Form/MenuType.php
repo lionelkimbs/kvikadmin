@@ -4,6 +4,7 @@ namespace Kvik\AdminBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -26,6 +27,11 @@ class MenuType extends AbstractType
                     'allow_add' => true,
                     'allow_delete' => true,
                     'label' => false
+                ])
+                ->add('sortable', HiddenType::class, [
+                    'label' => false,
+                    'by_reference' => false,
+                    'mapped' => false
                 ])
                 ->add('enregistrer', SubmitType::class)
             ;

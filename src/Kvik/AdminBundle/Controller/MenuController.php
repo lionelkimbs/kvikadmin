@@ -53,9 +53,18 @@ class MenuController extends Controller{
         ]);
         $formEditor->handleRequest($request);
         if( $formEditor->isSubmitted() && $formEditor->isValid() ){
-            $em->persist($menu);
+            $tris = $formEditor['sortable']->getData();
+            $tris = explode('&', str_replace('link[]=', '', $tris) );
+            for($i = 0; $i <= count($menu_edit->getLinks()) -1; $i++){
+                $link = $menu_edit->getLinks()[$i];
+                for($j = 0; $j <= count($tris) -1; $j++){
+                    if( $i == $tris[$j]) $link->setPosition($j);
+                }
+                $link->setMenu($menu_edit);
+            }
+            $em->persist($menu_edit);
+            $em->flush();
         }
-        
 
         return $this->render('KvikAdminBundle:Menu:index.html.twig', [
             'form'          => $form->createView(),
