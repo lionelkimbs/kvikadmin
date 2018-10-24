@@ -55,3 +55,7 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
     
+    twig.extension.sortbyfield:
+        class: Snilius\Twig\SortByFieldExtension
+        tags:
+            - { name: twig.extension }

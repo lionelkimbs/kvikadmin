@@ -52,13 +52,19 @@ class MenuController extends Controller{
         ]);
         $formEditor->handleRequest($request);
         if( $formEditor->isSubmitted() && $formEditor->isValid() ){
-            $tris = $formEditor['sortable']->getData();
-            $tris = explode('&', str_replace('link[]=', '', $tris) );
-            foreach($menu_edit->getLinks() as $link){
-                $link->setPosition( (int) array_search($link->getPosition(), $tris) );
+            if( !empty($formEditor['sortable']->getData()) ){
+                $tris = explode('&', str_replace('link[]=', '', $formEditor['sortable']->getData()) );
+                foreach($menu_edit->getLinks() as $link){
+                    $newposition = array_search($link->getPosition(), $tris);
+                    $link->setPosition( $newposition );
+                }
             }
             $em->persist($menu_edit);
             $em->flush();
+            return $this->redirectToRoute('kvik_admin_menus', [
+                'menu_id' => $menu_edit->getId()
+            ]);
+
         }
 
         return $this->render('KvikAdminBundle:Menu:index.html.twig', [
