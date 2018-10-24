@@ -136,7 +136,7 @@ class Link
      */
     public function getPosition()
     {
-        return $this->position;
+        return (int) $this->position;
     }
 
     /**

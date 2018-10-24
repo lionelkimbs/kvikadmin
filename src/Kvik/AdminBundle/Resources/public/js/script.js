@@ -1,6 +1,5 @@
 /**
  * LK: Autocomplete to find terms
- *
  */
 function split( val ) { return val.split( /,\s*/ ); }
 function extractLast( term ) { return split( term ).pop(); }
@@ -26,7 +25,7 @@ $(document).ready(function(e) {
         choosen.val(choosen.val().replace(',,',','));
         return false;
     });
-
+    
     /**
      * Coloration des onglets dans la page de login
      */
@@ -47,14 +46,14 @@ $(document).ready(function(e) {
         sortablelinks = $( "#sortablelinks" ),
         hidesort    = $('input.sorts')
     ;
+    sortablelinks.sortable({
+        stop: function(ev, ui){
+            hidesort.val( $(this).sortable('serialize') );
+        }
+    });
+    /** Ajout de card des menus */
     $("#link-item-button").on("click", function(e){
         e.preventDefault();
-        sortablelinks.sortable({
-            stop: function(ev, ui){
-                hidesort.val( $(this).sortable('serialize') );
-                //alert( $(this).sortable('serialize') );
-            }
-        });
         sortablelinks.disableSelection();
         var title   = form .find('[name=link-item-title]').val(),
             url     = form .find('[name=link-item-url]').val(),
@@ -114,10 +113,19 @@ $(document).ready(function(e) {
         if( that.hasClass('linkname') ){
             idParent.find("button").text( that.val() );
         }
-        //$(idParent + ' button').text( that.val() )
     });
-    
-    
+    /** Tris les menus dans l'orde avant l'envoie *
+    $('form.sortmenus').on('submit', function (e) {
+        e.preventDefault();
+        var lis = sortablelinks.find('li'),
+            tab = []
+        ;
+        for(var i=0; i<lis.length; i++ ){
+            tab.push( lis.get(i).id );
+        }
+        alert(tab);
+        
+    });*/
 });
 
 function completeTags(tags){

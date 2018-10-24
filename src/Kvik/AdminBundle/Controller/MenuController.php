@@ -45,8 +45,7 @@ class MenuController extends Controller{
                 'menu_id' => $formenu->getData()['menu']->getId()
             ]);
         }
-
-
+        
         //---- Formulaire qui édite le menu ----//
         $formEditor = $this->createForm(MenuType::class, $menu_edit, [
             'todo' => 'edit'
@@ -55,12 +54,8 @@ class MenuController extends Controller{
         if( $formEditor->isSubmitted() && $formEditor->isValid() ){
             $tris = $formEditor['sortable']->getData();
             $tris = explode('&', str_replace('link[]=', '', $tris) );
-            for($i = 0; $i <= count($menu_edit->getLinks()) -1; $i++){
-                $link = $menu_edit->getLinks()[$i];
-                for($j = 0; $j <= count($tris) -1; $j++){
-                    if( $i == $tris[$j]) $link->setPosition($j);
-                }
-                $link->setMenu($menu_edit);
+            foreach($menu_edit->getLinks() as $link){
+                $link->setPosition( (int) array_search($link->getPosition(), $tris) );
             }
             $em->persist($menu_edit);
             $em->flush();

@@ -55,9 +55,3 @@ services:
         tags:
             - { name: kernel.event_listener, event: kernel.request }
     
-    kvik.menu_builder:
-        class: Kvik\AdminBundle\Services\MenuBuilder
-        arguments: [ "@knp_menu.factory"]
-        tags:
-            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } #The alias is what is used to retrieve the menu
-        public: true
