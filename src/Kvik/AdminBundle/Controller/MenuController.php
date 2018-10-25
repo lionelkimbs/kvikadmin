@@ -2,7 +2,9 @@
 
 namespace Kvik\AdminBundle\Controller;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
+use Kvik\AdminBundle\Entity\Link;
 use Kvik\AdminBundle\Entity\Menu;
 use Kvik\AdminBundle\Form\MenuType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -16,6 +18,7 @@ class MenuController extends Controller{
         $em = $this->getDoctrine()->getManager();
         $menus = $em->getRepository(Menu::class)->findAll();
         $menu_edit = $em->getRepository(Menu::class)->find(!empty($request->query->get('menu_id')) ? $request->query->get('menu_id') : $em->getRepository(Menu::class)->findOneBy([], ['title' => 'desc'])->getId());
+        $origins = $em->getRepository(Link::class)->findBy(['menu' => $menu_edit]);
 
         //---- Formulaire pour ajouter un menu ----//
         $menu = new Menu();
@@ -52,6 +55,7 @@ class MenuController extends Controller{
         ]);
         $formEditor->handleRequest($request);
         if( $formEditor->isSubmitted() && $formEditor->isValid() ){
+            foreach ( $origins as $link) if( false === $menu_edit->getLinks()->contains($link) ) $em->remove($link);
             if( !empty($formEditor['sortable']->getData()) ){
                 $tris = explode('&', str_replace('link[]=', '', $formEditor['sortable']->getData()) );
                 foreach($menu_edit->getLinks() as $link){
