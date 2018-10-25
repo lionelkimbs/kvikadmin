@@ -26,7 +26,9 @@ class MenuType extends AbstractType
                     'entry_type' => LinkType::class,
                     'allow_add' => true,
                     'allow_delete' => true,
-                    'label' => false
+                    'label' => false,
+                    'prototype' => true,
+                    'by_reference' => false
                 ])
                 ->add('sortable', HiddenType::class, [
                     'label' => false,

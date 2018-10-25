@@ -122,6 +122,7 @@ class Menu
     public function addLink(\Kvik\AdminBundle\Entity\Link $link)
     {
         $this->links[] = $link;
+        $link->setMenu($this);
 
         return $this;
     }

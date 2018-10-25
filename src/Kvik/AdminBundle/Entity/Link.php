@@ -52,7 +52,7 @@ class Link
 
     /**
      * Many Links have One Menu
-     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Menu", inversedBy="links")
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Menu", inversedBy="links", cascade={"persist"})
      */
     private $menu;
 

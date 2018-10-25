@@ -64,7 +64,6 @@ class MenuController extends Controller{
             return $this->redirectToRoute('kvik_admin_menus', [
                 'menu_id' => $menu_edit->getId()
             ]);
-
         }
 
         return $this->render('KvikAdminBundle:Menu:index.html.twig', [

@@ -52,13 +52,16 @@ $(document).ready(function(e) {
         }
     });
     /** Ajout de card des menus */
-    $("#link-item-button").on("click", function(e){
+    var btn_ajouter = $("#link-item-button"),
+        li_cards = $("ul#sortablelinks li.card")
+    ;
+    btn_ajouter.on("click", function(e){
         e.preventDefault();
         sortablelinks.disableSelection();
         var title   = form .find('[name=link-item-title]').val(),
             url     = form .find('[name=link-item-url]').val(),
             type    = form .find('[name=link-item-type]').val(),
-            numero  = $("ul#sortablelinks .card").length
+            numero  = li_cards.length
         ;
         if( title.length > 0 && url.length > 0 ){
             if( type === 'custom') var type_shown = 'Lien personnalisé';
@@ -72,6 +75,7 @@ $(document).ready(function(e) {
                         '<div class="card-body row">' +
                             '<div class="col-12 menu-input">' +
                                 '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'">' +
+                                '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][position]" value="'+numero+'">' +
                                 '<input class="form-control linkname" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
                                 '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="text" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL">' +
                             '</div>' +
@@ -83,8 +87,13 @@ $(document).ready(function(e) {
                     '</div>' +
                 '</li>')
             ;
-            if( hidesort.val() === '' ) hidesort.val('link[]='+ numero);
-            else hidesort.val( hidesort.val() + '&link[]='+ numero);
+            if( hidesort.val() === '' ){
+                li_cards.each(function (){
+                    if( hidesort.val() === '' ) hidesort.val( 'link[]='+ $(this).attr('id').replace('link-', '') );
+                    else hidesort.val( hidesort.val() +'&link[]='+ $(this).attr('id').replace('link-', '') );
+                });
+            }
+            hidesort.val( hidesort.val() + '&link[]='+ numero);
             form.get(0).reset();
         }
         else $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
