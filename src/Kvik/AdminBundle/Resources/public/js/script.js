@@ -51,10 +51,17 @@ $(document).ready(function(e) {
         btn_retirer = $("a#retirer")
     ;
     sortablelinks.sortable({
-        stop: function(ev, ui){
+        axis: 'x, y',
+        stop: function(){
             hidesort.val( $(this).sortable('serialize') );
-        }
+        },
+        update: function (e, ui) {
+            alert( ui.position.left );
+        },
+        placeholder: "ui-state-highlight"
     });
+    sortablelinks.disableSelection();
+    
     /**
      * Clic sur le bouton pour ajouter menulink
      */
@@ -80,6 +87,7 @@ $(document).ready(function(e) {
                                 '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'">' +
                                 '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][position]" value="'+numero+'">' +
                                 '<input class="form-control linkname" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
+                                '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_parent" name="kvik_adminbundle_menu[links]['+numero+'][parent]">'+
                                 '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="text" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL">' +
                             '</div>' +
                             '<div class="col-12 btns">' +

@@ -49,14 +49,30 @@ class Link
      */
     private $position;
 
+    /**
+     * One Link has Many Link as Child.
+     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Link", mappedBy="parent")
+     */
+    private $children;
+    
+    /**
+     * Many Links can have One Link as a Parent.
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Link", inversedBy="children")
+     */
+    private $parent;
 
     /**
      * Many Links have One Menu
-     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Menu", inversedBy="links")
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Menu", inversedBy="links", cascade={"persist"})
      */
     private $menu;
 
 
+    public function __construct() {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    
     /**
      * Get id
      *
@@ -161,5 +177,29 @@ class Link
     public function getLinktype()
     {
         return $this->linktype;
+    }
+
+    /**
+     * Set menu
+     *
+     * @param \Kvik\AdminBundle\Entity\Menu $menu
+     *
+     * @return Link
+     */
+    public function setMenu(\Kvik\AdminBundle\Entity\Menu $menu = null)
+    {
+        $this->menu = $menu;
+
+        return $this;
+    }
+
+    /**
+     * Get menu
+     *
+     * @return \Kvik\AdminBundle\Entity\Menu
+     */
+    public function getMenu()
+    {
+        return $this->menu;
     }
 }

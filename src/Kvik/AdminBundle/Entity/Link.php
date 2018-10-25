@@ -49,6 +49,17 @@ class Link
      */
     private $position;
 
+    /**
+     * One Link has Many Link as Child.
+     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Link", mappedBy="parent")
+     */
+    private $children;
+    
+    /**
+     * Many Links can have One Link as a Parent.
+     * @ORM\ManyToOne(targetEntity="Kvik\AdminBundle\Entity\Link", inversedBy="children")
+     */
+    private $parent;
 
     /**
      * Many Links have One Menu
@@ -57,6 +68,11 @@ class Link
     private $menu;
 
 
+    public function __construct() {
+        $this->children = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    
     /**
      * Get id
      *
@@ -185,5 +201,63 @@ class Link
     public function getMenu()
     {
         return $this->menu;
+    }
+
+    /**
+     * Add child
+     *
+     * @param \Kvik\AdminBundle\Entity\Link $child
+     *
+     * @return Link
+     */
+    public function addChild(\Kvik\AdminBundle\Entity\Link $child)
+    {
+        $this->children[] = $child;
+
+        return $this;
+    }
+
+    /**
+     * Remove child
+     *
+     * @param \Kvik\AdminBundle\Entity\Link $child
+     */
+    public function removeChild(\Kvik\AdminBundle\Entity\Link $child)
+    {
+        $this->children->removeElement($child);
+    }
+
+    /**
+     * Get children
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getChildren()
+    {
+        return $this->children;
+    }
+
+    /**
+     * Set parent
+     *
+     * @param \Kvik\AdminBundle\Entity\Link $parent
+     *
+     * @return Link
+     */
+    public function setParent(\Kvik\AdminBundle\Entity\Link $parent = null)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Get parent
+     *
+     * @return \Kvik\AdminBundle\Entity\Link
+     */
+    public function getParent()
+    {
+        return $this->parent;
     }
 }

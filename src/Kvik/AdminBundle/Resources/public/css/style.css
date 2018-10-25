@@ -8,8 +8,9 @@ body{font-family: 'Montserrat', sans-serif; background:#f9f9f9;}
  * Gestion du DRAG AND DROP des menus
  */
 #sortable { list-style-type: none; margin: 0; padding: 0; width: 60%; }
-#sortable li { margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em;}
+#sortable li {margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em;}
 #sortable li span { position: absolute; margin-left: -1.3em; }
+.ui-state-highlight{display: block; background-color: transparent; border: dashed #ccc 1px; height: 2.5em; line-height: 1.2em; margin: 0 3px .6rem 3px;}
 
 /**
  * Page de gestion des menus
@@ -17,7 +18,11 @@ body{font-family: 'Montserrat', sans-serif; background:#f9f9f9;}
 #sortablelinks, #sortablelinks .card-header{padding:0;}
 .w100{width: 100%;}
 .clear{clear: both;}
-
+#sortablelinks li{list-style: none;}
+#sortablelinks .sublist{
+    margin: 0 0 .8rem 3rem;
+    border: 1px dotted #ccc;
+}
 header nav.navbar{padding: 0 1rem;  }
 main{margin-top: 3rem;}
 
