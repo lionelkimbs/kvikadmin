@@ -11,7 +11,7 @@ body{font-family: 'Montserrat', sans-serif; background:#f9f9f9;}
 #sortable li {margin: 0 3px 3px 3px; padding: 0.4em; padding-left: 1.5em; font-size: 1.4em;}
 #sortable li span { position: absolute; margin-left: -1.3em; }
 .ui-state-highlight{display: block; background-color: transparent; border: dashed #ccc 1px; height: 2.5em; line-height: 1.2em; margin: 0 3px .6rem 3px;}
-
+.sublist-1{margin-left: 3rem;}
 /**
  * Page de gestion des menus
  */

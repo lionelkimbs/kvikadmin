@@ -50,17 +50,22 @@ $(document).ready(function(e) {
         btn_ajouter = $("#link-item-button"),
         btn_retirer = $("a#retirer")
     ;
+    
     sortablelinks.sortable({
-        axis: 'x, y',
-        stop: function(){
-            hidesort.val( $(this).sortable('serialize') );
-        },
-        update: function (e, ui) {
-            alert( ui.position.left );
+        //Submenus
+        out: function(e, ui) {
+            if( ui.position.left > 10 ){
+                if( ui.item.prev().get(0) !== undefined ){
+                    $('.ui-state-highlight').addClass('sublist-1');
+                    ui.item.addClass('sublist-1');
+                }
+            }
+            if( ui.position.left < 10 )ui.item.removeClass('sublist-1');
         },
         placeholder: "ui-state-highlight"
     });
     sortablelinks.disableSelection();
+    
     
     /**
      * Clic sur le bouton pour ajouter menulink
@@ -136,18 +141,32 @@ $(document).ready(function(e) {
             idParent.find("button").text( that.val() );
         }
     });
-    /** Tris les menus dans l'orde avant l'envoie *
+    /** Tris les menus dans l'orde avant l'envoie du formulaire*/
     $('form.sortmenus').on('submit', function (e) {
         e.preventDefault();
         var lis = sortablelinks.find('li'),
-            tab = []
+            menus = [],
+            submenus = []
         ;
         for(var i=0; i<lis.length; i++ ){
-            tab.push( lis.get(i).id );
+            var link = lis.get(i);
+            if( link.classList.contains('sublist-1') ){
+                var parent = link.previousElementSibling;
+                while( parent.classList.contains('sublist-1') ){
+                    parent = parent.previousElementSibling;
+                }
+                submenus.push({
+                    'parent': parent.id,
+                    'element': link.id 
+                });
+            }
+            else{
+                menus.push( lis.get(i).id );
+            }
         }
-        alert(tab);
-        
-    });*/
+        hidesort.val( [menus, submenus ]);
+        console.log( hidesort.val().serialize() );
+    });
 });
 
 function completeTags(tags){

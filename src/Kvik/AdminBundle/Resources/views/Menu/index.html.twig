@@ -73,8 +73,8 @@
                     </div>
                     <div class="clear"></div>
                     <div class="row menu-elements">
-                        <div class="col-12">
-                            <ul id="sortablelinks" class="col-4 accordion ui-sortable">
+                        <div class="col-12 droppable">
+                            <ul id="sortablelinks" class="col-5 accordion ui-sortable">
                                 {% if formEditor.links is not null %}
                                     {% for child in formEditor.links %}
                                         {% set index = child.vars.value %}{# get array index #}
