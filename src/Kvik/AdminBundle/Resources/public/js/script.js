@@ -79,7 +79,7 @@ $(document).ready(function(e) {
             numero  = li_cards.length
         ;
         if( title.length > 0 && url.length > 0 ){
-            if( type === 'custom') var type_shown = 'Lien personnalisé';
+            if( type === 'custom') var type_shown = 'custom';
             sortablelinks.append(
                 '<li class="card" id="link-'+numero+'">' +
                     '<div class="card-header">' +
@@ -103,13 +103,6 @@ $(document).ready(function(e) {
                     '</div>' +
                 '</li>')
             ;
-            if( hidesort.val() === '' ){
-                li_cards.each(function (){
-                    if( hidesort.val() === '' ) hidesort.val( 'link[]='+ $(this).attr('id').replace('link-', '') );
-                    else hidesort.val( hidesort.val() +'&link[]='+ $(this).attr('id').replace('link-', '') );
-                });
-            }
-            hidesort.val( hidesort.val() + '&link[]='+ numero);
             form.get(0).reset();
         }
         else $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
@@ -150,22 +143,21 @@ $(document).ready(function(e) {
         ;
         for(var i=0; i<lis.length; i++ ){
             var link = lis.get(i);
+            menus.push(lis.get(i).id);
             if( link.classList.contains('sublist-1') ){
                 var parent = link.previousElementSibling;
                 while( parent.classList.contains('sublist-1') ){
                     parent = parent.previousElementSibling;
                 }
                 submenus.push({
-                    'parent': parent.id,
-                    'element': link.id 
+                    'element': link.id,
+                    'parent': parent.id
                 });
             }
-            else{
-                menus.push( lis.get(i).id );
-            }
         }
-        hidesort.val( [menus, submenus ]);
-        console.log( hidesort.val().serialize() );
+        hidesort.val( [ JSON.stringify(menus) +';'+ JSON.stringify(submenus) ]);
+        console.log(hidesort.val());
+        $(this).unbind('submit').submit();
     });
 });
 

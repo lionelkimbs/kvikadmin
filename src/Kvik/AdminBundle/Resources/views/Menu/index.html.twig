@@ -80,7 +80,7 @@
                                         {% set index = child.vars.value %}{# get array index #}
                                         
                                         {{ block('widget_container_attributes') }}
-                                        <li class="card ui-sortable-handle" id="link-{{ index.position }}">
+                                        <li class="card ui-sortable-handle {% if index.parent is not null %}sublist-1{% endif %}" id="link-{{ index.position }}">
                                             <div class="card-header">
                                                 <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ index.position }}" aria-expanded="false" aria-controls="collapse{{ index.position }}">
                                                     {{ index.name }}
@@ -103,8 +103,6 @@
                                                 </div>
                                             </div>
                                         </li>
-                                        
-                                        
                                     {% endfor %}
                                 {% endif %}
                             </ul>

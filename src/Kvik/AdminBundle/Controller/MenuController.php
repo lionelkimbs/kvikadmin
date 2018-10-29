@@ -55,12 +55,25 @@ class MenuController extends Controller{
         ]);
         $formEditor->handleRequest($request);
         if( $formEditor->isSubmitted() && $formEditor->isValid() ){
+            var_dump( $formEditor['sortable']->getData());
             foreach ( $origins as $link) if( false === $menu_edit->getLinks()->contains($link) ) $em->remove($link);
             if( !empty($formEditor['sortable']->getData()) ){
-                $tris = explode('&', str_replace('link[]=', '', $formEditor['sortable']->getData()) );
+                $array = explode(';', $formEditor['sortable']->getData());
+                
+                $list = explode(',', preg_replace('(\[|]|\"|link-)', '', $array[0]));
+                $sublist = explode(';', str_replace('},{', '};{', preg_replace('(\[|]|link-)', '', $array[1])));
+                for($i=0; $i<=count($sublist)-1; $i++){
+                    $sublist[$i] = json_decode($sublist[$i]);
+                }
                 foreach($menu_edit->getLinks() as $link){
-                    $newposition = array_search($link->getPosition(), $tris);
-                    $link->setPosition( $newposition );
+                    foreach ($sublist as $value){
+                        if( $link->getPosition() == $value->element ){
+                            foreach($menu_edit->getLinks() as $lien){
+                                if( $lien->getPosition() == $value->parent ) $link->setParent($lien);
+                            }
+                        }
+                    }
+                    $link->setPosition( array_search($link->getPosition(), $list) );
                 }
             }
             $em->persist($menu_edit);

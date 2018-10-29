@@ -20,7 +20,9 @@ class LinkType extends AbstractType
             ->add('url', TextType::class)
             ->add('linktype', HiddenType::class)
             ->add('position', HiddenType::class)
-            ->add('parent', HiddenType::class)
+            ->add('parent', HiddenType::class, [
+                'mapped' => false
+            ])
         ;
     }
     /**
