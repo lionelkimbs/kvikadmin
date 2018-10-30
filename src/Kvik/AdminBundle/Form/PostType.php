@@ -105,10 +105,6 @@ class PostType extends AbstractType
                     'property_path' => 'terms'
                 ])
             ;
-
-
-
-
         }
         if( $options['type'] == 'page' ){
             $builder

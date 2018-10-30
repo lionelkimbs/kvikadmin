@@ -69,6 +69,7 @@ class TermType extends AbstractType
                             'class' => Term::class,
                             'query_builder' => function(EntityRepository $er){
                                 return $er->createQueryBuilder('t')
+                                    ->where('t.termType = 1')
                                     ->orderBy('t.name', 'ASC')
                                     ;
                             },

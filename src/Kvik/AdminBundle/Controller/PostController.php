@@ -82,16 +82,18 @@ class PostController extends Controller
         $em = $this->getDoctrine()->getManager();
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if($post->getPostType() === 'post'){
-                $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData());
-                if($post->getTerms()->isEmpty()) $this->container->get('kvik.postManager')->addToUncategorized($post);
-            }
-            if($post->getPostType() === 'page') $this->container->get('kvik.postManager')->removeParentInChildren($post);
             $post->setSlug( $this->container->get('kvik.sanitize')->slugify($post->getSlug(), $post->getTitle(), $post) );
             $post->setPostType($type);
             $post->setEditor($this->getUser());
             $post->setPostType($type);
+            if($post->getPostType() == 'post'){
+                $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData());
+                if($post->getTerms()->isEmpty()) $this->container->get('kvik.postManager')->addToUncategorized($post);
+            }
+            if($post->getPostType() === 'page') $this->container->get('kvik.postManager')->removeParentInChildren($post);
+
             $em->persist($post);
+
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [
                 'id' => $post->getId(),
@@ -114,11 +116,14 @@ class PostController extends Controller
         ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid() ){
-            if($post->getPostType() === 'post') $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData());
-            if($post->getPostType() === 'page') $this->container->get('kvik.postManager')->removeParentInChildren($post);
-            if( $post->getTerms()->isEmpty() ) $this->container->get('kvik.postManager')->addToUncategorized($post);
             $post->setSlug( $this->container->get('kvik.sanitize')->slugify($post->getSlug(), $post->getTitle(), $post) );
             $post->setEditor($this->getUser());
+            if($post->getPostType() === 'post'){
+                $this->container->get('kvik.postManager')->addPostTags($post, $form["newTag"]->getData());
+                if( !$this->container->get('kvik.postManager')->hasCats($post) ) $this->container->get('kvik.postManager')->addToUncategorized($post);
+            }
+            if($post->getPostType() === 'page') $this->container->get('kvik.postManager')->removeParentInChildren($post);
+
             $em->persist($post);
             $em->flush();
             return $this->redirectToRoute('kvik_admin_post_edit', [

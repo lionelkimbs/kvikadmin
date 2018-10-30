@@ -2,6 +2,7 @@
 
 namespace Kvik\AdminBundle\Repository;
 
+use Doctrine\ORM\Query\AST\Join;
 use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
 use Kvik\AdminBundle\Entity\User;
@@ -14,6 +15,11 @@ use Kvik\AdminBundle\Entity\User;
  */
 class PostRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param Post|null $post
+     * @param $type
+     * @return \Doctrine\ORM\QueryBuilder
+     */
     public function getOtherPosts(Post $post = null, $type){
         $qb = $this->createQueryBuilder('p')
             ->where('p.postType = :type')
@@ -27,6 +33,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
         ;
         return $qb;
     }
+    
     /**
      * @param $params
      * @param $type
@@ -83,6 +90,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
         }
         return $qb;
     }
+    
     /**
      * @param array $params
      * @param $type
@@ -95,6 +103,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
             ->getSingleScalarResult()
         ;
     }
+    
     /**
      * @param array $params
      * @param $type
@@ -106,6 +115,27 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
             ->setFirstResult( $offset )
             ->setMaxResults(20)
         ;
+    }
+
+    /**
+     * @param $id
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findPostCats($id){
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.terms', 't')
+            ->where('p.id = :id')
+            ->andWhere('t.termType = 1')
+            ->setParameter('id', $id)
+        ;
+    }
+
+    /**
+     * @param $id
+     * @return array
+     */
+    public function getPostCats($id){
+        return $this->findPostCats($id)->getQuery()->getResult();
     }
 
 }

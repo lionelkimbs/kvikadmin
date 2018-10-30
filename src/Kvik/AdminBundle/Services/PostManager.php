@@ -25,7 +25,7 @@ class PostManager{
      * Add a post to Uncategorized
     **/
     public function addToUncategorized(Post $post){
-        if( $post->getPostType() == 'post' && $post->getTerms()->isEmpty() ){
+        if( $post->getPostType() === 'post'){
             $cat = $this->em->getRepository(Term::class)->findOneBy(['slug' => 'uncategorized']);
             if( $cat === null ) $cat = $this->getNewUncategorized();
             $post->addTerm($cat);
@@ -45,7 +45,6 @@ class PostManager{
 
 
     public function addPostTags(Post $post, $tags){
-
         if( !empty($tags) ){
             $terms_tag = explode(',', $tags );
             //Remove all terms deleted
@@ -73,6 +72,10 @@ class PostManager{
             }
         }
     }
+    
+    public function hasCats(Post $post){
+        return !empty( $this->em->getRepository(Post::class)->getPostCats($post->getId()) );
+    }
 
     /**
      * If parent added to $page is in his children list, remove it. A parent can't be a child at the same time
@@ -98,7 +101,6 @@ class PostManager{
         }
     }
     
-
     /*
      * Create and return Uncategorized term
     **/
@@ -114,4 +116,5 @@ class PostManager{
         return $cat;
     }
 
+    
 }

@@ -2,8 +2,6 @@
 
 namespace Kvik\AdminBundle\Repository;
 
-use Kvik\AdminBundle\Entity\Term;
-
 class TermRepository extends \Doctrine\ORM\EntityRepository
 {
     /*

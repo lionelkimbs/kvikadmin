@@ -93,9 +93,7 @@
                                 {{ form_label(child) }}
                             </th>
                             <td class="title">
-                                <a href="{{ path('kvik_admin_term_edit', {'id': term.id, 'type': type}) }}">
-                                {{ term.name }}
-                                </a>
+                                <a href="{{ path('kvik_admin_term_edit', {'id': term.id, 'type': type}) }}">{{ term.name }}</a> {% if term.parent is not null %}<span class="child">{{ term.parent.name }}</span>{% endif %}
                             </td>
                             <td>
                                 {{ term.resume }}

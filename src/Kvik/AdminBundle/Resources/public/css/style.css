@@ -34,31 +34,17 @@ main{margin-top: 3rem;}
 .page-item span.page-link{cursor: default;}
 .form-inline{margin: 0.6rem 0;}
 .post_info ul{ margin-top: 1.5rem;}
-.form-group-control{
-    margin: 1.6rem 0;
-    display: block;
-}
-.form-group-control .form-control{
-    border: none;
-    border-bottom: 1px solid #dadada;
-    border-radius: 0;
-}
-.form-group-control input.form-control::placeholder{
-    text-align: center;
-}
+.form-group-control{margin: 1.6rem 0; display: block;}
+.form-group-control .form-control{border: none; border-bottom: 1px solid #dadada; border-radius: 0;}
+.form-group-control input.form-control::placeholder{text-align: center;}
 .bg-info .nav-tabs {border-bottom: none;}
-
 
 /**
  * LK: Added elements
  */
 .login-box{margin: 0 auto; width: 30rem; margin-top: 8rem;}
 .bg-info a.card-title{color: #fff;}
-.welcome{
-    margin: 3rem 0 2.5rem 0;
-    padding: 0.5rem;
-    border-bottom: 1px dotted #dadada;
-}
+.welcome{margin: 3rem 0 2.5rem 0; padding: 0.5rem; border-bottom: 1px dotted #dadada;}
 
 .login-box .colorgraph{height: 0.8rem;}
 .colorgraph {
@@ -187,13 +173,8 @@ label:hover:before {
 .marge-left{ margin-left: 2rem;}
 .marge-right{ margin-right: 2rem;}
 .marge-top{ margin-top: 2rem;}
-.post_total {
-    font-size: smaller;
-    margin-right: 1rem;
-    vertical-align: bottom;
-    color: #777;
-    padding-top: 2rem;
-}
+.post_total {font-size: smaller; margin-right: 1rem; vertical-align: bottom; color: #777; padding-top: 2rem;}
+.child{background-color: #dedede; border-radius: .3rem; display: inline-block; font-size: 12px; margin: 0 .3rem; padding: .1rem .3rem; text-transform: lowercase;}
 .inlinge-marge-r{ margin-right: 0.4rem; }
 .inlinge-marge{ margin: 0 1rem; }
 a.in-trash{

@@ -151,15 +151,15 @@
                 <hr>
                 <div class="form-group">
                     <div class="row">
-                        {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
-                            <div class="col-6">
+                        <div class="col-6">
+                            {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
                                 {% if post.postStatus == 'trash' %}
                                     <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType, 'action':'draft'}) }}" class="text-danger">Restaurer</a>
                                 {% else %}
                                     <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType, 'action':'trash'}) }}" class="text-danger">Déplacer vers la corbeille</a>
+                                {% endif %}
                             {% endif %}
-                            </div>
-                        {% endif %}
+                        </div>
                         <div class="col-6 float-right">
                             {{ form_widget(form.enregistrer, {'attr': {'class': 'btn btn-info float-right'} }) }}
                         </div>
