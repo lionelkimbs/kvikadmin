@@ -79,11 +79,25 @@ class PostManager{
      * @param Post $page
      */
     public function removeParentInChildren(Post $page){
-        foreach ($page->getChildren() as $child){
+        foreach($page->getChildren() as $child){
             if( $child === $page->getParent() ) $child->setParent(null);
         }
     }
 
+    /**
+     * @param Post $page
+     * When a Page is trashed, all child lost him as parent
+     */
+    public function removeTrashedParent(Post $page){
+        foreach($page->getChildren() as $child) $child->setParent(null);
+    }
+
+    public function removeFormAllTags(Post $post){
+        if($post->getTerms() !== null ){
+            foreach($post->getTerms() as $term) $post->removeTerm($term);
+        }
+    }
+    
 
     /*
      * Create and return Uncategorized term

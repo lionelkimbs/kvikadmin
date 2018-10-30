@@ -7,11 +7,20 @@
 {% endblock title %}
 
 {% block page_h1 %}
-    <h1>
-        {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}Modifier {% if type == "page" %}la page{% else %}l'article{% endif %}
-        {% else %}Créer {% if type == "page" %}une nouvelle page{% else %}un nouvel article{% endif %}
+    <div class="row">
+        <div class="col-10">
+            <h1>
+                {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}Modifier {% if type == "page" %}la page{% else %}l'article{% endif %}
+                {% else %}Créer {% if type == "page" %}une nouvelle page{% else %}un nouvel article{% endif %}
+                {% endif %}
+            </h1>
+        </div>
+        {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
+            <div class="col-2">
+                <a href="{{ path('kvik_admin_post_add', {'type': type}) }}" class="btn btn-info float-right" title="Créer un nouveau contenu">Ajouter</a>
+            </div>
         {% endif %}
-    </h1>
+    </div>
 {% endblock %}
 
 {% block container %}
@@ -144,7 +153,11 @@
                     <div class="row">
                         {% if app.request.attributes.get('_route') == 'kvik_admin_post_edit' %}
                             <div class="col-6">
-                                <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType}) }}" class="text-danger">Déplacer vers la corbeille</a>
+                                {% if post.postStatus == 'trash' %}
+                                    <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType, 'action':'draft'}) }}" class="text-danger">Restaurer</a>
+                                {% else %}
+                                    <a href="{{ path('kvik_admin_post_trash', {'id': post.id, 'type':post.postType, 'action':'trash'}) }}" class="text-danger">Déplacer vers la corbeille</a>
+                            {% endif %}
                             </div>
                         {% endif %}
                         <div class="col-6 float-right">

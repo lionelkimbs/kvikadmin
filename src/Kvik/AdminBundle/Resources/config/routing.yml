@@ -45,12 +45,13 @@ kvik_admin_post_edit:
         id: \d+
         type: post|page
 kvik_admin_post_trash:
-    path:    /{type}/trash-{id}
+    path:    /{type}/trash-{id}-{action}
     defaults:
         _controller: KvikAdminBundle:Post:trash
     requirements:
         id: \d+
         type: post|page
+        type: trash|draft
 
 #User
 kvik_admin_users:

@@ -47,7 +47,8 @@ class PostType extends AbstractType
             ->add('postStatus', ChoiceType::class, [
                 'choices' => [
                     'Brouillon' => 'draft',
-                    'Publié' => 'publish'
+                    'Publié' => 'publish',
+                    'Corbeille' => 'trash'
                 ]
             ])
             ->add('privacy', ChoiceType::class, [

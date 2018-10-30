@@ -33,7 +33,6 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
      * @return \Doctrine\ORM\QueryBuilder
      */
     public function findPosts($params, $type){
-
         $qb = $this->createQueryBuilder('p')
             ->where('p.postType = :type')
             ->setParameter('type', $type)
@@ -47,7 +46,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('status', $params['status'])
             ;
         }
-        if( $params['status'] != 'trash' ) $qb ->andWhere('p.postStatus != :status')->setParameter('status', 'trash');
+        if( $params['status'] != 'trash' ) $qb->andWhere('p.postStatus != :statustrash')->setParameter('statustrash', 'trash');
 
         //cat
         if ( isset($params['cat']) ) {
