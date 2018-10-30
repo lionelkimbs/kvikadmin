@@ -7,10 +7,8 @@ use Kvik\AdminBundle\Entity\Post;
 use Kvik\AdminBundle\Entity\Term;
 
 class Sanitize{
-
     private $em;
-    public function __construct(EntityManagerInterface $entityManager)
-    {
+    public function __construct(EntityManagerInterface $entityManager){
         $this->em = $entityManager;
     }
 
@@ -43,5 +41,4 @@ class Sanitize{
         if( $check_object === $object || $check_object === null ) return $text;
         else return $text .'-1';
     }
-
 }

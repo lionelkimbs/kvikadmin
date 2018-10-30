@@ -66,7 +66,6 @@ $(document).ready(function(e) {
     });
     sortablelinks.disableSelection();
     
-    
     /**
      * Clic sur le bouton pour ajouter menulink
      */
@@ -159,14 +158,31 @@ $(document).ready(function(e) {
         console.log(hidesort.val());
         $(this).unbind('submit').submit();
     });
+
+    /**
+     * Type de menus a chercher
+     */
+    var btn_content = $('.content-button button.btn');
+    btn_content.on('click', function() {
+        if( !$(this).hasClass('active') ){
+            $('.content-button button.active').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+    $('#content-search').autocomplete({
+        source: function (rq, rsp) {
+            var type = $('.content-button button.active').attr('id');
+            rsp($.ui.autocomplete.filter('/autocomplete/content-'+type, rq.term));
+        }
+    });
+    
 });
 
 function completeTags(tags){
     $( "#tags" ).autocomplete({
         minLength: 1,
         source: function( request, response ) {
-            response( $.ui.autocomplete.filter(
-                tags, extractLast( request.term ) ) );
+            response($.ui.autocomplete.filter(tags, extractLast(request.term)));
         },
         focus: function() {
             return false;

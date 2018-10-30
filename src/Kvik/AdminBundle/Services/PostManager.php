@@ -10,17 +10,14 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class PostManager{
-
     private $em;
     private $container;
 
-    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container)
-    {
+    public function __construct(EntityManagerInterface $entityManager, ContainerInterface $container){
         $this->em = $entityManager;
         $this->container = $container;
     }
-
-
+    
     /*
      * Add a post to Uncategorized
     **/
@@ -31,8 +28,7 @@ class PostManager{
             $post->addTerm($cat);
         }
     }
-
-
+    
     /***
      * When a category is deleted, all posts without any category goes to Uncategorized
      */
@@ -42,8 +38,7 @@ class PostManager{
             $this->em->persist($post);
         }
     }
-
-
+    
     public function addPostTags(Post $post, $tags){
         if( !empty($tags) ){
             $terms_tag = explode(',', $tags );
@@ -115,6 +110,4 @@ class PostManager{
 
         return $cat;
     }
-
-    
 }

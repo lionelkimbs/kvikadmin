@@ -232,12 +232,7 @@ table td.title{ font-size: medium; max-width: 18rem;}
 /**
  * Menus
  */
-.menu-add{
-    border: 1px solid #dadada;
-    background-color: #f1f1f1;
-    width: 100%;
-    padding: .5rem 0;
-}
+.menu-add{border: 1px solid #dadada; background-color: #f1f1f1; width: 100%; padding: .5rem 0;}
 .menulinks .card{cursor: move;}
 .menulinks .card-body{padding: .5rem;}
 .menulinks .card-body .form-control{margin: 0;}
@@ -250,3 +245,5 @@ table td.title{ font-size: medium; max-width: 18rem;}
 .menulinks .btns a{font-size: smaller;}
 .inline-block{display: inline-block !important;}
 .labelCheckbox{color: transparent;}
+.menulinks .content-button{text-align: center;}
+.menulinks .content-button .active{box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.3) inset; background-color: #F2FFFB;}

@@ -50,11 +50,22 @@ $(document).ready(function(e) {
         btn_ajouter = $("#link-item-button"),
         btn_retirer = $("a#retirer")
     ;
+    
     sortablelinks.sortable({
-        stop: function(ev, ui){
-            hidesort.val( $(this).sortable('serialize') );
-        }
+        //Submenus
+        out: function(e, ui) {
+            if( ui.position.left > 10 ){
+                if( ui.item.prev().get(0) !== undefined ){
+                    $('.ui-state-highlight').addClass('sublist-1');
+                    ui.item.addClass('sublist-1');
+                }
+            }
+            if( ui.position.left < 10 )ui.item.removeClass('sublist-1');
+        },
+        placeholder: "ui-state-highlight"
     });
+    sortablelinks.disableSelection();
+    
     /**
      * Clic sur le bouton pour ajouter menulink
      */
@@ -67,7 +78,7 @@ $(document).ready(function(e) {
             numero  = li_cards.length
         ;
         if( title.length > 0 && url.length > 0 ){
-            if( type === 'custom') var type_shown = 'Lien personnalisé';
+            if( type === 'custom') var type_shown = 'custom';
             sortablelinks.append(
                 '<li class="card" id="link-'+numero+'">' +
                     '<div class="card-header">' +
@@ -80,6 +91,7 @@ $(document).ready(function(e) {
                                 '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'">' +
                                 '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][position]" value="'+numero+'">' +
                                 '<input class="form-control linkname" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
+                                '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_parent" name="kvik_adminbundle_menu[links]['+numero+'][parent]">'+
                                 '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="text" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL">' +
                             '</div>' +
                             '<div class="col-12 btns">' +
@@ -90,13 +102,6 @@ $(document).ready(function(e) {
                     '</div>' +
                 '</li>')
             ;
-            if( hidesort.val() === '' ){
-                li_cards.each(function (){
-                    if( hidesort.val() === '' ) hidesort.val( 'link[]='+ $(this).attr('id').replace('link-', '') );
-                    else hidesort.val( hidesort.val() +'&link[]='+ $(this).attr('id').replace('link-', '') );
-                });
-            }
-            hidesort.val( hidesort.val() + '&link[]='+ numero);
             form.get(0).reset();
         }
         else $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
@@ -128,26 +133,56 @@ $(document).ready(function(e) {
             idParent.find("button").text( that.val() );
         }
     });
-    /** Tris les menus dans l'orde avant l'envoie *
+    /** Tris les menus dans l'orde avant l'envoie du formulaire*/
     $('form.sortmenus').on('submit', function (e) {
         e.preventDefault();
         var lis = sortablelinks.find('li'),
-            tab = []
+            menus = [],
+            submenus = []
         ;
         for(var i=0; i<lis.length; i++ ){
-            tab.push( lis.get(i).id );
+            var link = lis.get(i);
+            menus.push(lis.get(i).id);
+            if( link.classList.contains('sublist-1') ){
+                var parent = link.previousElementSibling;
+                while( parent.classList.contains('sublist-1') ){
+                    parent = parent.previousElementSibling;
+                }
+                submenus.push({
+                    'element': link.id,
+                    'parent': parent.id
+                });
+            }
         }
-        alert(tab);
-        
-    });*/
+        hidesort.val( [ JSON.stringify(menus) +';'+ JSON.stringify(submenus) ]);
+        console.log(hidesort.val());
+        $(this).unbind('submit').submit();
+    });
+
+    /**
+     * Type de menus a chercher
+     */
+    var btn_content = $('.content-button button.btn');
+    btn_content.on('click', function() {
+        if( !$(this).hasClass('active') ){
+            $('.content-button button.active').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+    $('#content-search').on('focus', function() {
+        var type = $('.content-button button.active').attr('id');
+        $(this).autocomplete({
+            minLength: 3,
+            source: '/autocomplete/content-'+type
+        });
+    });
 });
 
 function completeTags(tags){
     $( "#tags" ).autocomplete({
         minLength: 1,
         source: function( request, response ) {
-            response( $.ui.autocomplete.filter(
-                tags, extractLast( request.term ) ) );
+            response($.ui.autocomplete.filter(tags, extractLast(request.term)));
         },
         focus: function() {
             return false;

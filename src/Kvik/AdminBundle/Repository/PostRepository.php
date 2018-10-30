@@ -20,122 +20,136 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
      * @param $type
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getOtherPosts(Post $post = null, $type){
+    public function getOtherPosts(Post $post = null, $type)
+    {
         $qb = $this->createQueryBuilder('p')
             ->where('p.postType = :type')
             ->setParameter('type', $type)
-            ->orderBy('p.title', 'ASC')
-        ;
-        if( $post->getId() !== null )
+            ->orderBy('p.title', 'ASC');
+        if ($post->getId() !== null)
             $qb
-            ->andWhere('p.id != :id')
-            ->setParameter('id', $post->getId())
-        ;
+                ->andWhere('p.id != :id')
+                ->setParameter('id', $post->getId());
         return $qb;
     }
-    
+
     /**
      * @param $params
      * @param $type
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function findPosts($params, $type){
+    public function findPosts($params, $type)
+    {
         $qb = $this->createQueryBuilder('p')
             ->where('p.postType = :type')
             ->setParameter('type', $type)
-            ->orderBy('p.dateEdit', 'DESC')
-        ;
+            ->orderBy('p.dateEdit', 'DESC');
 
         //status
-        if ( isset($params['status']) ) {
+        if (isset($params['status'])) {
             $qb
                 ->andWhere('p.postStatus = :status')
-                ->setParameter('status', $params['status'])
-            ;
+                ->setParameter('status', $params['status']);
         }
-        if( $params['status'] != 'trash' ) $qb->andWhere('p.postStatus != :statustrash')->setParameter('statustrash', 'trash');
+        if ($params['status'] != 'trash') $qb->andWhere('p.postStatus != :statustrash')->setParameter('statustrash', 'trash');
 
         //cat
-        if ( isset($params['cat']) ) {
+        if (isset($params['cat'])) {
             $params['cat'] = $this->_em->getRepository(Term::class)->findOneBy([
                 'slug' => $params['cat']
             ])->getId();
             $qb
                 ->join('p.terms', 't')
                 ->andWhere('t.id = :cat')
-                ->setParameter('cat', $params['cat'])
-            ;
+                ->setParameter('cat', $params['cat']);
         }
         //tag
-        if ( isset($params['tag']) ) {
+        if (isset($params['tag'])) {
             $params['tag'] = $this->_em->getRepository(Term::class)->findOneBy([
                 'slug' => $params['tag']
             ])->getId();
             $qb
                 ->join('p.terms', 't')
                 ->andWhere('t.id = :tag')
-                ->setParameter('tag', $params['tag'])
-            ;
+                ->setParameter('tag', $params['tag']);
         }
         //author
-        if ( isset($params['author']) ) {
+        if (isset($params['author'])) {
             $params['author'] = $this->_em->getRepository(User::class)->findOneBy([
                 'username' => $params['author']
             ])->getId();
             $qb
                 ->join('p.author', 'a')
                 ->andWhere('a.id = :author')
-                ->setParameter('author', $params['author'])
-            ;
+                ->setParameter('author', $params['author']);
         }
         return $qb;
     }
-    
+
+    /**
+     * @param $type
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function findTitles($type){
+        return $this->createQueryBuilder('p')
+            ->select('p.title')
+            ->where('p.postType = :type')
+            ->setParameter('type', $type);
+    }
+
     /**
      * @param array $params
      * @param $type
      * @return mixed
      */
-    public function getTotalPosts(array $params, $type){
+    public function getTotalPosts(array $params, $type)
+    {
         return $this->findPosts($params, $type)
             ->select('count(p.id)')
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
-    
+
     /**
      * @param array $params
      * @param $type
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function getPosts(array $params, $type){
-        $offset = !is_null($params['pge']) ? ($params['pge'] - 1)*20 : 0;
+    public function getPosts(array $params, $type)
+    {
+        $offset = !is_null($params['pge']) ? ($params['pge'] - 1) * 20 : 0;
         return $this->findPosts($params, $type)
-            ->setFirstResult( $offset )
-            ->setMaxResults(20)
-        ;
+            ->setFirstResult($offset)
+            ->setMaxResults(20);
     }
 
     /**
      * @param $id
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function findPostCats($id){
+    public function findPostCats($id)
+    {
         return $this->createQueryBuilder('p')
             ->innerJoin('p.terms', 't')
             ->where('p.id = :id')
             ->andWhere('t.termType = 1')
-            ->setParameter('id', $id)
-        ;
+            ->setParameter('id', $id);
     }
 
     /**
      * @param $id
      * @return array
      */
-    public function getPostCats($id){
+    public function getPostCats($id)
+    {
         return $this->findPostCats($id)->getQuery()->getResult();
     }
 
+    /**
+     * @param $type
+     * @return array
+     */
+    public function getTitles($type){
+        return $this->findTitles($type)->getQuery()->getResult();
+    }
 }

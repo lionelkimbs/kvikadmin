@@ -28,3 +28,9 @@ kvik_admin:
 elfinder:
      resource: "@FMElfinderBundle/Resources/config/routing.yml"
 
+kvik_autocomplete_post:
+    path: /autocomplete/content-{type}
+    defaults:
+        _controller: KvikAdminBundle:Post:all
+    requirements:
+        type: post|page

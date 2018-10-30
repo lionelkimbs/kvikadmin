@@ -10,6 +10,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends Controller
@@ -67,7 +68,6 @@ class PostController extends Controller
             }
             return $this->redirectToRoute('kvik_admin_post', ['type' => $type]);
         }
-
         return $this->render('@KvikAdmin/Post/index.html.twig', [
             'type' => $type,
             'form' => $form->createView(),
@@ -154,5 +154,10 @@ class PostController extends Controller
                 'type' => $post->getPostType()
             ]);
         }
+    }
+    
+    public function allAction($type){
+        $em = $this->getDoctrine()->getManager();
+        return new JsonResponse(['term' => $em->getRepository(Post::class)->getTitles($type)], 200);
     }
 }

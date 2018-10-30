@@ -46,16 +46,32 @@
     <div class="row menulinks">
         <div class="col-3">
             <form method="post" id="add-link">
-            <h3>Liens personnalisés</h3>
-            <div class="form-group menu-input" id="custom-link">
-                <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
-                <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
-                <input type="hidden" name="link-item-type" value="custom">
-            </div>
+                <div class="">
+                    <h3>Liens personnalisés</h3>
+                    <div class="form-group menu-input" id="custom-link">
+                        <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
+                        <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
+                        <input type="hidden" name="link-item-type" value="custom">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
+                    </div>
+                </div>
+                <div class="clear"></div>
 
-            <div class="form-group">
-                <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
-            </div>
+                <div class="">
+                    <h3>Contenus</h3>
+                    <div class="form-group menu-input" id="custom-link">
+                        <div class="content-button">
+                            <button class="btn btn-sm btn-action" id="article" type="button">Article</button>
+                            <button class="btn btn-sm btn-action active" id="page" type="button">Page</button>
+                        </div>
+                        <input class="form-control" type="text" id="content-search" placeholder="Rechercher à partir du titre">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
+                    </div>
+                </div>
             </form>
         </div>
         
