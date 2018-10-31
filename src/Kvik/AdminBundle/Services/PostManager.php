@@ -95,10 +95,15 @@ class PostManager{
             foreach($post->getTerms() as $term) $post->removeTerm($term);
         }
     }
+
+
+    public function getTermAutocompletion($type, $term){
+        return $this->em->getRepository(Post::class)->getTitles($type, $term);
+    }
     
-    /*
+    /**
      * Create and return Uncategorized term
-    **/
+    */
     private function getNewUncategorized(){
         $cat = new Term();
         $cat->setTermType(1);

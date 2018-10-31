@@ -22,8 +22,7 @@ class PostController extends Controller
      * @param $type
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, $type)
-    {
+    public function indexAction(Request $request, $type){
         $em = $this->getDoctrine()->getManager();
         $params = [
             'status' => $request->query->get('status'),
@@ -156,8 +155,17 @@ class PostController extends Controller
         }
     }
     
-    public function allAction($type){
-        $em = $this->getDoctrine()->getManager();
-        return new JsonResponse(['term' => $em->getRepository(Post::class)->getTitles($type)], 200);
+    public function allAction(Request $request, $type){
+        $term = $request->query->get('term');
+        if( !empty($term) ){
+            $titles = $this->container->get('kvik.postManager')->getTermAutocompletion($type, $term);
+            $array = [];
+            for($i=0; $i<= count($titles)-1; $i++){
+                $array[$i]['label'] = $titles[$i]->getTitle();
+                $array[$i]['value'] = $titles[$i]->getSlug();
+            }
+            return new JsonResponse($array);
+        }
+        else return new JsonResponse([]);
     }
 }

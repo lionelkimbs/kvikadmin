@@ -90,11 +90,17 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
      * @param $type
      * @return \Doctrine\ORM\QueryBuilder
      */
-    public function findTitles($type){
+    public function findTitles($type, $term){
         return $this->createQueryBuilder('p')
-            ->select('p.title')
-            ->where('p.postType = :type')
-            ->setParameter('type', $type);
+            ->where('p.postStatus = :postStatus')
+            ->andwhere('p.postType = :type')
+            ->andWhere('p.title LIKE :term')
+            ->setParameters([
+                'postStatus' => 'publish',
+                'type' => $type,
+                'term' => '%'.$term.'%'
+            ])
+        ;
     }
 
     /**
@@ -149,7 +155,7 @@ class PostRepository extends \Doctrine\ORM\EntityRepository
      * @param $type
      * @return array
      */
-    public function getTitles($type){
-        return $this->findTitles($type)->getQuery()->getResult();
+    public function getTitles($type, $term){
+        return $this->findTitles($type, $term)->getQuery()->getResult();
     }
 }

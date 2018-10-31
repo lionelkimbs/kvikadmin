@@ -155,7 +155,6 @@ $(document).ready(function(e) {
             }
         }
         hidesort.val( [ JSON.stringify(menus) +';'+ JSON.stringify(submenus) ]);
-        console.log(hidesort.val());
         $(this).unbind('submit').submit();
     });
 
@@ -169,13 +168,63 @@ $(document).ready(function(e) {
             $(this).addClass('active');
         }
     });
-    $('#content-search').autocomplete({
-        source: function (rq, rsp) {
-            var type = $('.content-button button.active').attr('id');
-            rsp($.ui.autocomplete.filter('/autocomplete/content-'+type, rq.term));
-        }
+    $('#content-search').on('focus', function () {
+        var type = $('.content-button button.active').attr('id'),
+            src = '/autocomplete/content-'+ type;
+        $(this).autocomplete({
+            delay: 100,
+            source: function (request, response){
+                $.ajax({
+                    url: src,
+                    dataType: 'json',
+                    data: {term: request.term, maxRows: 6},
+                    success: function(data) {
+                        if( !data.length ){
+                            var result = [{label: 'Aucun résultat trouvé', value: response.term}];
+                            response(result);
+                        }
+                        else{
+                            response($.map(data, function(item){
+                                return{label: item.label, value: item.value}
+                            }));
+                        }
+                    }
+                });
+            },
+            select: function(e, ui ) {
+                sortablelinks.disableSelection();
+                var title = ui.item.label,
+                    url = ui.item.value,
+                    numero = li_cards.length
+                ;
+                sortablelinks.append(
+                    '<li class="card" id="link-'+numero+'">' +
+                        '<div class="card-header">' +
+                            '<button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="collapse'+numero+'">'+title+'</button>' +
+                            '<span class="link-type">'+type+'</span>' +
+                        '</div>' +
+                        '<div id="collapse'+numero+'" class="collapse" aria-labelledby="link'+numero+'" data-parent="#sortablelinks">' +
+                            '<div class="card-body row">' +
+                                '<div class="col-12 menu-input">' +
+                                    '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][linktype]" value="'+type+'">' +
+                                    '<input type="hidden" id="kvik_adminbundle_menu_links_'+numero+'_linktype" name="kvik_adminbundle_menu[links]['+numero+'][position]" value="'+numero+'">' +
+                                    '<input class="form-control linkname" id="kvik_adminbundle_menu_links_'+numero+'_name" type="text" name="kvik_adminbundle_menu[links]['+numero+'][name]" value="'+title+'" placeholder="Titre du lien">' +
+                                    '<input class="form-control" id="kvik_adminbundle_menu_links_'+numero+'_url" type="hidden" name="kvik_adminbundle_menu[links]['+numero+'][url]" value="'+url+'"placeholder="Adresse URL">' +
+
+                                '</div>' +
+                                '<div class="col-12 btns">' +
+                                    '<a href="#" class="text-danger" id="retirer" title="Retirer ce lien du menu">Retirer</a>' +
+                                    '<a class="text-primary float-right" href="#" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="#collapse'+numero+'">Annuler</a>' +
+                                '</div>' +
+                            '</div>' +
+                        '</div>' +
+                    '</li>')
+                ;
+                $('#content-search').val('');
+                return false;
+            }
+        });
     });
-    
 });
 
 function completeTags(tags){
