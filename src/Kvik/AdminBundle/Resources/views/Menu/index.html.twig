@@ -46,20 +46,8 @@
     <div class="row menulinks">
         <div class="col-3">
             <form method="post" id="add-link">
-                <div class="">
-                    <h3>Liens personnalisés</h3>
-                    <div class="form-group menu-input" id="custom-link">
-                        <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
-                        <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
-                        <input type="hidden" name="link-item-type" value="custom">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
-                    </div>
-                </div>
-                <div class="clear"></div>
-
-                <div class="">
+                {# Contenus #}
+                <div class="menu-bloc">
                     <h3>Contenus</h3>
                     <div class="form-group menu-input" id="custom-link">
                         <div class="content-button">
@@ -69,6 +57,19 @@
                             <input class="form-control" type="hidden" id="post-url" name="post-url" placeholder="Adresse URL">
                         </div>
                         <input class="form-control" type="text" id="content-search" placeholder="Rechercher à partir du titre">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
+                    </div>
+                </div>
+                <div class="clear"></div>
+                {# Liens personnalisés #}
+                <div class="menu-bloc">
+                    <h3>Liens personnalisés</h3>
+                    <div class="form-group menu-input" id="custom-link">
+                        <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
+                        <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
+                        <input type="hidden" name="link-item-type" value="custom">
                     </div>
                     <div class="form-group">
                         <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
