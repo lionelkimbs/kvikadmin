@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block container %}
-    {% if menus|length > 0 %}
+    {% if menus is not empty %}
     {{ form_start(formenu, {'attr': {'class': 'form-inline' } }) }}
         <div class="row justify-content-md-center menu-add">
             <div class="col-12">
@@ -41,100 +41,99 @@
         </div>
     {% endif %}
     <hr>
-    
-    {# Liens du menu #}
-    <div class="row menulinks">
-        <div class="col-3">
-            <form method="post" id="add-link">
-                {# Contenus #}
-                <div class="menu-bloc">
-                    <h3>Contenus</h3>
-                    <div class="form-group menu-input" id="custom-link">
-                        <div class="content-button">
-                            <button class="btn btn-sm btn-action" id="post" type="button">Article</button>
-                            <button class="btn btn-sm btn-action active" id="page" type="button">Page</button>
-                            <input class="form-control" type="hidden" id="post-title" name="post-title" placeholder="Titre du lien">
-                            <input class="form-control" type="hidden" id="post-url" name="post-url" placeholder="Adresse URL">
+
+    {% if menuedit is defined %}
+        {# Liens du menu #}
+        <div class="row menulinks">
+            <div class="col-3">
+                <form method="post" id="add-link">
+                    {# Contenus #}
+                    <div class="menu-bloc">
+                        <h3>Contenus</h3>
+                        <div class="form-group menu-input" id="custom-link">
+                            <div class="content-button">
+                                <button class="btn btn-sm btn-action" id="post" type="button">Article</button>
+                                <button class="btn btn-sm btn-action active" id="page" type="button">Page</button>
+                                <input class="form-control" type="hidden" id="post-title" name="post-title" placeholder="Titre du lien">
+                                <input class="form-control" type="hidden" id="post-url" name="post-url" placeholder="Adresse URL">
+                            </div>
+                            <input class="form-control" type="text" id="content-search" placeholder="Rechercher à partir du titre">
                         </div>
-                        <input class="form-control" type="text" id="content-search" placeholder="Rechercher à partir du titre">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
-                    </div>
-                </div>
-                <div class="clear"></div>
-                {# Liens personnalisés #}
-                <div class="menu-bloc">
-                    <h3>Liens personnalisés</h3>
-                    <div class="form-group menu-input" id="custom-link">
-                        <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
-                        <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
-                        <input type="hidden" name="link-item-type" value="custom">
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-        
-        <div class="col-9">
-            {{ form_start(formEditor, {'attr': {'class': 'form-inline sortmenus'} }) }}
-            <div class="card bg-light mb-3 w100">
-                <div class="card-header">
-                    {{ form_errors(formEditor.title) }}
-                    {{ form_widget(formEditor.title, {'attr': {'class': 'form-control mr-4', 'placeholder': 'Titre du menu' } }) }}
-                </div>
-                <div class="card-body">
-                    <div class="">
-                        <h3 class="float-left">Structure du menu</h3>
-                        {{ form_widget(formEditor.enregistrer, {'attr': {'class': 'btn btn-info btn-sm float-right'} }) }}
                     </div>
                     <div class="clear"></div>
-                    <div class="row menu-elements">
-                        <div class="col-12 droppable">
-                            <ul id="sortablelinks" class="col-5 accordion ui-sortable">
-                                {% if formEditor.links is not null %}
-                                    {% for child in formEditor.links %}
-                                        {% set index = child.vars.value %}{# get array index #}
-                                        
-                                        {{ block('widget_container_attributes') }}
-                                        <li class="card ui-sortable-handle {% if index.parent is not null %}sublist-1{% endif %}" id="link-{{ index.position }}">
-                                            <div class="card-header">
-                                                <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ index.position }}" aria-expanded="false" aria-controls="collapse{{ index.position }}">
-                                                    {{ index.name }}
-                                                </button>
-                                                <span class="link-type">{{ index.linktype }}</span>
-                                            </div>
-                                            <div id="collapse{{ index.position }}" class="collapse" aria-labelledby="link{{ index.position }}" data-parent="#sortablelinks">
-                                                <div class="card-body row">
-                                                    <div class="col-12 menu-input">
-                                                        {{ form_widget(child.linktype) }}
-                                                        {{ form_widget(child.name, {'attr': {'class': 'form-control linkname'} }) }}
-                                                        {{ form_widget(child.url, {'attr': {'class': 'form-control'} }) }}
-                                                        {{ form_widget(child.position) }}
-                                                        {{ form_widget(child.parent) }}
-                                                    </div>
-                                                    <div class="col-12 btns">
-                                                        <a href="#" class="text-danger" id="retirer" title="Retirer ce lien du menu">Retirer</a>
-                                                        <a class="text-primary float-right" href="#" data-toggle="collapse" data-target="#collapse{{ index.position }}" aria-expanded="false" aria-controls="#collapse{{ index.position }}">Annuler</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                {% endif %}
-                            </ul>
-                            {{ form_widget(formEditor.sortable, {'attr': {'class': 'sorts' } }) }}
+                    {# Liens personnalisés #}
+                    <div class="menu-bloc">
+                        <h3>Liens personnalisés</h3>
+                        <div class="form-group menu-input" id="custom-link">
+                            <input class="form-control" type="text" name="link-item-title" placeholder="Titre du lien">
+                            <input class="form-control" type="text" name="link-item-url" placeholder="Adresse URL">
+                            <input type="hidden" name="link-item-type" value="custom">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" id="link-item-button" class="btn btn-action float-right">Ajouter</button>
                         </div>
                     </div>
-
-                </div>
+                </form>
             </div>
-            
-            
-            {{ form_end(formEditor) }}
+
+            <div class="col-9">
+                {{ form_start(formEditor, {'attr': {'class': 'form-inline sortmenus'} }) }}
+                <div class="card bg-light mb-3 w100">
+                    <div class="card-header">
+                        {{ form_errors(formEditor.title) }}
+                        {{ form_widget(formEditor.title, {'attr': {'class': 'form-control mr-4', 'placeholder': 'Titre du menu' } }) }}
+                    </div>
+                    <div class="card-body">
+                        <div class="">
+                            <h3 class="float-left">Structure du menu</h3>
+                            {{ form_widget(formEditor.enregistrer, {'attr': {'class': 'btn btn-info btn-sm float-right'} }) }}
+                        </div>
+                        <div class="clear"></div>
+                        <div class="row menu-elements">
+                            <div class="col-12 droppable">
+                                <ul id="sortablelinks" class="col-5 accordion ui-sortable">
+                                    {% if formEditor.links is not null %}
+                                        {% for child in formEditor.links %}
+                                            {% set index = child.vars.value %}{# get array index #}
+
+                                            {{ block('widget_container_attributes') }}
+                                            <li class="card ui-sortable-handle {% if index.parent is not null %}sublist-1{% endif %}" id="link-{{ index.position }}">
+                                                <div class="card-header">
+                                                    <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapse{{ index.position }}" aria-expanded="false" aria-controls="collapse{{ index.position }}">
+                                                        {{ index.name }}
+                                                    </button>
+                                                    <span class="link-type">{{ index.linktype }}</span>
+                                                </div>
+                                                <div id="collapse{{ index.position }}" class="collapse" aria-labelledby="link{{ index.position }}" data-parent="#sortablelinks">
+                                                    <div class="card-body row">
+                                                        <div class="col-12 menu-input">
+                                                            {{ form_widget(child.linktype) }}
+                                                            {{ form_widget(child.name, {'attr': {'class': 'form-control linkname'} }) }}
+                                                            {{ form_widget(child.url, {'attr': {'class': 'form-control'} }) }}
+                                                            {{ form_widget(child.position) }}
+                                                            {{ form_widget(child.parent) }}
+                                                        </div>
+                                                        <div class="col-12 btns">
+                                                            <a href="#" class="text-danger" id="retirer" title="Retirer ce lien du menu">Retirer</a>
+                                                            <a class="text-primary float-right" href="#" data-toggle="collapse" data-target="#collapse{{ index.position }}" aria-expanded="false" aria-controls="#collapse{{ index.position }}">Annuler</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    {% endif %}
+                                </ul>
+                                {{ form_widget(formEditor.sortable, {'attr': {'class': 'sorts' } }) }}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+                {{ form_end(formEditor) }}
+            </div>
         </div>
-    </div>
-    
+    {% endif %}
+        
 {% endblock %}

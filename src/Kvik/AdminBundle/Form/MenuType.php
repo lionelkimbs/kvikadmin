@@ -40,7 +40,6 @@ class MenuType extends AbstractType
         }
         else{
             $builder
-                ->add('title')
                 ->add('valider', SubmitType::class)
             ;
         }
