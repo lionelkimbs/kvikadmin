@@ -264,3 +264,4 @@ table td.title{ font-size: medium; max-width: 18rem;}
 .labelCheckbox{color: transparent;}
 .menulinks .content-button{text-align: center;}
 .menulinks .content-button .active{box-shadow: -1px 1px 2px 1px rgba(0, 0, 0, 0.3) inset; background-color: #F2FFFB;}
+.clear{margin-bottom: 1rem;}

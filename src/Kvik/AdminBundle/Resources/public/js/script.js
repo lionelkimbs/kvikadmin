@@ -44,11 +44,7 @@ $(document).ready(function(e) {
     var form        = $("form#add-link"),
         mlinks      = $(".menulinks"),
         sortablelinks = $( "#sortablelinks" ),
-        hidesort    = $('input.sorts'),
-        li_cards = $("ul#sortablelinks li.card"),
-        
-        btn_ajouter = $("#link-item-button"),
-        btn_retirer = $("a#retirer")
+        hidesort    = $('input.sorts')
     ;
     
     sortablelinks.sortable({
@@ -67,15 +63,14 @@ $(document).ready(function(e) {
     sortablelinks.disableSelection();
     
     /**
-     * Clic sur le bouton pour ajouter menulink
+     * Ajout d'un menulink depuis CUSTOM 
      */
-    btn_ajouter.on("click", function(e){
-        e.preventDefault();
+    $("#link-item-button").on("click", function(e){
         sortablelinks.disableSelection();
         var title   = form .find('[name=link-item-title]').val(),
             url     = form .find('[name=link-item-url]').val(),
             type    = form .find('[name=link-item-type]').val(),
-            numero  = li_cards.length
+            numero  = $("ul#sortablelinks li.card").length
         ;
         if( title.length > 0 && url.length > 0 ){
             if( type === 'custom') var type_shown = 'custom';
@@ -107,21 +102,14 @@ $(document).ready(function(e) {
         else $("#custom-link").prepend('<span class="text-danger">Vous devez remplir les deux champs</span>');
         return false;
     });
-    /**
-     * Clic sur le bouton pour retirer menulink ajouté
-     */
-    btn_retirer.on("click", function(e){
-        var li = $(this).parent().parent().parent().parent();
-        li.fadeOut(500);
-        li.remove();
-        return false;
-    });
+    
     /**
      * Supprime le message d'erreur quand le champ est vide
      */
     mlinks.on("focus", "input.form-control", function () {
         $("span.text-danger").remove();
     });
+    
     /**
      * En modifiant l'input on modifie aussi le title du menulink
      */
@@ -132,30 +120,6 @@ $(document).ready(function(e) {
         if( that.hasClass('linkname') ){
             idParent.find("button").text( that.val() );
         }
-    });
-    /** Tris les menus dans l'orde avant l'envoie du formulaire*/
-    $('form.sortmenus').on('submit', function (e) {
-        e.preventDefault();
-        var lis = sortablelinks.find('li'),
-            menus = [],
-            submenus = []
-        ;
-        for(var i=0; i<lis.length; i++ ){
-            var link = lis.get(i);
-            menus.push(lis.get(i).id);
-            if( link.classList.contains('sublist-1') ){
-                var parent = link.previousElementSibling;
-                while( parent.classList.contains('sublist-1') ){
-                    parent = parent.previousElementSibling;
-                }
-                submenus.push({
-                    'element': link.id,
-                    'parent': parent.id
-                });
-            }
-        }
-        hidesort.val( [ JSON.stringify(menus) +';'+ JSON.stringify(submenus) ]);
-        $(this).unbind('submit').submit();
     });
 
     /**
@@ -168,6 +132,7 @@ $(document).ready(function(e) {
             $(this).addClass('active');
         }
     });
+    
     $('#content-search').on('focus', function () {
         var type = $('.content-button button.active').attr('id'),
             src = '/autocomplete/content-'+ type;
@@ -195,7 +160,7 @@ $(document).ready(function(e) {
                 sortablelinks.disableSelection();
                 var title = ui.item.label,
                     url = ui.item.value,
-                    numero = li_cards.length
+                    numero = $("ul#sortablelinks li.card").length
                 ;
                 sortablelinks.append(
                     '<li class="card" id="link-'+numero+'">' +
@@ -213,7 +178,7 @@ $(document).ready(function(e) {
 
                                 '</div>' +
                                 '<div class="col-12 btns">' +
-                                    '<a href="#" class="text-danger" id="retirer" title="Retirer ce lien du menu">Retirer</a>' +
+                                    '<a class="text-danger removelink" id="retirer" title="Retirer ce lien du menu">Retirer</a>' +
                                     '<a class="text-primary float-right" href="#" data-toggle="collapse" data-target="#collapse'+numero+'" aria-expanded="false" aria-controls="#collapse'+numero+'">Annuler</a>' +
                                 '</div>' +
                             '</div>' +
@@ -225,6 +190,45 @@ $(document).ready(function(e) {
             }
         });
     });
+
+
+
+    /** Tris les menus dans l'orde avant l'envoie du formulaire*/
+    $('form.sortmenus').on('submit', function (e) {
+        e.preventDefault();
+        var lis = sortablelinks.find('li'),
+            menus = [],
+            submenus = []
+        ;
+        for(var i=0; i<lis.length; i++ ){
+            var link = lis.get(i);
+            menus.push(lis.get(i).id);
+            if( link.classList.contains('sublist-1') ){
+                var parent = link.previousElementSibling;
+                while( parent.classList.contains('sublist-1') ){
+                    parent = parent.previousElementSibling;
+                }
+                submenus.push({
+                    'element': link.id,
+                    'parent': parent.id
+                });
+            }
+        }
+        hidesort.val( [ JSON.stringify(menus) +';'+ JSON.stringify(submenus) ]);
+        $(this).unbind('submit').submit();
+    });
+});
+
+/**
+ * Clic sur le bouton pour retirer menulink ajouté
+ */
+$(document).on('click', '.removelink', function(e){
+    e.preventDefault();
+    var parent = $(this).parent().parent().parent().parent();
+    parent.fadeOut(300, function(){
+        $(this).remove();
+    });
+    return false;
 });
 
 function completeTags(tags){
@@ -260,3 +264,4 @@ function completeTags(tags){
         }
     });
 }
+

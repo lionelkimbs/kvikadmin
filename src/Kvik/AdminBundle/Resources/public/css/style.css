@@ -239,6 +239,7 @@ table td.title{ font-size: medium; max-width: 18rem;}
 .menulinks .menu-input input{margin: .5rem; border: none; border-bottom: 1px solid #ced4da; border-radius: 0;}
 .menulinks .menu-input input:focus{border-bottom: 1px solid #17a2b8;}
 .menulinks .card{margin-bottom: .6rem;}
+.menulinks .card .removelink{cursor: pointer;}
 .menulinks .link-type{display: inline-block; float: right; margin-right: .5rem; padding: 0; margin-top: .5rem;}
 .menulinks span.text-danger{font-size: .8rem;}
 .menulinks .btns{margin-top: 1rem;}

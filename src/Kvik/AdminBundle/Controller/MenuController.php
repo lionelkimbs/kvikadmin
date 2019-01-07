@@ -31,7 +31,8 @@ class MenuController extends Controller{
         $menu_id = $request->query->get('menu_id');
         if( $last_menu !== null || !empty($menu_id) ) $menu_edit = $em->getRepository(Menu::class)->find(!empty($menu_id) ? $menu_id : $last_menu->getId() );
         else $menu_edit = null;
-
+        
+        //Si lon a un menu à modifier
         if( $menu_edit !== null ){
             $origins = $em->getRepository(Link::class)->findBy(['menu' => $menu_edit]);
             //---- Formulaire pour sélectionner le menu à éditer ----//
@@ -94,6 +95,7 @@ class MenuController extends Controller{
                 'menuedit'         => $menu_edit
             ]);
         }
+        
         else{
             return $this->render('KvikAdminBundle:Menu:index.html.twig', [
                 'form'          => $form->createView(),
