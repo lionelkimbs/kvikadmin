@@ -39,7 +39,7 @@ class Menu
 
     /**
      * One Menu has Many Links
-     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Link", mappedBy="menu", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Kvik\AdminBundle\Entity\Link", mappedBy="menu", cascade={"persist", "remove"}, fetch ="EAGER")
      * @ORM\OrderBy({"position" = "ASC"})
      */
     private $links;

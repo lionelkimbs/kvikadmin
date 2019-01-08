@@ -203,32 +203,43 @@ $(document).ready(function(e) {
         for(var i=0; i<lis.length; i++ ){
             var link = lis.get(i);
             menus.push(lis.get(i).id);
-            if( link.classList.contains('sublist-1') ){
-                var parent = link.previousElementSibling;
-                while( parent.classList.contains('sublist-1') ){
-                    parent = parent.previousElementSibling;
+            
+            if( menus.length > 0){
+                if( link.classList.contains('sublist-1') ){
+                    var parent = link.previousElementSibling;
+                    if( parent !== null ){
+                        while( parent.classList.contains('sublist-1') ){
+                            parent = parent.previousElementSibling;
+                        }
+                        submenus.push({
+                            'element': link.id,
+                            'parent': parent.id
+                        });
+                    }
                 }
-                submenus.push({
-                    'element': link.id,
-                    'parent': parent.id
-                });
             }
         }
-        hidesort.val( [ JSON.stringify(menus) +';'+ JSON.stringify(submenus) ]);
+        console.log(menus.length);
+        if( menus.length === 0 ) hidesort.val(null);
+        else{
+            hidesort.val( [ JSON.stringify(menus) ]);
+            if( submenus.length !== 0 ) hidesort.val( hidesort.val() +';'+ JSON.stringify(submenus) );
+        }
         $(this).unbind('submit').submit();
     });
+
+    
 });
 
 /**
  * Clic sur le bouton pour retirer menulink ajouté
  */
-$(document).on('click', '.removelink', function(e){
+$(document).on('click', '#retirer', function(e){
     e.preventDefault();
     var parent = $(this).parent().parent().parent().parent();
     parent.fadeOut(300, function(){
         $(this).remove();
     });
-    return false;
 });
 
 function completeTags(tags){
